@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "aseprite";
+  src: url("./assets/fonts/aseprite.ttf") format("truetype");
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
