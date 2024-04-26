@@ -22,6 +22,7 @@ const playlist: any[] = [
 ];
 
 import { motion } from "framer-motion";
+import PageHeader from "./pageHeader";
 
 function Home() {
   return (
@@ -33,7 +34,7 @@ function Home() {
       exit={{ x: "100%" }}
       transition={{ duration: 0.3, delay: 0, ease: [0, 0.71, 0.2, 1.01] }}
     >
-      {/* PAGE HEADER */}
+      <PageHeader />
 
       <div className=" relative z-10 px-6 pt-12">
         <Greetings />

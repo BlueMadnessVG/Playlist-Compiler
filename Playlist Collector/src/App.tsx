@@ -63,7 +63,7 @@ function App() {
             </Suspense>
           </main>
 
-          <footer className="[grid-area:player]  min-h-[100px]">
+          <footer className="[grid-area:player] bg-zinc-900 ">
             <Player />
           </footer>
         </Router>

@@ -1,4 +1,6 @@
-function PlaylistIcon() {
+import React from "react";
+
+function VolumeNoneIcon() {
   return (
     <svg
       role="img"
@@ -7,14 +9,13 @@ function PlaylistIcon() {
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      fill="#ff0000"
     >
       <path
-        d="M18 2H6v2h12V2zM4 6h16v2H4V6zm-2 4h20v12H2V10zm18 10v-8H4v8h16z"
+        d="M13 2h-2v2H9v2H7v2H3v8h4v2h2v2h2v2h2V2zM9 18v-2H7v-2H5v-4h2V8h2V6h2v12H9zm10-6.777h-2v-2h-2v2h2v2h-2v2h2v-2h2v2h2v-2h-2v-2zm0 0h2v-2h-2v2z"
         fill="currentColor"
       />
     </svg>
   );
 }
 
-export default PlaylistIcon;
+export default VolumeNoneIcon;
