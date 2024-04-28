@@ -4,7 +4,7 @@ import PlayIcon from "../../assets/icons/play";
 import { usePlayerStore } from "../../global/musicStore";
 import PauseIcon from "../../assets/icons/pause";
 
-function CardPlayButton({ id }: { id: number }) {
+function CardPlayButton({ id }: { id: string }) {
   const { currentMusic, isPlaying, setIsPlaying, setCurrentMusic } =
     usePlayerStore((state: any) => state);
 
@@ -25,7 +25,7 @@ function CardPlayButton({ id }: { id: number }) {
   return (
     <button
       onClick={handleClick}
-      className="card-play-button rounded-full bg-green-500 p-2 text-white hover:scale-110 transition hover:bg-green-500"
+      className="card-play-button rounded-full  p-2 text-white hover:scale-110 transition  bg-violet-800 hover:bg-violet-500"
     >
       {isPlayingPlaylist ? <PauseIcon /> : <PlayIcon />}
     </button>

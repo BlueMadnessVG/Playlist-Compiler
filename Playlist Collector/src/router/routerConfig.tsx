@@ -7,7 +7,7 @@ export const routes = [
     element: <Home />,
   },
   {
-    path: "playlist/:id",
+    path: "playlist/:type/:id",
     element: <PlayList />,
   },
 ];

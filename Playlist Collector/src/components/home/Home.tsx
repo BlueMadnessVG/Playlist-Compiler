@@ -1,6 +1,14 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import PlayListItemCard from "./playListItemCard";
 import Greetings from "./Greetings";
+import { motion } from "framer-motion";
+import PageHeader from "./pageHeader";
+import {
+  fetchYouTubeProfile,
+  fetchYoutubePlaylists,
+  setYouTubeClientToken,
+} from "../../services/YoutubeService";
+import { useYoutubeStore } from "../../global/youtubeStore";
 
 const playlist: any[] = [
   {
@@ -21,14 +29,46 @@ const playlist: any[] = [
   },
 ];
 
-import { motion } from "framer-motion";
-import PageHeader from "./pageHeader";
-
 function Home() {
+  const { youtubeToken, youtubePlaylist, setYoutubeToken, setYoutubePlaylist } =
+    useYoutubeStore((state: any) => state);
+
+  useEffect(() => {
+    const StorageYoutubeToken = window.localStorage.getItem("YouTube_token");
+    const StorageSpotifyToken = window.localStorage.getItem("Spotify_token");
+    const hash = window.location.hash;
+    window.location.hash = "";
+
+    if (!StorageYoutubeToken && hash) {
+      const _token = hash.split("&")[0].split("=")[1];
+      window.localStorage.setItem("YouTube_token", _token);
+      setYoutubeToken(_token);
+      //setSpotifyClientToken(_token);
+      setYouTubeClientToken(_token);
+    } else if (StorageYoutubeToken) {
+      setYoutubeToken(StorageYoutubeToken);
+      //setSpotifyClientToken(StorageToken);
+      setYouTubeClientToken(StorageYoutubeToken);
+    }
+  }, []);
+
+  useEffect(() => {
+    async function getYoutubePlaylist() {
+      try {
+        const _youtubePlaylist = await fetchYoutubePlaylists();
+        setYoutubePlaylist(_youtubePlaylist.items);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if (youtubeToken) getYoutubePlaylist();
+  }, [youtubeToken]);
+
   return (
     <motion.div
       id="playlist-container"
-      className=" relative transition-all duration-1000 bg-green-600 rounded-lg flex-1 m-2 ml-0 mt-0"
+      className=" relative transition-all duration-1000 bg-violet-800 rounded-lg flex-1 m-2 ml-0 mt-0"
       initial={{ x: "-100%" }}
       animate={{ x: 0 }}
       exit={{ x: "100%" }}
@@ -36,12 +76,18 @@ function Home() {
     >
       <PageHeader />
 
-      <div className=" relative z-10 px-6 pt-12">
+      <div className=" relative z-10 px-6 pt-6">
         <Greetings />
 
-        <div className="flex flex-wrap mt-6 gap-4">
-          {playlist.map((playlist: any, index) => {
-            return <PlayListItemCard key={index} playlist={playlist} />;
+        <div className="flex flex-wrap mt-4 gap-4">
+          {youtubePlaylist.map((playlist: any, index: number) => {
+            return (
+              <PlayListItemCard
+                key={index}
+                playlist={playlist}
+                type="youtube"
+              />
+            );
           })}
         </div>
       </div>

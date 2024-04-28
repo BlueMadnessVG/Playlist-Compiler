@@ -39,3 +39,17 @@ export async function fetchYouTubeProfile() {
   });
   return result.data;
 }
+
+export async function fetchYoutubePlaylists() {
+  const result = await apiYouTube("playlists", {
+    params: { part: "snippet", mine: true, maxResults: 10 },
+  });
+  return result.data;
+}
+
+export async function fetchYoutubePlaylistsItems(id: any) {
+  const result = await apiYouTube("playlistItems", {
+    params: { part: "snippet", maxResults: 50, playlistId: id },
+  });
+  return result.data;
+}

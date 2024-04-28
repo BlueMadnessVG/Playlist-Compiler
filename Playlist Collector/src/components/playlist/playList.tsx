@@ -1,5 +1,9 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useYoutubeStore } from "../../global/youtubeStore";
+import { fetchYoutubePlaylistsItems } from "../../services/YoutubeService";
+import MusicItem from "./musicItem";
 
 const Playlist: any[] = [
   {
@@ -21,7 +25,28 @@ const Playlist: any[] = [
 ];
 
 function PlayList() {
-  let playlist = Playlist[0];
+  const { type, id } = useParams();
+  const { youtubePlaylist } = useYoutubeStore((state: any) => state);
+  const [playlistInfo, setPlaylistInfo] = useState<any>();
+  const [items, setItems] = useState<any>();
+
+  useEffect(() => {
+    const item = youtubePlaylist.filter((val: any) => val.id === id)[0];
+    setPlaylistInfo(item);
+
+    async function getItems() {
+      try {
+        const result = await fetchYoutubePlaylistsItems(id);
+        console.log(result);
+        setItems(result);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getItems();
+  }, []);
+
   return (
     <motion.div
       id="playlist-container"
@@ -34,8 +59,10 @@ function PlayList() {
       <header className="flex flex-row gap-8 px-6 mt-12">
         <picture className=" aspect-square w-52 h-52 flex-none">
           <img
-            src={playlist.imageURL}
-            alt={`Playlist from ${playlist.from}`}
+            src={type == "youtube" && playlistInfo?.snippet.thumbnails.high.url}
+            alt={`Playlist from ${
+              type == "youtube" && playlistInfo?.snippet.channelTitle
+            }`}
             className=" object-cover w-full h-full rounded-sm shadow-lg"
           />
         </picture>
@@ -44,20 +71,28 @@ function PlayList() {
           <h2 className="flex flex-1 items-end text-sm font-light">Playlist</h2>
           <div>
             <h1 className=" text-7xl font-bold block text-white mt-5">
-              {playlist.title}
+              {type == "youtube" && playlistInfo?.snippet.title}
             </h1>
           </div>
 
           <div className="flex-1 flex items-end">
             <div className="text-sm text-gray-300 font-normal flex flex-row">
               <span className=" font-bold text-white text-xs">
-                Christian Armenta
+                {type == "youtube" && playlistInfo?.snippet.channelTitle}
               </span>
-              <span className=" ml-1 text-xs">&bull; 50 songs, about 3 hr</span>
+              <span className=" ml-1 text-xs">
+                &bull; {items?.items.length} songs, about 3 hr
+              </span>
             </div>
           </div>
         </div>
       </header>
+
+      <div className="flex flex-col">
+        {items?.items.map((music: any, index: number) => {
+          return <MusicItem key={index} music={music} />;
+        })}
+      </div>
 
       <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-zinc-900 from-65% via-zinc-900/80 -z-10" />
     </motion.div>
