@@ -28,7 +28,7 @@ const playlist: any[] = [
 function PageAside() {
   return (
     <nav className="flex flex-col flex-1 p-2">
-      <div className="flex items-center p-2 px-6 gap-2 font-abc bg-zinc-900 mb-1 rounded-lg text-xl font-semibold">
+      <div className="flex items-center p-2 px-6 gap-2 font-abc bg-zinc-900 mb-1 rounded-lg text-xl font-semibold ">
         <picture className="h-10 w-10 flex-none ">
           <img
             src="https://avatars.githubusercontent.com/u/102503098?v=4"

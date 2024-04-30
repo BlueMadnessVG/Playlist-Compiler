@@ -63,19 +63,16 @@ export function setSpotifyClientToken(token: string) {
 }
 
 export async function fetchSpotifyProfile(): Promise<any> {
-  try {
-    const result = await apiClient.get("me");
-    return result.data;
-  } catch (error) {
-    console.log(error);
-  }
+  const result = await apiClient.get("me");
+  return result.data;
 }
 
-export async function getSpotifyUserPlaylist() {
-  try {
-    const result = await apiClient.get("me/playlists");
-    console.log(result.data);
-  } catch (error) {
-    console.log(error);
-  }
+export async function fetchSpotifyUserPlaylist() {
+  const result = await apiClient.get("me/playlists");
+  return result.data;
+}
+
+export async function fetchSpotifyPlaylistItems(id: any) {
+  const result = await apiClient.get(`playlists/${id}/tracks`);
+  return result.data;
 }

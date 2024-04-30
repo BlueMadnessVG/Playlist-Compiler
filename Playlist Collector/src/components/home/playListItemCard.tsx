@@ -15,15 +15,17 @@ function PlaylistItemCard({ playlist, type }: { playlist: any; type: string }) {
         }}
         className="playlist-item transition-all duration-300 overflow-hidden p-2 pb-4 rounded-md flex flex-col relative gap-2 bg-zing-500/30 w-48 hover:bg-zinc-700/30"
       >
-        <picture className="aspect-square w-full h-auto flex-none  ">
+        <picture className="aspect-square w-full h-44 flex-none  ">
           <img
             src={
               type == "youtube"
                 ? playlist.snippet.thumbnails.high.url
-                : playlist.imageURL
+                : playlist.images[0].url
             }
             alt={`Playlist from ${
-              type == "youtube" && playlist.snippet.channelTitle
+              type == "youtube"
+                ? playlist.snippet.channelTitle
+                : playlist.owner.display_name
             }`}
             className=" object-cover w-full h-full rounded-lg shadow-inner"
           />
@@ -31,11 +33,13 @@ function PlaylistItemCard({ playlist, type }: { playlist: any; type: string }) {
 
         <div className="flex flex-auto flex-col font-abc px-3 ">
           <h4 className=" text-sm truncate">
-            {type == "youtube" && playlist.snippet.title}
+            {type == "youtube" ? playlist.snippet.title : playlist.name}
           </h4>
           <span className="text-xs text-gray-400 pt-1">
-            {type == "youtube" && "YouTube"} &bull;{" "}
-            {playlist.snippet.channelTitle}
+            {type == "youtube" ? "YouTube" : "Spotify"} &bull;
+            {type == "youtube"
+              ? playlist.snippet.channelTitle
+              : playlist.owner.display_name}
           </span>
         </div>
       </a>

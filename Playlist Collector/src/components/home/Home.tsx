@@ -9,6 +9,11 @@ import {
   setYouTubeClientToken,
 } from "../../services/YoutubeService";
 import { useYoutubeStore } from "../../global/youtubeStore";
+import { useSpotifyStore } from "../../global/spotifyStore";
+import {
+  fetchSpotifyUserPlaylist,
+  setSpotifyClientToken,
+} from "../../services/SpotifyService";
 
 const playlist: any[] = [
   {
@@ -33,22 +38,42 @@ function Home() {
   const { youtubeToken, youtubePlaylist, setYoutubeToken, setYoutubePlaylist } =
     useYoutubeStore((state: any) => state);
 
+  const { spotifyToken, spotifyPlaylist, setSpotifyToken, setSpotifyPlaylist } =
+    useSpotifyStore((state: any) => state);
+
   useEffect(() => {
     const StorageYoutubeToken = window.localStorage.getItem("YouTube_token");
     const StorageSpotifyToken = window.localStorage.getItem("Spotify_token");
     const hash = window.location.hash;
     window.location.hash = "";
 
-    if (!StorageYoutubeToken && hash) {
-      const _token = hash.split("&")[0].split("=")[1];
-      window.localStorage.setItem("YouTube_token", _token);
-      setYoutubeToken(_token);
-      //setSpotifyClientToken(_token);
-      setYouTubeClientToken(_token);
-    } else if (StorageYoutubeToken) {
-      setYoutubeToken(StorageYoutubeToken);
-      //setSpotifyClientToken(StorageToken);
-      setYouTubeClientToken(StorageYoutubeToken);
+    if (hash) {
+      if (
+        !StorageYoutubeToken &&
+        hash.split("&")[0].split("=")[1].length == 216
+      ) {
+        const _token = hash.split("&")[0].split("=")[1];
+        window.localStorage.setItem("YouTube_token", _token);
+        setYoutubeToken(_token);
+        setYouTubeClientToken(_token);
+      } else if (
+        !StorageSpotifyToken &&
+        hash.split("&")[0].split("=")[1].length == 238
+      ) {
+        const _token = hash.split("&")[0].split("=")[1];
+        window.localStorage.setItem("Spotify_token", _token);
+        setSpotifyToken(_token);
+        setSpotifyClientToken(_token);
+      }
+    } else if (StorageYoutubeToken || StorageSpotifyToken) {
+      if (StorageYoutubeToken) {
+        setYoutubeToken(StorageYoutubeToken);
+        setYouTubeClientToken(StorageYoutubeToken);
+      }
+      if (StorageSpotifyToken) {
+        setSpotifyToken(StorageSpotifyToken);
+        setSpotifyClientToken(StorageSpotifyToken);
+      }
     }
   }, []);
 
@@ -65,10 +90,23 @@ function Home() {
     if (youtubeToken) getYoutubePlaylist();
   }, [youtubeToken]);
 
+  useEffect(() => {
+    async function getSpotifyPlaylist() {
+      try {
+        const _spotifyPlaylist = await fetchSpotifyUserPlaylist();
+        setSpotifyPlaylist(_spotifyPlaylist.items);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if (spotifyToken) getSpotifyPlaylist();
+  }, [spotifyToken]);
+
   return (
     <motion.div
       id="playlist-container"
-      className=" relative transition-all duration-1000 bg-violet-800 rounded-lg flex-1 m-2 ml-0 mt-0"
+      className=" relative transition-all duration-1000  bg-zinc-900 rounded-lg flex-1 m-2 ml-0 mt-0 overflow-y-auto"
       initial={{ x: "-100%" }}
       animate={{ x: 0 }}
       exit={{ x: "100%" }}
@@ -76,22 +114,44 @@ function Home() {
     >
       <PageHeader />
 
-      <div className=" relative z-10 px-6 pt-6">
+      <div className=" relative z-10 px-6 pt-6 ">
         <Greetings />
+        <div className="flex flex-col gap-2 font-abc">
+          <div className="pb-2 pt-8 ">
+            <h2 className="ml-1 font-bold text-xl">
+              Your <span className="text-red-500">YouTube</span> playlists
+            </h2>
+            <div className="flex mt-1 gap-4 overflow-x-auto">
+              {youtubePlaylist.map((playlist: any, index: number) => {
+                return (
+                  <PlayListItemCard
+                    key={index}
+                    playlist={playlist}
+                    type="youtube"
+                  />
+                );
+              })}
+            </div>
+          </div>
 
-        <div className="flex flex-wrap mt-4 gap-4">
-          {youtubePlaylist.map((playlist: any, index: number) => {
-            return (
-              <PlayListItemCard
-                key={index}
-                playlist={playlist}
-                type="youtube"
-              />
-            );
-          })}
+          <div className="pb-2 pt-8">
+            <h2 className="ml-1 font-bold text-xl">
+              Your <span className="text-green-500">Spotify</span> playlists
+            </h2>
+            <div className="flex mt-1 gap-4 overflow-x-auto">
+              {spotifyPlaylist.map((playlist: any, index: number) => {
+                return (
+                  <PlayListItemCard
+                    key={index}
+                    playlist={playlist}
+                    type="spotify"
+                  />
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
-      <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-zinc-900 from-65% via-zinc-900/80 " />
     </motion.div>
   );
 }
