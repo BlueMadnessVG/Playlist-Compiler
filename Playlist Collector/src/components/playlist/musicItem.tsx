@@ -24,9 +24,11 @@ function MusicItem({ music, type }: { music: any; type: any }) {
             className="w-10 h-10 rounded-md"
           />
         </picture>
-        <h3>{type == "youtube" ? music?.snippet.title : music?.track.name}</h3>
+        <h3 className=" max-w-96 truncate">
+          {type == "youtube" ? music?.snippet.title : music?.track.name}
+        </h3>
       </td>
-      <td className="px-3 py-1 font-thin text-zinc-500">
+      <td className="px-3 py-1 font-thin text-zinc-500 max-w-72 truncate">
         {type == "youtube"
           ? music?.snippet.videoOwnerChannelTitle.split("-")[0]
           : music?.track.album.name}
@@ -34,7 +36,7 @@ function MusicItem({ music, type }: { music: any; type: any }) {
 
       {type == "spotify" && (
         <>
-          <td className="px-3 py-1 font-thin text-zinc-500 truncate">
+          <td className="px-3 py-1 font-thin text-zinc-500">
             {music?.track.artists[0].name}
           </td>
           <td className="px-3 py-1 font-thin text-zinc-500">

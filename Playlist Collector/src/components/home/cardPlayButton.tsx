@@ -19,6 +19,8 @@ function CardPlayButton({ id }: { id: string }) {
     setIsPlaying(true);
     setCurrentMusic({
       playList: { id },
+      song: 0,
+      songs: [],
     });
   };
 

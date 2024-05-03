@@ -12,6 +12,7 @@ import {
   fetchSpotifyProfile,
   redirectToSpotifyAuth,
 } from "../../services/SpotifyService";
+import YouTubeIcon from "../../assets/icons/youtube";
 
 function PageHeader() {
   const { youtubeToken, setYoutubeToken } = useYoutubeStore(
@@ -31,6 +32,8 @@ function PageHeader() {
         setYoutubePic(youtube.items[0].snippet.thumbnails.default.url);
       } catch (error) {
         console.log(error);
+        setYoutubeToken("");
+        window.localStorage.removeItem("YouTube_token");
       }
     }
 
@@ -40,6 +43,8 @@ function PageHeader() {
         setSpotifyPic(spotify.images[0].url);
       } catch (error) {
         console.log(error);
+        setSpotifyToken("");
+        window.localStorage.removeItem("Spotify_token");
       }
     }
 
@@ -88,16 +93,20 @@ function PageHeader() {
         ) : (
           <Tooltip tooltip="Youtube profile">
             <button
-              className="flex hover:scale-110 transition "
+              className="flex group-hover:scale-110 transition group"
               onClick={handleYoutubeLogout}
             >
               <picture className="h-12 w-12 flex-none">
                 <img
                   src={youtubePic}
-                  className=" object-cover w-full h-full rounded-full border  border-red-500 hover:border-red-500/50"
+                  className=" object-cover w-full h-full rounded-full border border-red-500 group-hover:brightness-50"
                 />
               </picture>
             </button>
+
+            <div className="absolute right-3 bottom-7 translate-y-0 transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:translate-y-4 text-red-500 pointer-events-none">
+              <img src="/Youtube.png" />
+            </div>
           </Tooltip>
         )}
         {!spotifyToken ? (
@@ -111,16 +120,20 @@ function PageHeader() {
         ) : (
           <Tooltip tooltip="Spotify profile">
             <button
-              className="flex hover:scale-110 transition"
+              className="flex hover:scale-110 transition group"
               onClick={handleSpotifyLogout}
             >
               <picture className="h-12 w-12 flex-none">
                 <img
                   src={spotifyPic}
-                  className=" object-cover w-full h-full rounded-full border border-green-500 hover:border-green-500/50"
+                  className=" object-cover w-full h-full rounded-full border border-green-500 group-hover:brightness-50"
                 />
               </picture>
             </button>
+
+            <div className="absolute right-3 bottom-7 translate-y-0 transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:translate-y-4 text-red-500 pointer-events-none">
+              <img src="/Spotify.png" />
+            </div>
           </Tooltip>
         )}
       </div>

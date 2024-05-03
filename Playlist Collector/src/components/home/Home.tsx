@@ -14,25 +14,8 @@ import {
   fetchSpotifyUserPlaylist,
   setSpotifyClientToken,
 } from "../../services/SpotifyService";
-
-const playlist: any[] = [
-  {
-    id: 1,
-    title: "Ado god",
-    imageURL:
-      "https://a.storyblok.com/f/178900/960x540/b13931671a/ado.jpg/m/filters:quality(95)format(webp)",
-    total: 6,
-    from: "Spotify",
-  },
-  {
-    id: 2,
-    title: "Try hard",
-    imageURL:
-      "https://www.callofduty.com/content/dam/atvi/callofduty/blog/archives/feature/featured-Image10737600.jpg",
-    total: 6,
-    from: "YouTube",
-  },
-];
+import Filters from "./Filters";
+import { useFiltersStore } from "../../global/filtestStore";
 
 function Home() {
   const { youtubeToken, youtubePlaylist, setYoutubeToken, setYoutubePlaylist } =
@@ -40,6 +23,9 @@ function Home() {
 
   const { spotifyToken, spotifyPlaylist, setSpotifyToken, setSpotifyPlaylist } =
     useSpotifyStore((state: any) => state);
+  const { isAll, isYoutube, isSpotify } = useFiltersStore(
+    (state: any) => state
+  );
 
   useEffect(() => {
     const StorageYoutubeToken = window.localStorage.getItem("YouTube_token");
@@ -77,31 +63,41 @@ function Home() {
     }
   }, []);
 
-  useEffect(() => {
-    async function getYoutubePlaylist() {
-      try {
-        const _youtubePlaylist = await fetchYoutubePlaylists();
-        setYoutubePlaylist(_youtubePlaylist.items);
-      } catch (error) {
-        console.log(error);
-      }
+  function getPlaylists() {}
+
+  async function getYoutubePlaylist() {
+    try {
+      const _youtubePlaylist = await fetchYoutubePlaylists();
+      setYoutubePlaylist(_youtubePlaylist.items);
+    } catch (error) {
+      console.log(error);
     }
+  }
 
-    if (youtubeToken) getYoutubePlaylist();
-  }, [youtubeToken]);
+  async function getSpotifyPlaylist() {
+    try {
+      const _spotifyPlaylist = await fetchSpotifyUserPlaylist();
+      setSpotifyPlaylist(_spotifyPlaylist.items);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
-    async function getSpotifyPlaylist() {
-      try {
-        const _spotifyPlaylist = await fetchSpotifyUserPlaylist();
-        setSpotifyPlaylist(_spotifyPlaylist.items);
-      } catch (error) {
-        console.log(error);
-      }
+    if (isAll) {
+      if (youtubeToken) getYoutubePlaylist();
+      if (spotifyToken) getSpotifyPlaylist();
+    } else if (isYoutube) {
+      if (youtubeToken) getYoutubePlaylist();
+      setSpotifyPlaylist([]);
+    } else if (isSpotify) {
+      if (spotifyToken) getSpotifyPlaylist();
+      setYoutubePlaylist([]);
+    } else {
+      console.log("asdk");
+      console.log(youtubeToken + " " + spotifyToken);
     }
-
-    if (spotifyToken) getSpotifyPlaylist();
-  }, [spotifyToken]);
+  }, [isAll, isYoutube, isSpotify, youtubeToken, spotifyToken]);
 
   return (
     <motion.div
@@ -115,40 +111,31 @@ function Home() {
       <PageHeader />
 
       <div className=" relative z-10 px-6 pt-6 ">
-        <Greetings />
-        <div className="flex flex-col gap-2 font-abc">
-          <div className="pb-2 pt-8 ">
-            <h2 className="ml-1 font-bold text-xl">
-              Your <span className="text-red-500">YouTube</span> playlists
-            </h2>
-            <div className="flex mt-1 gap-4 overflow-x-auto">
-              {youtubePlaylist.map((playlist: any, index: number) => {
-                return (
-                  <PlayListItemCard
-                    key={index}
-                    playlist={playlist}
-                    type="youtube"
-                  />
-                );
-              })}
-            </div>
-          </div>
+        <Filters />
+        <h1 className=" text-xl font-abc font-bold ml-2 pt-4">
+          Your Playlists
+        </h1>
 
-          <div className="pb-2 pt-8">
-            <h2 className="ml-1 font-bold text-xl">
-              Your <span className="text-green-500">Spotify</span> playlists
-            </h2>
-            <div className="flex mt-1 gap-4 overflow-x-auto">
-              {spotifyPlaylist.map((playlist: any, index: number) => {
-                return (
-                  <PlayListItemCard
-                    key={index}
-                    playlist={playlist}
-                    type="spotify"
-                  />
-                );
-              })}
-            </div>
+        <div className="flex flex-col gap-2 font-abc">
+          <div className="flex flex-wrap mt-1 gap-2">
+            {youtubePlaylist.map((playlist: any, index: number) => {
+              return (
+                <PlayListItemCard
+                  key={index}
+                  playlist={playlist}
+                  type="youtube"
+                />
+              );
+            })}
+            {spotifyPlaylist.map((playlist: any, index: number) => {
+              return (
+                <PlayListItemCard
+                  key={index}
+                  playlist={playlist}
+                  type="spotify"
+                />
+              );
+            })}
           </div>
         </div>
       </div>
