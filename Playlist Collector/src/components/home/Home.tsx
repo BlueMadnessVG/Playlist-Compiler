@@ -1,11 +1,10 @@
-import React, { Suspense, useEffect, useState } from "react";
+import { useEffect } from "react";
 import PlayListItemCard from "./playListItemCard";
-import Greetings from "./Greetings";
 import { motion } from "framer-motion";
 import PageHeader from "./pageHeader";
 import {
-  fetchYouTubeProfile,
   fetchYoutubePlaylists,
+  fetchYoutubePlaylistsNoLogin,
   setYouTubeClientToken,
 } from "../../services/YoutubeService";
 import { useYoutubeStore } from "../../global/youtubeStore";
@@ -26,6 +25,15 @@ function Home() {
   const { isAll, isYoutube, isSpotify } = useFiltersStore(
     (state: any) => state
   );
+
+  const getPlayListNoLogin = async () => {
+    try {
+      const response = await fetchYoutubePlaylistsNoLogin();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const StorageYoutubeToken = window.localStorage.getItem("YouTube_token");
@@ -60,10 +68,10 @@ function Home() {
         setSpotifyToken(StorageSpotifyToken);
         setSpotifyClientToken(StorageSpotifyToken);
       }
+    } else {
+      getPlayListNoLogin();
     }
   }, []);
-
-  function getPlaylists() {}
 
   async function getYoutubePlaylist() {
     try {
@@ -93,9 +101,6 @@ function Home() {
     } else if (isSpotify) {
       if (spotifyToken) getSpotifyPlaylist();
       setYoutubePlaylist([]);
-    } else {
-      console.log("asdk");
-      console.log(youtubeToken + " " + spotifyToken);
     }
   }, [isAll, isYoutube, isSpotify, youtubeToken, spotifyToken]);
 

@@ -6,8 +6,11 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import PageAside from "./components/static/aside/pageAside";
 import Player from "./components/static/player/player";
+import { usePlayerStore } from "./global/musicStore";
 
 function App() {
+  const { currentMusic } = usePlayerStore((state: any) => state);
+
   return (
     <>
       <div id={styles.app} className="relative h-screen gap-2 ">
@@ -22,9 +25,11 @@ function App() {
             </Suspense>
           </main>
 
-          <footer className="[grid-area:player] ">
-            <Player />
-          </footer>
+          {currentMusic.playList && (
+            <footer>
+              <Player />
+            </footer>
+          )}
         </Router>
       </div>
     </>

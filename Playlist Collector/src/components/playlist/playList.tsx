@@ -81,7 +81,7 @@ function PlayList() {
       transition={{ duration: 0.3, delay: 0, ease: [0, 0.71, 0.2, 1.01] }}
     >
       <header
-        className={`flex flex-row sticky top-0 gap-8 px-6 pt-10 pb-6 bg-gradient-to-t from-zinc-900/80 from-5% via-zinc-900/60 via-50% `}
+        className={`flex flex-row sticky top-0 gap-8 px-6 pt-10 pb-6 bg-gradient-to-t z-20 from-zinc-900/80 from-5% via-zinc-900/60 via-50% `}
         style={{ backgroundColor: bgColor.current }}
       >
         <picture className=" aspect-square w-52 h-52 flex-none">
@@ -143,7 +143,14 @@ function PlayList() {
           </thead>
           <tbody className="overflow-y-auto">
             {items?.items.map((music: any, index: number) => {
-              return <MusicItem key={index} music={music} type={type} />;
+              return (
+                <MusicItem
+                  key={index}
+                  music={music}
+                  type={type}
+                  index={index}
+                />
+              );
             })}
           </tbody>
         </table>
