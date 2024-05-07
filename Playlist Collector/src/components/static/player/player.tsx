@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { createRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import PlayIcon from "../../../assets/icons/play";
 import PauseIcon from "../../../assets/icons/pause";
 
@@ -8,12 +8,14 @@ import YouTubePlayer from "react-player/youtube";
 import { fetchYoutubePlaylistsItems } from "../../../services/YoutubeService";
 import NextIcon from "../../../assets/icons/next";
 import PrevIcon from "../../../assets/icons/prev";
+import CloseIcon from "../../../assets/icons/close";
 import { MusicSlider } from "./MusicSlider";
+import { motion } from "framer-motion";
+import styles from "../../../App.module.css";
 
 function Player() {
-  const { currentMusic, isPlaying, setIsPlaying, volume } = usePlayerStore(
-    (state: any) => state
-  );
+  const { currentMusic, isPlaying, setIsPlaying, setCurrentMusic, volume } =
+    usePlayerStore((state: any) => state);
   const audioRef = useRef<string>("");
   const playerRef = useRef<any>(null);
   const [time, setTime] = useState({
@@ -45,15 +47,12 @@ function Player() {
         setIsPlaying(true);
       } catch (error) {
         console.log("error: " + error);
+        setCurrentMusic({ playList: null, song: null, songs: [] });
       }
     };
 
     if (currentMusic.playList) getYoutubePlaylistItems();
   }, [currentMusic]);
-
-  useEffect(() => {}, [volume]);
-
-  useEffect(() => {}, [isPlaying]);
 
   const handlePlay = () => {
     if (currentMusic?.playList) setIsPlaying(!isPlaying);
@@ -92,7 +91,6 @@ function Player() {
   };
 
   const handleOnDuration = (state: any) => {
-    console.log(state);
     setTime({ ...time, MaxTime: state });
   };
 
@@ -105,8 +103,19 @@ function Player() {
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
+  const handleCloseClick = () => {
+    setIsPlaying(false);
+    setCurrentMusic({ playList: null, song: null, songs: [] });
+  };
+
   return (
-    <div className="absolute bottom-0 rounded-t-lg right-4 overflow-hidden z-20 cursor-pointer">
+    <motion.div
+      className="absolute bottom-0 rounded-t-lg right-4 overflow-hidden z-20 cursor-pointer"
+      initial={{ y: "100%" }}
+      animate={{ y: 0 }}
+      exit={{ y: "-100%" }}
+      transition={{ duration: 0.3, delay: 0, ease: [0, 0.71, 0.2, 1.01] }}
+    >
       <div className=" group cursor-default">
         <div className="flex gap-5 place-content-center absolute bg-zinc-900/50 w-[28vw] h-[16vw] items-center opacity-0 group-hover:opacity-100">
           <button
@@ -132,6 +141,12 @@ function Player() {
             <span>{formatTime(time.played)}</span>
             <span>/</span>
             <span>{formatTime(time.MaxTime)}</span>
+          </div>
+
+          <div className="absolute gap-x-1 top-2 right-2">
+            <button className="hover:scale-110" onClick={handleCloseClick}>
+              <CloseIcon />
+            </button>
           </div>
         </div>
 
@@ -167,7 +182,7 @@ function Player() {
         }}
       />
 
-      <div className="flex flex-auto flex-col gap-1 justify-between w-[28vw] px-4 z-50 pb-2 pt-3 bg-zinc-800 font-abc cursor-default">
+      <div className="flex flex-auto flex-col justify-between w-[28vw] px-4 z-50 pb-2 pt-2 bg-zinc-800 font-abc cursor-default overflow-hidden">
         <h2 className="text-md truncate">
           {currentMusic.songs[currentMusic.song]?.name}
         </h2>
@@ -190,7 +205,7 @@ function Player() {
           <VolumeController />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

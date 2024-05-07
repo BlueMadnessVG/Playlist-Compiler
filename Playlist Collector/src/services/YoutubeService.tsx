@@ -57,6 +57,17 @@ export async function fetchYoutubePlaylistsNoLogin() {
   return result.data;
 }
 
+export async function fetchYoutubePlaylistId(id: any) {
+  const result = await apiYouTube("playlists", {
+    params: {
+      part: "snippet",
+      id: id,
+    },
+  });
+  console.log(result);
+  return result.data;
+}
+
 export async function fetchYoutubePlaylistsItems(id: any) {
   const result = await apiYouTube("playlistItems", {
     params: { part: "snippet", maxResults: 50, playlistId: id },

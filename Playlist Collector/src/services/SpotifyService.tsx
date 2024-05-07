@@ -76,3 +76,8 @@ export async function fetchSpotifyPlaylistItems(id: any) {
   const result = await apiClient.get(`playlists/${id}/tracks`);
   return result.data;
 }
+
+export async function fetchSpotifyNoLogin() {
+  const result = await apiClient.get(`playlist/3cEYpjA9oz9GiPac4AsH4n`);
+  console.log(result);
+}

@@ -1,31 +1,11 @@
 import { motion } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useYoutubeStore } from "../../global/youtubeStore";
 import { fetchYoutubePlaylistsItems } from "../../services/YoutubeService";
 import MusicItem from "./musicItem";
-import PlayIcon from "../../assets/icons/play";
 import { useSpotifyStore } from "../../global/spotifyStore";
 import { fetchSpotifyPlaylistItems } from "../../services/SpotifyService";
-
-const Playlist: any[] = [
-  {
-    id: 1,
-    title: "Ado god",
-    imageURL:
-      "https://a.storyblok.com/f/178900/960x540/b13931671a/ado.jpg/m/filters:quality(95)format(webp)",
-    total: 6,
-    from: "Spotify",
-  },
-  {
-    id: 2,
-    title: "Try hard",
-    imageURL:
-      "https://www.callofduty.com/content/dam/atvi/callofduty/blog/archives/feature/featured-Image10737600.jpg",
-    total: 6,
-    from: "YouTube",
-  },
-];
 
 function PlayList() {
   const { type, id } = useParams();

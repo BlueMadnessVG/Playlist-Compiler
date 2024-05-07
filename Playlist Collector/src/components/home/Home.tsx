@@ -10,11 +10,12 @@ import {
 import { useYoutubeStore } from "../../global/youtubeStore";
 import { useSpotifyStore } from "../../global/spotifyStore";
 import {
+  fetchSpotifyNoLogin,
   fetchSpotifyUserPlaylist,
   setSpotifyClientToken,
 } from "../../services/SpotifyService";
 import Filters from "./Filters";
-import { useFiltersStore } from "../../global/filtestStore";
+import { useFiltersStore } from "../../global/filtersStore";
 
 function Home() {
   const { youtubeToken, youtubePlaylist, setYoutubeToken, setYoutubePlaylist } =
@@ -28,7 +29,7 @@ function Home() {
 
   const getPlayListNoLogin = async () => {
     try {
-      const response = await fetchYoutubePlaylistsNoLogin();
+      const response = await fetchSpotifyNoLogin();
       console.log(response);
     } catch (error) {
       console.log(error);

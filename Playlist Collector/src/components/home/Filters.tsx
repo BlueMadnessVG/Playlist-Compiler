@@ -1,5 +1,5 @@
 import React from "react";
-import { useFiltersStore } from "../../global/filtestStore";
+import { useFiltersStore } from "../../global/filtersStore";
 
 function Filters() {
   const { isAll, isSpotify, isYoutube, setAll, setSpotify, setYoutube } =

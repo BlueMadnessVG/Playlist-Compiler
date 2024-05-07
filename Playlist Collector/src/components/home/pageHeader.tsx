@@ -15,10 +15,10 @@ import {
 import YouTubeIcon from "../../assets/icons/youtube";
 
 function PageHeader() {
-  const { youtubeToken, setYoutubeToken } = useYoutubeStore(
+  const { youtubeToken, setYoutubeToken, setYoutubeId } = useYoutubeStore(
     (state: any) => state
   );
-  const { spotifyToken, setSpotifyToken } = useSpotifyStore(
+  const { spotifyToken, setSpotifyToken, setSpotifyId } = useSpotifyStore(
     (state: any) => state
   );
 
@@ -30,6 +30,8 @@ function PageHeader() {
       try {
         const youtube = await fetchYouTubeProfile();
         setYoutubePic(youtube.items[0].snippet.thumbnails.default.url);
+        console.log(youtube);
+        setYoutubeId(youtube.items[0].id);
       } catch (error) {
         console.log(error);
         setYoutubeToken("");
@@ -41,6 +43,7 @@ function PageHeader() {
       try {
         const spotify = await fetchSpotifyProfile();
         setSpotifyPic(spotify.images[0].url);
+        setSpotifyId(spotify.id);
       } catch (error) {
         console.log(error);
         setSpotifyToken("");

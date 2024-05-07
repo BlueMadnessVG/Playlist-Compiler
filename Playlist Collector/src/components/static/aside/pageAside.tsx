@@ -6,26 +6,48 @@ import PlaylistIcon from "../../../assets/icons/playlist";
 import SideMenuCard from "./sideMenuCard";
 import { useNavigate } from "react-router-dom";
 
-const playlist: any[] = [
-  {
-    id: 1,
-    title: "Ado god",
-    imageURL:
-      "https://a.storyblok.com/f/178900/960x540/b13931671a/ado.jpg/m/filters:quality(95)format(webp)",
-    total: 6,
-    from: "Spotify",
-  },
-  {
-    id: 2,
-    title: "Try hard",
-    imageURL:
-      "https://www.callofduty.com/content/dam/atvi/callofduty/blog/archives/feature/featured-Image10737600.jpg",
-    total: 6,
-    from: "YouTube",
-  },
-];
+import { get, ref } from "firebase/database";
+import { useEffect, useState } from "react";
+import { database } from "../../../global/fireBase";
+import { useYoutubeStore } from "../../../global/youtubeStore";
+import { fetchYoutubePlaylistId } from "../../../services/YoutubeService";
 
 function PageAside() {
+  const { youtubeId } = useYoutubeStore((state: any) => state);
+  const [history, setHistory] = useState<any>([]);
+
+  const getHistory = async (id: any) => {
+    try {
+      const result = await fetchYoutubePlaylistId(id);
+      setHistory(result.items);
+      console.log(history);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const usersRef = ref(database, `Users/${youtubeId}`);
+
+    get(usersRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        const usersArray = Object.entries(snapshot.val()).map(
+          ([id, data]: any) => ({
+            id,
+            ...data,
+          })
+        );
+
+        console.log(usersArray);
+        const lastPlaylists = usersArray.slice(-5);
+        let ids = [...new Set(lastPlaylists.map((index) => index.id))].join();
+        console.log(ids);
+
+        getHistory(ids);
+      }
+    });
+  }, [youtubeId]);
+
   return (
     <nav className="flex flex-col flex-1 p-2">
       <div className="flex items-center p-2 px-6 gap-2 font-abc bg-zinc-900 mb-1 rounded-lg text-xl font-semibold ">
@@ -63,11 +85,16 @@ function PageAside() {
           </SideMenuItem>
 
           <div className=" pt-2">
-            {playlist.map((playlist: any, index) => {
-              return (
-                <SideMenuCard key={index} playlist={playlist}></SideMenuCard>
-              );
-            })}
+            {history &&
+              history.map((playlist: any, index: number) => {
+                return (
+                  <SideMenuCard
+                    key={index}
+                    playlist={playlist}
+                    type="youtube"
+                  ></SideMenuCard>
+                );
+              })}
           </div>
         </ul>
       </div>
