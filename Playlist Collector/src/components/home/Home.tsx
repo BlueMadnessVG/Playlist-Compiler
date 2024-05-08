@@ -4,13 +4,11 @@ import { motion } from "framer-motion";
 import PageHeader from "./pageHeader";
 import {
   fetchYoutubePlaylists,
-  fetchYoutubePlaylistsNoLogin,
   setYouTubeClientToken,
 } from "../../services/YoutubeService";
 import { useYoutubeStore } from "../../global/youtubeStore";
 import { useSpotifyStore } from "../../global/spotifyStore";
 import {
-  fetchSpotifyNoLogin,
   fetchSpotifyUserPlaylist,
   setSpotifyClientToken,
 } from "../../services/SpotifyService";
@@ -26,15 +24,6 @@ function Home() {
   const { isAll, isYoutube, isSpotify } = useFiltersStore(
     (state: any) => state
   );
-
-  const getPlayListNoLogin = async () => {
-    try {
-      const response = await fetchSpotifyNoLogin();
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
     const StorageYoutubeToken = window.localStorage.getItem("YouTube_token");
@@ -53,8 +42,9 @@ function Home() {
         setYouTubeClientToken(_token);
       } else if (
         !StorageSpotifyToken &&
-        hash.split("&")[0].split("=")[1].length == 238
+        hash.split("&")[0].split("=")[1].length >= 238
       ) {
+        console.log("entro");
         const _token = hash.split("&")[0].split("=")[1];
         window.localStorage.setItem("Spotify_token", _token);
         setSpotifyToken(_token);
@@ -69,8 +59,6 @@ function Home() {
         setSpotifyToken(StorageSpotifyToken);
         setSpotifyClientToken(StorageSpotifyToken);
       }
-    } else {
-      getPlayListNoLogin();
     }
   }, []);
 
@@ -109,12 +97,14 @@ function Home() {
     <motion.div
       id="playlist-container"
       className=" relative transition-all duration-1000  bg-zinc-900 rounded-lg flex-1 m-2 ml-0 mt-0 overflow-y-auto"
-      initial={{ x: "-100%" }}
+      initial={{ x: "100%" }}
       animate={{ x: 0 }}
-      exit={{ x: "100%" }}
+      exit={{ x: "-100%" }}
       transition={{ duration: 0.3, delay: 0, ease: [0, 0.71, 0.2, 1.01] }}
     >
-      <PageHeader />
+      <header className="pt-6 px-6">
+        <PageHeader />
+      </header>
 
       <div className=" relative z-10 px-6 pt-6 ">
         <Filters />

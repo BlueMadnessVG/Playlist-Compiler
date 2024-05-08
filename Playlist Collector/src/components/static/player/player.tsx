@@ -1,6 +1,7 @@
-import { createRef, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PlayIcon from "../../../assets/icons/play";
 import PauseIcon from "../../../assets/icons/pause";
+import styles from "../../../App.module.css";
 
 import { usePlayerStore } from "../../../global/musicStore";
 import VolumeController from "./Volume";
@@ -11,11 +12,25 @@ import PrevIcon from "../../../assets/icons/prev";
 import CloseIcon from "../../../assets/icons/close";
 import { MusicSlider } from "./MusicSlider";
 import { motion } from "framer-motion";
-import styles from "../../../App.module.css";
+import { fetchSpotifyPlaylistItems } from "../../../services/SpotifyService";
+
+import SpotifyPlayer from "react-spotify-web-playback";
+import { useSpotifyStore } from "../../../global/spotifyStore";
+import { useNavigate } from "react-router-dom";
 
 function Player() {
-  const { currentMusic, isPlaying, setIsPlaying, setCurrentMusic, volume } =
-    usePlayerStore((state: any) => state);
+  const navigate = useNavigate();
+  const {
+    currentMusic,
+    playlistType,
+    isPlaying,
+    setIsPlaying,
+    setCurrentMusic,
+    volume,
+  } = usePlayerStore((state: any) => state);
+
+  const { spotifyToken } = useSpotifyStore((state: any) => state);
+
   const audioRef = useRef<string>("");
   const playerRef = useRef<any>(null);
   const [time, setTime] = useState({
@@ -23,35 +38,49 @@ function Player() {
     MaxTime: 0,
   });
 
-  useEffect(() => {
-    const getYoutubePlaylistItems = async () => {
-      try {
-        const result = await fetchYoutubePlaylistsItems(
-          currentMusic.playList.id
-        );
+  const getYoutubePlaylistItems = async () => {
+    try {
+      const result = await fetchYoutubePlaylistsItems(currentMusic.playList.id);
 
-        currentMusic.songs = [];
-        setTime({ ...time, played: 0 });
+      currentMusic.songs = [];
+      setTime({ ...time, played: 0 });
 
-        for (let i = 0; i < result.items.length; i++) {
-          currentMusic.songs.push({
-            id: result.items[i].snippet.resourceId.videoId,
-            img: result.items[i].snippet.thumbnails.default.url,
-            name: result.items[i].snippet.title,
-            artist: result.items[i].snippet.videoOwnerChannelTitle,
-            channelID: result.items[i].snippet.videoOwnerChannelId,
-          });
-        }
-
-        audioRef.current = currentMusic.songs[currentMusic.song].id;
-        setIsPlaying(true);
-      } catch (error) {
-        console.log("error: " + error);
-        setCurrentMusic({ playList: null, song: null, songs: [] });
+      for (let i = 0; i < result.items.length; i++) {
+        currentMusic.songs.push({
+          id: result.items[i].snippet.resourceId.videoId,
+          img: result.items[i].snippet.thumbnails.default.url,
+          name: result.items[i].snippet.title,
+          artist: result.items[i].snippet.videoOwnerChannelTitle,
+          channelID: result.items[i].snippet.videoOwnerChannelId,
+        });
       }
-    };
 
-    if (currentMusic.playList) getYoutubePlaylistItems();
+      console.log(currentMusic.songs[currentMusic.song].id);
+      audioRef.current = currentMusic.songs[currentMusic.song].id;
+      setIsPlaying(true);
+    } catch (error) {
+      console.log("error: " + error);
+      setCurrentMusic({ playList: null, song: null, songs: [] });
+    }
+  };
+
+  const getSpotifyPlaylistItems = async () => {
+    try {
+      const result = await fetchSpotifyPlaylistItems(currentMusic.playList.id);
+
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+      setCurrentMusic({ playList: null, song: null, songs: [] });
+    }
+  };
+
+  useEffect(() => {
+    if (currentMusic.playList) {
+      setIsPlaying(false);
+      if (playlistType == "youtube") getYoutubePlaylistItems();
+      else if (playlistType == "spotify") getSpotifyPlaylistItems();
+    }
   }, [currentMusic]);
 
   const handlePlay = () => {
@@ -164,7 +193,6 @@ function Player() {
           style={{ cursor: "default" }}
         />
       </div>
-
       <MusicSlider
         defaultValue={[0]}
         max={time.MaxTime}
@@ -181,20 +209,20 @@ function Player() {
           if (!isPlaying) setIsPlaying(true);
         }}
       />
-
       <div className="flex flex-auto flex-col justify-between w-[28vw] px-4 z-50 pb-2 pt-2 bg-zinc-800 font-abc cursor-default overflow-hidden">
-        <h2 className="text-md truncate">
-          {currentMusic.songs[currentMusic.song]?.name}
-        </h2>
+        <div
+          className={`${styles.marquee}  whitespace-nowrap inline-block pl-[100%]`}
+        >
+          <h2 className="text-md ">
+            {currentMusic.songs[currentMusic.song]?.name}
+          </h2>
+        </div>
 
         <div className="flex items-end justify-between">
           <a
             onClick={() => {
-              window.open(
-                `https://www.youtube.com/channel/${
-                  currentMusic.songs[currentMusic.song]?.channelID
-                }`,
-                "_blank"
+              navigate(
+                "/artist/" + playlistType + "/" + currentMusic?.playList.id
               );
             }}
             className="text-xs font-thin text-gray-400 border-0 hover:text-gray-300 cursor-pointer"

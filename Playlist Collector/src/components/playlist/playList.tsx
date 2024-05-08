@@ -6,6 +6,7 @@ import { fetchYoutubePlaylistsItems } from "../../services/YoutubeService";
 import MusicItem from "./musicItem";
 import { useSpotifyStore } from "../../global/spotifyStore";
 import { fetchSpotifyPlaylistItems } from "../../services/SpotifyService";
+import PageHeader from "../home/pageHeader";
 
 function PlayList() {
   const { type, id } = useParams();
@@ -61,53 +62,63 @@ function PlayList() {
       transition={{ duration: 0.3, delay: 0, ease: [0, 0.71, 0.2, 1.01] }}
     >
       <header
-        className={`flex flex-row sticky top-0 gap-8 px-6 pt-10 pb-6 bg-gradient-to-t z-20 from-zinc-900/80 from-5% via-zinc-900/60 via-50% `}
+        className="z-50"
+        style={{ backgroundColor: bgColor.current }}
+      ></header>
+      <header
+        className={`flex flex-col sticky top-0 px-6 pt-6 pb-6 bg-gradient-to-t z-20 from-zinc-900/80 from-5% via-zinc-900/60 via-50% `}
         style={{ backgroundColor: bgColor.current }}
       >
-        <picture className=" aspect-square w-52 h-52 flex-none">
-          <img
-            src={
-              type == "youtube"
-                ? playlistInfo?.snippet.thumbnails.high.url
-                : playlistInfo?.images[0].url
-            }
-            alt={`Playlist from ${
-              type == "youtube"
-                ? playlistInfo?.snippet.channelTitle
-                : playlistInfo?.owner.display_name
-            }`}
-            className=" object-cover w-full h-full rounded-md shadow-lg"
-          />
-        </picture>
+        <PageHeader />
 
-        <div className="flex flex-col justify-between">
-          <h2 className="flex flex-1 items-end text-sm font-light">Playlist</h2>
-          <div>
-            <h1 className=" text-7xl font-bold block text-white mt-5">
-              {type == "youtube"
-                ? playlistInfo?.snippet.title
-                : playlistInfo?.name}
-            </h1>
-          </div>
-
-          <div className="flex-1 flex pt-2 items-end">
-            <div className="text-sm text-gray-300 font-normal flex flex-row">
-              <span className=" font-bold text-white text-xs">
-                {type == "youtube"
+        <div className="flex flex-row gap-8">
+          <picture className=" aspect-square w-52 h-52 flex-none">
+            <img
+              src={
+                type == "youtube"
+                  ? playlistInfo?.snippet.thumbnails.high.url
+                  : playlistInfo?.images[0].url
+              }
+              alt={`Playlist from ${
+                type == "youtube"
                   ? playlistInfo?.snippet.channelTitle
-                  : playlistInfo?.owner.display_name}
-              </span>
-              <span className=" ml-1 text-xs">
-                &bull; {items?.items.length} songs, from
-                <span
-                  className={
-                    type == "youtube" ? `text-red-500` : `text-green-500`
-                  }
-                >
-                  {" "}
-                  {type}
+                  : playlistInfo?.owner.display_name
+              }`}
+              className=" object-cover w-full h-full rounded-md shadow-lg"
+            />
+          </picture>
+
+          <div className="flex flex-col justify-between">
+            <h2 className="flex flex-1 items-end text-sm font-light">
+              Playlist
+            </h2>
+            <div>
+              <h1 className=" text-7xl font-bold block text-white mt-5">
+                {type == "youtube"
+                  ? playlistInfo?.snippet.title
+                  : playlistInfo?.name}
+              </h1>
+            </div>
+
+            <div className="flex-1 flex pt-2 items-end">
+              <div className="text-sm text-gray-300 font-normal flex flex-row">
+                <span className=" font-bold text-white text-xs">
+                  {type == "youtube"
+                    ? playlistInfo?.snippet.channelTitle
+                    : playlistInfo?.owner.display_name}
                 </span>
-              </span>
+                <span className=" ml-1 text-xs">
+                  &bull; {items?.items.length} songs, from
+                  <span
+                    className={
+                      type == "youtube" ? `text-red-500` : `text-green-500`
+                    }
+                  >
+                    {" "}
+                    {type}
+                  </span>
+                </span>
+              </div>
             </div>
           </div>
         </div>

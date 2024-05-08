@@ -47,13 +47,39 @@ export async function fetchYoutubePlaylists() {
   return result.data;
 }
 
-export async function fetchYoutubePlaylistsNoLogin() {
+export async function fetchYoutubeChanel(id: any) {
+  const result = await apiYouTube("channels", {
+    params: {
+      part: "snippet",
+      id: id,
+    },
+  });
+  return result.data;
+}
+
+export async function fetchYoutubeChanelVideos(id: any) {
+  const result = await apiYouTube("search", {
+    params: {
+      part: "snippet",
+      channelId: id,
+      type: "video",
+      videoCategoryId: 10,
+      maxResults: 50,
+    },
+  });
+
+  return result.data;
+}
+
+export async function fetchYoutubeChanelPlaylists(id: any) {
   const result = await apiYouTube("playlists", {
     params: {
       part: "snippet",
-      channelId: "UCln9P4Qm3-EAY4aiEPmRwEA",
+      channelId: id,
+      maxResults: 50,
     },
   });
+
   return result.data;
 }
 
@@ -64,7 +90,6 @@ export async function fetchYoutubePlaylistId(id: any) {
       id: id,
     },
   });
-  console.log(result);
   return result.data;
 }
 

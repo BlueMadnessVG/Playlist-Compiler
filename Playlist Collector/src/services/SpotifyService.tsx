@@ -2,7 +2,11 @@ import axios from "axios";
 
 // REGION: Spotify authorization controllers
 const authEndPoint = "https://accounts.spotify.com/authorize?";
-const userScope = ["user-library-read", "playlist-modify-private"];
+const userScope = [
+  "user-library-read",
+  "playlist-modify-private",
+  "user-read-playback-state",
+];
 
 const clientID = import.meta.env.VITE_SPOTIFY_API_ID; // User credentials
 const redirectUri = import.meta.env.VITE_REDIRECT_URI; // Page redirection when login
@@ -75,9 +79,4 @@ export async function fetchSpotifyUserPlaylist() {
 export async function fetchSpotifyPlaylistItems(id: any) {
   const result = await apiClient.get(`playlists/${id}/tracks`);
   return result.data;
-}
-
-export async function fetchSpotifyNoLogin() {
-  const result = await apiClient.get(`playlist/3cEYpjA9oz9GiPac4AsH4n`);
-  console.log(result);
 }

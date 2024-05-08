@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import ArrowLeftIcon from "../../assets/icons/arrowLeft";
-import ArrowRightIcon from "../../assets/icons/arrowRight";
+import { useEffect, useState } from "react";
 import {
   fetchYouTubeProfile,
   redirectToYouTubeAuth,
@@ -12,7 +10,6 @@ import {
   fetchSpotifyProfile,
   redirectToSpotifyAuth,
 } from "../../services/SpotifyService";
-import YouTubeIcon from "../../assets/icons/youtube";
 
 function PageHeader() {
   const { youtubeToken, setYoutubeToken, setYoutubeId } = useYoutubeStore(
@@ -30,7 +27,6 @@ function PageHeader() {
       try {
         const youtube = await fetchYouTubeProfile();
         setYoutubePic(youtube.items[0].snippet.thumbnails.default.url);
-        console.log(youtube);
         setYoutubeId(youtube.items[0].id);
       } catch (error) {
         console.log(error);
@@ -74,17 +70,8 @@ function PageHeader() {
   }
 
   return (
-    <div className="relative flex z-10 px-6 pt-4 justify-between">
-      <div className="flex flex-row gap-2 h-8 w-8 mt-2">
-        <button className="p-1 bg-slate-800/70 rounded-full ">
-          <ArrowLeftIcon />
-        </button>
-        <button className="p-1 bg-slate-800/70 rounded-full ">
-          <ArrowRightIcon />
-        </button>
-      </div>
-
-      <div className="flex flex-row gap-4 mr-3">
+    <div className="relative flex justify-end z-40">
+      <div className="flex gap-2 mr-3">
         {!youtubeToken ? (
           <button
             className="rounded-xl flex items-center text-xs gap-2 px-2 border font-abc text-red-500 bg-zinc-700/80 border-red-500/50 hover:bg-zinc-700 hover:border-red-500"
@@ -99,7 +86,7 @@ function PageHeader() {
               className="flex group-hover:scale-110 transition group"
               onClick={handleYoutubeLogout}
             >
-              <picture className="h-12 w-12 flex-none">
+              <picture className="h-10 w-10 flex-none">
                 <img
                   src={youtubePic}
                   className=" object-cover w-full h-full rounded-full border border-red-500 group-hover:brightness-50"
@@ -107,14 +94,14 @@ function PageHeader() {
               </picture>
             </button>
 
-            <div className="absolute right-3 bottom-7 translate-y-0 transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:translate-y-4 text-red-500 pointer-events-none">
+            <div className="absolute right-2 bottom-6 translate-y-0 transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:translate-y-4 text-red-500 pointer-events-none">
               <img src="/Youtube.png" />
             </div>
           </Tooltip>
         )}
         {!spotifyToken ? (
           <button
-            className="rounded-xl flex items-center text-xs gap-2 px-2 border font-abc text-green-500 bg-zinc-700/80 border-green-500/50 hover:bg-zinc-700 hover:border-green-500"
+            className="rounded-xl flex items-center text-xs gap-1 px-2 border font-abc text-green-500 bg-zinc-700/80 border-green-500/50 hover:bg-zinc-700 hover:border-green-500"
             onClick={handleSpotifyLogin}
           >
             <img src="/Spotify.png" />
@@ -126,7 +113,7 @@ function PageHeader() {
               className="flex hover:scale-110 transition group"
               onClick={handleSpotifyLogout}
             >
-              <picture className="h-12 w-12 flex-none">
+              <picture className="h-10 w-10 flex-none">
                 <img
                   src={spotifyPic}
                   className=" object-cover w-full h-full rounded-full border border-green-500 group-hover:brightness-50"
@@ -134,7 +121,7 @@ function PageHeader() {
               </picture>
             </button>
 
-            <div className="absolute right-3 bottom-7 translate-y-0 transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:translate-y-4 text-red-500 pointer-events-none">
+            <div className="absolute right-2 bottom-6 translate-y-0 transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:translate-y-4 text-red-500 pointer-events-none">
               <img src="/Spotify.png" />
             </div>
           </Tooltip>

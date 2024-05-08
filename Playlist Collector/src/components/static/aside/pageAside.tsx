@@ -1,10 +1,8 @@
-import React from "react";
 import HomeIcon from "../../../assets/icons/home";
 import SideMenuItem from "./sideMenuItem";
 import SearchIcon from "../../../assets/icons/search";
 import PlaylistIcon from "../../../assets/icons/playlist";
 import SideMenuCard from "./sideMenuCard";
-import { useNavigate } from "react-router-dom";
 
 import { get, ref } from "firebase/database";
 import { useEffect, useState } from "react";
@@ -20,7 +18,6 @@ function PageAside() {
     try {
       const result = await fetchYoutubePlaylistId(id);
       setHistory(result.items);
-      console.log(history);
     } catch (error) {
       console.log(error);
     }
@@ -38,10 +35,8 @@ function PageAside() {
           })
         );
 
-        console.log(usersArray);
         const lastPlaylists = usersArray.slice(-5);
         let ids = [...new Set(lastPlaylists.map((index) => index.id))].join();
-        console.log(ids);
 
         getHistory(ids);
       }
@@ -58,7 +53,7 @@ function PageAside() {
             className=" object-cover w-full h-full rounded-full"
           />
         </picture>
-        Machapa
+        <h1 className="text-md"> Playlist Collector </h1>
       </div>
 
       <div className="bg-zinc-900 rounded-t-lg p-2">
