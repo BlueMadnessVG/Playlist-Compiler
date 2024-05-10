@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePlayerStore } from "../../global/musicStore";
 import PlayIcon from "../../assets/icons/play";
@@ -38,17 +37,17 @@ function MusicItem({
           <PlayIcon />
         </button>
 
-        <picture className="">
+        <picture className="w-10 h-10 rounded-md">
           <img
             src={
               type == "youtube"
-                ? music?.snippet.thumbnails.default.url
+                ? music?.snippet.thumbnails.high.url
                 : music?.track.album.images[0].url
             }
             alt={`Playlist from ${
               type == "youtube" ? music?.snippet.title : music?.track.name
             }`}
-            className="w-10 h-10 rounded-md"
+            className="object-cover w-full h-full rounded-md "
           />
         </picture>
         <h3 className=" max-w-96 truncate">

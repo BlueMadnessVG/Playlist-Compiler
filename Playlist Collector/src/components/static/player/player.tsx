@@ -14,7 +14,6 @@ import { MusicSlider } from "./MusicSlider";
 import { motion } from "framer-motion";
 import { fetchSpotifyPlaylistItems } from "../../../services/SpotifyService";
 
-import SpotifyPlayer from "react-spotify-web-playback";
 import { useSpotifyStore } from "../../../global/spotifyStore";
 import { useNavigate } from "react-router-dom";
 

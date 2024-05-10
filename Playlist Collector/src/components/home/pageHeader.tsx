@@ -12,9 +12,8 @@ import {
 } from "../../services/SpotifyService";
 
 function PageHeader() {
-  const { youtubeToken, setYoutubeToken, setYoutubeId } = useYoutubeStore(
-    (state: any) => state
-  );
+  const { youtubeToken, youtubeId, setYoutubeToken, setYoutubeId } =
+    useYoutubeStore((state: any) => state);
   const { spotifyToken, setSpotifyToken, setSpotifyId } = useSpotifyStore(
     (state: any) => state
   );
@@ -25,6 +24,8 @@ function PageHeader() {
   useEffect(() => {
     async function getYoutubeUser() {
       try {
+        if (youtubeId) return;
+
         const youtube = await fetchYouTubeProfile();
         setYoutubePic(youtube.items[0].snippet.thumbnails.default.url);
         setYoutubeId(youtube.items[0].id);
@@ -74,7 +75,7 @@ function PageHeader() {
       <div className="flex gap-2 mr-3">
         {!youtubeToken ? (
           <button
-            className="rounded-xl flex items-center text-xs gap-2 px-2 border font-abc text-red-500 bg-zinc-700/80 border-red-500/50 hover:bg-zinc-700 hover:border-red-500"
+            className="rounded-xl flex items-center min-h-10 text-xs gap-2 px-2 border font-abc text-red-500 bg-zinc-700/80 border-red-500/50 hover:bg-zinc-700 hover:border-red-500"
             onClick={handleYoutubeLogin}
           >
             <img src="/Youtube.png" />

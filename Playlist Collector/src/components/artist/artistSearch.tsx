@@ -7,15 +7,18 @@ import {
   fetchYoutubeChanelPlaylists,
   fetchYoutubeChanelVideos,
 } from "../../services/YoutubeService";
+import PopularSong from "./popularSong";
 
 function ArtistSearch() {
   const { type, id } = useParams();
   const [artist, setArtist] = useState<any>();
+  const [artistSongs, setArtistSongs] = useState<any>();
 
   const fetchVideos = async () => {
     try {
       const response = await fetchYoutubeChanelVideos(id);
 
+      setArtistSongs(response.items);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -26,7 +29,7 @@ function ArtistSearch() {
     try {
       const response = await fetchYoutubeChanelPlaylists(id);
 
-      console.log(response);
+      //console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -80,6 +83,18 @@ function ArtistSearch() {
             {artist?.snippet.title.split("-")[0]}
           </h1>
         </header>
+
+        <main className="px-6">
+          <h2> Popular Songs </h2>
+          <table className="table-auto text-left min-w-full divide-y-2 divide-gray-500/50 ">
+            <tbody>
+              {artistSongs &&
+                artistSongs?.slice(0, 5).map((song: any, index: number) => {
+                  return <PopularSong key={index} song={song} />;
+                })}
+            </tbody>
+          </table>
+        </main>
       </motion.div>
     )
   );

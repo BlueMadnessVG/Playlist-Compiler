@@ -65,6 +65,18 @@ export async function fetchYoutubeChanelVideos(id: any) {
       type: "video",
       videoCategoryId: 10,
       maxResults: 50,
+      order: "viewCount",
+    },
+  });
+
+  return result.data;
+}
+
+export async function fetchYoutubeVideo(id: any) {
+  const result = await apiYouTube("videos", {
+    params: {
+      part: "snippet, contentDetails",
+      id: id,
     },
   });
 

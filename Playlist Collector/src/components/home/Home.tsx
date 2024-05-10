@@ -29,7 +29,7 @@ function Home() {
     const StorageYoutubeToken = window.localStorage.getItem("YouTube_token");
     const StorageSpotifyToken = window.localStorage.getItem("Spotify_token");
     const hash = window.location.hash;
-    window.location.hash = "";
+    //window.location.hash = "";
 
     if (hash) {
       if (
@@ -40,11 +40,11 @@ function Home() {
         window.localStorage.setItem("YouTube_token", _token);
         setYoutubeToken(_token);
         setYouTubeClientToken(_token);
+        getYoutubePlaylist();
       } else if (
         !StorageSpotifyToken &&
         hash.split("&")[0].split("=")[1].length >= 238
       ) {
-        console.log("entro");
         const _token = hash.split("&")[0].split("=")[1];
         window.localStorage.setItem("Spotify_token", _token);
         setSpotifyToken(_token);
@@ -66,6 +66,7 @@ function Home() {
     try {
       const _youtubePlaylist = await fetchYoutubePlaylists();
       setYoutubePlaylist(_youtubePlaylist.items);
+      console.log(_youtubePlaylist);
     } catch (error) {
       console.log(error);
     }
