@@ -29,7 +29,7 @@ function Home() {
     const StorageYoutubeToken = window.localStorage.getItem("YouTube_token");
     const StorageSpotifyToken = window.localStorage.getItem("Spotify_token");
     const hash = window.location.hash;
-    //window.location.hash = "";
+    window.location.hash = "";
 
     if (hash) {
       if (
@@ -66,7 +66,6 @@ function Home() {
     try {
       const _youtubePlaylist = await fetchYoutubePlaylists();
       setYoutubePlaylist(_youtubePlaylist.items);
-      console.log(_youtubePlaylist);
     } catch (error) {
       console.log(error);
     }

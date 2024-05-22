@@ -6,10 +6,12 @@ function PlaylistItemCard({ playlist, type }: { playlist: any; type: string }) {
 
   return (
     <article className=" group relative">
-      <div className="absolute right-4 bottom-20 translate-y-4 transition-all duration-500 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 z-10">
+      <div className="absolute right-4 bottom-16 translate-y-4 transition-all duration-500 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 z-10">
         <CardPlayButton
           id={type == "youtube" ? playlist.id : playlist.id}
           type={type}
+          text=""
+          style="card-play-button text-xs rounded-full flex gap-4 p-2 text-white hover:scale-110 transition  bg-violet-800 hover:bg-violet-500"
         />
       </div>
 
@@ -23,7 +25,7 @@ function PlaylistItemCard({ playlist, type }: { playlist: any; type: string }) {
           <img
             src={
               type == "youtube"
-                ? playlist.snippet.thumbnails.high.url
+                ? playlist.snippet.thumbnails.medium.url
                 : playlist.images[0].url
             }
             alt={`Playlist from ${
@@ -31,7 +33,9 @@ function PlaylistItemCard({ playlist, type }: { playlist: any; type: string }) {
                 ? playlist.snippet.channelTitle
                 : playlist.owner.display_name
             }`}
-            className=" object-cover w-full h-full rounded-lg shadow-inner"
+            className={`w-full h-full rounded-lg shadow-inner ${
+              type == "youtube" && "object-none"
+            }`}
           />
         </picture>
 
@@ -39,7 +43,7 @@ function PlaylistItemCard({ playlist, type }: { playlist: any; type: string }) {
           <h4 className=" text-sm truncate">
             {type == "youtube" ? playlist.snippet.title : playlist.name}
           </h4>
-          <span className="text-xs text-gray-400 pt-1">
+          <span className="text-xs text-gray-500 pt-1">
             {type == "youtube" ? "YouTube" : "Spotify"}
           </span>
         </div>

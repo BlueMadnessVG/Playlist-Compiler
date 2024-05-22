@@ -7,7 +7,7 @@ import { usePlayerStore } from "../../global/musicStore";
 import { push, ref, update } from "firebase/database";
 import { database } from "../../global/fireBase";
 
-function CardPlayButton({
+function PlayButton({
   id,
   type,
   text,
@@ -74,4 +74,4 @@ function CardPlayButton({
   );
 }
 
-export default CardPlayButton;
+export default PlayButton;

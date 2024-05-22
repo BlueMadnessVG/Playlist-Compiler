@@ -54,7 +54,6 @@ function Player() {
         });
       }
 
-      console.log(currentMusic.songs[currentMusic.song].id);
       audioRef.current = currentMusic.songs[currentMusic.song].id;
       setIsPlaying(true);
     } catch (error) {

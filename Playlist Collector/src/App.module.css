@@ -9,6 +9,14 @@
   grid-template-rows: 1fr auto;
 }
 
+#playlistContainer {
+  display: grid;
+  grid-template-areas: "aside main main";
+
+  grid-template-columns: 380px 1fr;
+  grid-template-rows: 1fr auto;
+}
+
 .marquee {
   animation: marquee 10s linear infinite;
 }

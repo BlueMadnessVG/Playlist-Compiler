@@ -9,8 +9,10 @@ import { useEffect, useState } from "react";
 import { database } from "../../../global/fireBase";
 import { useYoutubeStore } from "../../../global/youtubeStore";
 import { fetchYoutubePlaylistId } from "../../../services/YoutubeService";
+import { usePlayerStore } from "../../../global/musicStore";
 
 function PageAside() {
+  const { currentMusic } = usePlayerStore((state: any) => state);
   const { youtubeId } = useYoutubeStore((state: any) => state);
   const [history, setHistory] = useState<any>([]);
 
@@ -24,24 +26,27 @@ function PageAside() {
   };
 
   useEffect(() => {
-    const usersRef = ref(database, `Users/${youtubeId}`);
+    if (currentMusic.playList.id != null) {
+      console.log("entro");
+      const usersRef = ref(database, `Users/${youtubeId.id}`);
 
-    get(usersRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        const usersArray = Object.entries(snapshot.val()).map(
-          ([id, data]: any) => ({
-            id,
-            ...data,
-          })
-        );
+      get(usersRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const usersArray = Object.entries(snapshot.val()).map(
+            ([id, data]: any) => ({
+              id,
+              ...data,
+            })
+          );
 
-        const lastPlaylists = usersArray.slice(-5);
-        let ids = [...new Set(lastPlaylists.map((index) => index.id))].join();
+          const lastPlaylists = usersArray.slice(-5);
+          let ids = [...new Set(lastPlaylists.map((index) => index.id))].join();
 
-        getHistory(ids);
-      }
-    });
-  }, [youtubeId]);
+          getHistory(ids);
+        }
+      });
+    }
+  }, [currentMusic.playList.id]);
 
   return (
     <nav className="flex flex-col flex-1 p-2">

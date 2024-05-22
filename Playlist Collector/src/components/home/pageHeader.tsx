@@ -24,11 +24,15 @@ function PageHeader() {
   useEffect(() => {
     async function getYoutubeUser() {
       try {
-        if (youtubeId) return;
+        if (youtubeId != null) {
+          setYoutubePic(youtubeId.snippet.thumbnails.default.url);
+          return;
+        }
 
         const youtube = await fetchYouTubeProfile();
         setYoutubePic(youtube.items[0].snippet.thumbnails.default.url);
-        setYoutubeId(youtube.items[0].id);
+        setYoutubeId(youtube.items[0]);
+        console.log(youtubeId);
       } catch (error) {
         console.log(error);
         setYoutubeToken("");

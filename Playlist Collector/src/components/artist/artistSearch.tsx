@@ -1,25 +1,61 @@
 import React, { useEffect, useState } from "react";
 import PageHeader from "../home/pageHeader";
-import { motion } from "framer-motion";
-import { useParams } from "react-router-dom";
+import { FlatTree, motion } from "framer-motion";
+import { json, useNavigate, useParams } from "react-router-dom";
 import {
   fetchYoutubeChanel,
   fetchYoutubeChanelPlaylists,
   fetchYoutubeChanelVideos,
 } from "../../services/YoutubeService";
 import PopularSong from "./popularSong";
+import SongCart from "./songCart";
+import PlaylistCart from "./playlistCart";
+import { useArtistStore } from "../../global/artistStore";
+import styles from "../../App.module.css";
+import NextIcon from "../../assets/icons/next";
+import ArrowLeftIcon from "../../assets/icons/arrowLeft";
+import ArrowRightIcon from "../../assets/icons/arrowRight";
+import { useYoutubeStore } from "../../global/youtubeStore";
 
 function ArtistSearch() {
   const { type, id } = useParams();
-  const [artist, setArtist] = useState<any>();
-  const [artistSongs, setArtistSongs] = useState<any>();
+
+  const { setYoutubePlaylist } = useYoutubeStore((state: any) => state);
+
+  const {
+    artistInfo,
+    artistSongs,
+    artistPlaylist,
+    setArtistInfo,
+    setArtistSongs,
+    setArtistPlaylist,
+  } = useArtistStore((state: any) => state);
+
+  const [curr, setCurr] = useState<number>(0);
+
+  const [verifier, setVerifier] = useState<boolean>(true);
+  const [showPublication, setShowPublication] = useState<boolean>(false);
+
+  const handleClick = () => {
+    setShowPublication(!showPublication);
+  };
+
+  const handlePlaylistPrev = () => {
+    if (curr <= 0) return;
+    setCurr(curr - 1);
+  };
+
+  const handlePlaylistNext = () => {
+    if (curr + 5 >= artistPlaylist.length) return;
+    setCurr(curr + 1);
+  };
 
   const fetchVideos = async () => {
     try {
-      const response = await fetchYoutubeChanelVideos(id);
-
-      setArtistSongs(response.items);
-      console.log(response);
+      if (verifier || !artistSongs) {
+        const response = await fetchYoutubeChanelVideos(id);
+        setArtistSongs(response.items);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -27,9 +63,14 @@ function ArtistSearch() {
 
   const fetchPlaylists = async () => {
     try {
-      const response = await fetchYoutubeChanelPlaylists(id);
-
-      //console.log(response);
+      if (verifier || !artistPlaylist) {
+        const response = await fetchYoutubeChanelPlaylists(id);
+        setArtistPlaylist(response.items);
+        setYoutubePlaylist(response.items);
+        console.log(response);
+      } else {
+        console.log(artistPlaylist);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -38,8 +79,14 @@ function ArtistSearch() {
   useEffect(() => {
     const fetchChanel = async () => {
       try {
-        const response = await fetchYoutubeChanel(id);
-        setArtist(response?.items[0]);
+        if (!artistInfo || (artistInfo && artistInfo?.id != id)) {
+          console.log("entro");
+          const response = await fetchYoutubeChanel(id);
+          setArtistInfo(response?.items[0]);
+        } else {
+          setVerifier(false);
+        }
+
         fetchVideos();
         fetchPlaylists();
       } catch (error) {
@@ -51,7 +98,7 @@ function ArtistSearch() {
   }, []);
 
   return (
-    artist != undefined && (
+    artistInfo != undefined && (
       <motion.div
         id="playlist-container"
         className=" relative transition-all duration-1000 flex-1 flex-col h-full rounded-lg  bg-zinc-900 overflow-x-hidden mr-2 font-abc"
@@ -63,9 +110,9 @@ function ArtistSearch() {
         <div className="flex">
           <picture className="aspect-square w-full h-96 flex-none absolute inset-0">
             <img
-              src={type == "youtube" && artist?.snippet.thumbnails.high.url}
+              src={type == "youtube" && artistInfo?.snippet.thumbnails.high.url}
               alt={`Playlist from ${
-                type == "youtube" && artist?.snippet.channelTitle
+                type == "youtube" && artistInfo?.snippet.channelTitle
               }`}
               className=" object-cover w-full h-full  shadow-lg"
             />
@@ -75,12 +122,14 @@ function ArtistSearch() {
 
         <header
           className="flex flex-col top-0 px-6 pt-6 pb-6 justify-between h-96"
-          style={{ backgroundImage: `${artist?.snippet.thumbnails.high.url}` }}
+          style={{
+            backgroundImage: `${artistInfo?.snippet.thumbnails.high.url}`,
+          }}
         >
           <PageHeader />
 
           <h1 className="z-10 text-4xl">
-            {artist?.snippet.title.split("-")[0]}
+            {artistInfo?.snippet.title.split("-")[0]}
           </h1>
         </header>
 
@@ -94,6 +143,61 @@ function ArtistSearch() {
                 })}
             </tbody>
           </table>
+
+          {artistPlaylist?.length > 0 && (
+            <div className="pt-10">
+              <div className="flex justify-between">
+                <h2> Playlists </h2>
+
+                <div className="flex gap-2">
+                  <button
+                    className=" border border-zinc-600 rounded-full p-2 hover:bg-zinc-600 transition-all duration-200"
+                    onClick={handlePlaylistPrev}
+                  >
+                    <ArrowLeftIcon />
+                  </button>
+                  <button
+                    className="text-xs border border-zinc-600 rounded-full p-2 hover:bg-zinc-600 transition-all duration-200"
+                    onClick={handlePlaylistNext}
+                  >
+                    <ArrowRightIcon />
+                  </button>
+                </div>
+              </div>
+
+              <div
+                className="flex flex-shrink-0 gap-1 py-2 transition-transform ease-out duration-500"
+                style={{ transform: `translateX(-${0.19 * curr * 100}%)` }}
+              >
+                {artistPlaylist?.map((playlist: any, index: number) => {
+                  return <PlaylistCart key={index} playlist={playlist} />;
+                })}
+              </div>
+            </div>
+          )}
+
+          <div className="pt-10">
+            <div className="flex justify-between">
+              <h2>Publications</h2>
+              <button
+                className=" text-xs border border-zinc-600 rounded-xl p-2 hover:bg-zinc-600 transition-all duration-200"
+                onClick={handleClick}
+              >
+                {!showPublication ? "Show All" : "Hide"}
+              </button>
+            </div>
+
+            <div className="flex flex-wrap gap-1 py-2">
+              {artistSongs?.slice(-5).map((song: any, index: number) => {
+                return <SongCart key={index} song={song} />;
+              })}
+              <div className={showPublication ? "flex flex-wrap" : "hidden"}>
+                {artistSongs?.slice(0, -5).map((song: any, index: number) => {
+                  return <SongCart key={index} song={song} />;
+                })}
+              </div>
+            </div>
+          </div>
         </main>
       </motion.div>
     )

@@ -19,7 +19,6 @@ function MusicItem({
     min = Math.floor((music?.track.duration_ms / (1000 * 60)) << 0);
     sec = Math.floor((music?.track.duration_ms / 1000) % 60);
   }
-  console.log(music);
   const { id } = useParams();
   const { setCurrentMusic } = usePlayerStore((state: any) => state);
 
@@ -28,16 +27,16 @@ function MusicItem({
   };
 
   return (
-    <tr className="text-gray-300 text-sm font-light border-b border-gray-500/20 group cursor-default">
-      <td className="px-3 py-2 flex gap-3 items-center group-hover:bg-zinc-800">
+    <main className="text-gray-300 text-sm font-light border-b border-gray-500/20 group cursor-default">
+      <div className="px-3 py-2 flex gap-3 items-center group-hover:bg-zinc-800 relative ">
         <button
-          className="flex place-content-center items-center absolute w-10 h-10 text-white bg-zinc-900/70 opacity-0 group-hover:opacity-100"
+          className="flex place-content-center items-center absolute w-40 h-24 text-white bg-zinc-900/70 opacity-0 group-hover:opacity-100 z-10"
           onClick={handleClick}
         >
           <PlayIcon />
         </button>
 
-        <picture className="w-10 h-10 rounded-md">
+        <picture className=" w-40 h-24 rounded-md">
           <img
             src={
               type == "youtube"
@@ -47,39 +46,30 @@ function MusicItem({
             alt={`Playlist from ${
               type == "youtube" ? music?.snippet.title : music?.track.name
             }`}
-            className="object-cover w-full h-full rounded-md "
+            className="object-cover w-full h-full rounded-lg "
           />
         </picture>
-        <h3 className=" max-w-96 truncate">
-          {type == "youtube" ? music?.snippet.title : music?.track.name}
-        </h3>
-      </td>
-      <td className="px-3 py-1 font-thin text-zinc-500 max-w-72 truncate group-hover:bg-zinc-800">
-        <a
-          onClick={() => {
-            navigate(
-              "/artist/" + type + "/" + music?.snippet.videoOwnerChannelId
-            );
-          }}
-          className="cursor-pointer hover:text-white"
-        >
-          {type == "youtube"
-            ? music?.snippet.videoOwnerChannelTitle.split("-")[0]
-            : music?.track.artists[0].name}
-        </a>
-      </td>
 
-      {type == "spotify" && (
-        <>
-          <td className="px-3 py-1 font-thin text-zinc-500 group-hover:bg-zinc-800 max-w-72 truncate">
-            {music?.track.album.name}
-          </td>
-          <td className="px-3 py-1 font-thin text-zinc-500 group-hover:bg-zinc-800">
-            {min + ":"} {sec < 10 ? `0${sec}` : sec}
-          </td>
-        </>
-      )}
-    </tr>
+        <div className="flex flex-col gap-2">
+          <h3 className=" max-w-96 truncate text-white">
+            {type == "youtube" ? music?.snippet.title : music?.track.name}
+          </h3>
+
+          <a
+            onClick={() => {
+              navigate(
+                "/artist/" + type + "/" + music?.snippet.videoOwnerChannelId
+              );
+            }}
+            className="cursor-pointer hover:text-white text-xs text-gray-500"
+          >
+            {type == "youtube"
+              ? music?.snippet.videoOwnerChannelTitle.split("-")[0]
+              : music?.track.artists[0].name}
+          </a>
+        </div>
+      </div>
+    </main>
   );
 }
 

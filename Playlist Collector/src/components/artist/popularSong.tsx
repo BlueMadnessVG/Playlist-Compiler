@@ -10,19 +10,19 @@ function PopularSong({ song }: { song: any }) {
       <td className="px-3 py-2 flex gap-3 items-center group-hover:bg-zinc-800">
         <picture className="aspect-square w-12 h-12">
           <img
-            src={song?.snippet.thumbnails.high.url}
+            src={song?.snippet.thumbnails.default.url}
             alt={`Playlist from ${song?.snippet.title}`}
-            className=" object-cover w-full h-full rounded-md "
+            className=" object-none w-full h-full rounded-md "
           />
         </picture>
         <h3 className=" max-w-96 truncate">{song?.snippet.title}</h3>
       </td>
-      <td className="px-3 py-1 font-thin text-zinc-500 max-w-72 truncate group-hover:bg-zinc-800">
+      <td className="px-3 py-1 font-thin text-gray-500 max-w-72 truncate group-hover:bg-zinc-800">
         <a className="cursor-pointer hover:text-white">
           {song?.snippet.channelTitle.split("-")[0]}
         </a>
       </td>
-      <td className="px-3 py-1 font-thin text-zinc-500 max-w-72 truncate group-hover:bg-zinc-800">
+      <td className="px-3 py-1 font-thin text-gray-500 max-w-72 truncate group-hover:bg-zinc-800">
         <p className="">{`${day} ${month} ${year}`}</p>
       </td>
     </tr>
