@@ -65,7 +65,7 @@ function Home() {
   async function getYoutubePlaylist() {
     try {
       const _youtubePlaylist = await fetchYoutubePlaylists();
-      setYoutubePlaylist(_youtubePlaylist.items);
+      setYoutubePlaylist(_youtubePlaylist);
     } catch (error) {
       console.log(error);
     }

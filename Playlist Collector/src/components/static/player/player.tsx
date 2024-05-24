@@ -44,13 +44,13 @@ function Player() {
       currentMusic.songs = [];
       setTime({ ...time, played: 0 });
 
-      for (let i = 0; i < result.items.length; i++) {
+      for (let i = 0; i < result.length; i++) {
         currentMusic.songs.push({
-          id: result.items[i].snippet.resourceId.videoId,
-          img: result.items[i].snippet.thumbnails.default.url,
-          name: result.items[i].snippet.title,
-          artist: result.items[i].snippet.videoOwnerChannelTitle,
-          channelID: result.items[i].snippet.videoOwnerChannelId,
+          id: result[i].music_id,
+          img: result[i].thumbnails.medium,
+          name: result[i].title,
+          artist: result[i].artist.title,
+          channelID: result[i].artist.id,
         });
       }
 
@@ -208,9 +208,7 @@ function Player() {
         }}
       />
       <div className="flex flex-auto flex-col justify-between w-[28vw] px-4 z-50 pb-2 pt-2 bg-zinc-800 font-abc cursor-default overflow-hidden">
-        <div
-          className={`${styles.marquee}  whitespace-nowrap inline-block pl-[100%]`}
-        >
+        <div className={`whitespace-nowrap inline-block truncate`}>
           <h2 className="text-md ">
             {currentMusic.songs[currentMusic.song]?.name}
           </h2>

@@ -5,7 +5,7 @@ import { json, useNavigate, useParams } from "react-router-dom";
 import {
   fetchYoutubeChanel,
   fetchYoutubeChanelPlaylists,
-  fetchYoutubeChanelVideos,
+  fetchYoutubeChannelVideos,
 } from "../../services/YoutubeService";
 import PopularSong from "./popularSong";
 import SongCart from "./songCart";
@@ -53,8 +53,8 @@ function ArtistSearch() {
   const fetchVideos = async () => {
     try {
       if (verifier || !artistSongs) {
-        const response = await fetchYoutubeChanelVideos(id);
-        setArtistSongs(response.items);
+        const response = await fetchYoutubeChannelVideos(id);
+        setArtistSongs(response);
       }
     } catch (error) {
       console.log(error);
@@ -65,9 +65,8 @@ function ArtistSearch() {
     try {
       if (verifier || !artistPlaylist) {
         const response = await fetchYoutubeChanelPlaylists(id);
-        setArtistPlaylist(response.items);
-        setYoutubePlaylist(response.items);
-        console.log(response);
+        setArtistPlaylist(response);
+        setYoutubePlaylist(response);
       } else {
         console.log(artistPlaylist);
       }
@@ -80,7 +79,6 @@ function ArtistSearch() {
     const fetchChanel = async () => {
       try {
         if (!artistInfo || (artistInfo && artistInfo?.id != id)) {
-          console.log("entro");
           const response = await fetchYoutubeChanel(id);
           setArtistInfo(response?.items[0]);
         } else {

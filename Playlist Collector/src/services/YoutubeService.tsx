@@ -1,4 +1,8 @@
 import axios from "axios";
+import PlaylistData, { MusicData } from "../utils/interfaces";
+import PlaylistStandardization, {
+  MusicStandardization,
+} from "../utils/YoutubeStandarisation";
 
 // REGION: Spotify authorization controllers
 const authEndPoint = "https://accounts.google.com/o/oauth2/v2/auth?";
@@ -44,7 +48,13 @@ export async function fetchYoutubePlaylists() {
   const result = await apiYouTube("playlists", {
     params: { part: "snippet", mine: true, maxResults: 10 },
   });
-  return result.data;
+
+  var data: PlaylistData[] = [];
+  result.data.items.map((item: any) => {
+    data.push(PlaylistStandardization(item));
+  });
+
+  return data;
 }
 
 export async function fetchYoutubeChanel(id: any) {
@@ -57,7 +67,7 @@ export async function fetchYoutubeChanel(id: any) {
   return result.data;
 }
 
-export async function fetchYoutubeChanelVideos(id: any) {
+export async function fetchYoutubeChannelVideos(id: any) {
   const result = await apiYouTube("search", {
     params: {
       part: "snippet",
@@ -69,7 +79,12 @@ export async function fetchYoutubeChanelVideos(id: any) {
     },
   });
 
-  return result.data;
+  let data: MusicData[] = [];
+  result.data.items.map((item: any) => {
+    data.push(MusicStandardization(item, "channelSearch"));
+  });
+
+  return data;
 }
 
 export async function fetchYoutubeVideo(id: any) {
@@ -79,6 +94,8 @@ export async function fetchYoutubeVideo(id: any) {
       id: id,
     },
   });
+
+  console.log(result.data);
 
   return result.data;
 }
@@ -92,7 +109,12 @@ export async function fetchYoutubeChanelPlaylists(id: any) {
     },
   });
 
-  return result.data;
+  let data: PlaylistData[] = [];
+  result.data.items.map((item: any) => {
+    data.push(PlaylistStandardization(item));
+  });
+
+  return data;
 }
 
 export async function fetchYoutubePlaylistId(id: any) {
@@ -109,5 +131,11 @@ export async function fetchYoutubePlaylistsItems(id: any) {
   const result = await apiYouTube("playlistItems", {
     params: { part: "snippet", maxResults: 50, playlistId: id },
   });
-  return result.data;
+
+  let data: MusicData[] = [];
+  result.data.items.map((item: any) => {
+    data.push(MusicStandardization(item, "playlistSearch"));
+  });
+
+  return data;
 }

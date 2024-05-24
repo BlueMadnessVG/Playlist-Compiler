@@ -1,7 +1,7 @@
 import styles from "../../App.module.css";
 
 import { motion } from "framer-motion";
-import { createElement, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useYoutubeStore } from "../../global/youtubeStore";
 import { fetchYoutubePlaylistsItems } from "../../services/YoutubeService";
@@ -10,7 +10,6 @@ import { useSpotifyStore } from "../../global/spotifyStore";
 import { fetchSpotifyPlaylistItems } from "../../services/SpotifyService";
 import PageHeader from "../home/pageHeader";
 import { FastAverageColor } from "fast-average-color";
-import PlayButton from "./PlayButton";
 import CardPlayButton from "../home/cardPlayButton";
 
 function PlayList() {
@@ -25,10 +24,11 @@ function PlayList() {
   useEffect(() => {
     let item;
     if (type == "youtube") {
-      item = youtubePlaylist.filter((val: any) => val.id === id)[0];
+      item = youtubePlaylist.filter((val: any) => val.playlist_id === id)[0];
     } else {
-      item = spotifyPlaylist.filter((val: any) => val.id === id)[0];
+      item = spotifyPlaylist.filter((val: any) => val.playlist_id === id)[0];
     }
+
     generateColor(item);
     setPlaylistInfo(item);
 
@@ -51,7 +51,7 @@ function PlayList() {
     try {
       const color = await fac.getColorAsync(
         type == "youtube"
-          ? playlistInfo?.snippet.thumbnails.high.url
+          ? playlistInfo?.thumbnails.high
           : playlistInfo?.images[0].url
       );
       bgColor.current = await color.hex;
@@ -87,12 +87,12 @@ function PlayList() {
               <img
                 src={
                   type == "youtube"
-                    ? playlistInfo?.snippet.thumbnails.high.url
+                    ? playlistInfo?.thumbnails.high
                     : playlistInfo?.images[0].url
                 }
                 alt={`Playlist from ${
                   type == "youtube"
-                    ? playlistInfo?.snippet.channelTitle
+                    ? playlistInfo?.creator
                     : playlistInfo?.owner.display_name
                 }`}
                 className=" object-none w-full h-full rounded-xl shadow-md "
@@ -109,16 +109,14 @@ function PlayList() {
             <div className="flex flex-col justify-between gap-3 ">
               <div>
                 <h1 className=" text-3xl font-bold block text-white ">
-                  {type == "youtube"
-                    ? playlistInfo?.snippet.title
-                    : playlistInfo?.name}
+                  {type == "youtube" ? playlistInfo?.title : playlistInfo?.name}
                 </h1>
               </div>
 
               <h2 className="flex flex-1 items-end text-sm font-light ">
                 <span className=" font-bold text-white text-md">
                   {type == "youtube"
-                    ? playlistInfo?.snippet.channelTitle
+                    ? playlistInfo?.creator
                     : playlistInfo?.owner.display_name}
                 </span>
               </h2>
@@ -126,13 +124,13 @@ function PlayList() {
               <div className="flex-1 flex pt-2 items-end">
                 <div className="text-sm text-gray-300 font-normal flex flex-row">
                   <span className=" ml-1 text-xs">
-                    {items?.items.length} songs, from
+                    {items?.length} songs, from
                     <span
                       className={
                         type == "youtube" ? `text-red-500` : `text-green-500`
                       }
                     >
-                      {" "}
+                      {"  "}
                       {type}
                     </span>
                   </span>
@@ -144,7 +142,7 @@ function PlayList() {
 
         <section className="[grid-area:main]  p-4 mb-8 w- h-full overflow-x-hidden">
           <div className="flex flex-col text-left divide-gray-500/50">
-            {items?.items.map((music: any, index: number) => {
+            {items?.map((music: any, index: number) => {
               return (
                 <MusicItem
                   key={index}

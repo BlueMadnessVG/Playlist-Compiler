@@ -12,13 +12,6 @@ function MusicItem({
   index: number;
 }) {
   const navigate = useNavigate();
-  let min = 0;
-  let sec = 0;
-
-  if (type != "youtube") {
-    min = Math.floor((music?.track.duration_ms / (1000 * 60)) << 0);
-    sec = Math.floor((music?.track.duration_ms / 1000) % 60);
-  }
   const { id } = useParams();
   const { setCurrentMusic } = usePlayerStore((state: any) => state);
 
@@ -40,11 +33,11 @@ function MusicItem({
           <img
             src={
               type == "youtube"
-                ? music?.snippet.thumbnails.high.url
+                ? music?.thumbnails.high
                 : music?.track.album.images[0].url
             }
             alt={`Playlist from ${
-              type == "youtube" ? music?.snippet.title : music?.track.name
+              type == "youtube" ? music?.title : music?.track.name
             }`}
             className="object-cover w-full h-full rounded-lg "
           />
@@ -52,19 +45,17 @@ function MusicItem({
 
         <div className="flex flex-col gap-2">
           <h3 className=" max-w-96 truncate text-white">
-            {type == "youtube" ? music?.snippet.title : music?.track.name}
+            {type == "youtube" ? music?.title : music?.track.name}
           </h3>
 
           <a
             onClick={() => {
-              navigate(
-                "/artist/" + type + "/" + music?.snippet.videoOwnerChannelId
-              );
+              navigate("/artist/" + type + "/" + music?.artist.id);
             }}
             className="cursor-pointer hover:text-white text-xs text-gray-500"
           >
             {type == "youtube"
-              ? music?.snippet.videoOwnerChannelTitle.split("-")[0]
+              ? music?.artist.title.split("-")[0]
               : music?.track.artists[0].name}
           </a>
         </div>

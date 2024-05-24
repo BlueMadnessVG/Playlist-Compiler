@@ -1,5 +1,5 @@
 function PopularSong({ song }: { song: any }) {
-  const date = new Date(song?.snippet.publishedAt);
+  const date = new Date(song?.published_at);
 
   const day = date.getUTCDate().toString().padStart(2);
   const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
@@ -10,16 +10,16 @@ function PopularSong({ song }: { song: any }) {
       <td className="px-3 py-2 flex gap-3 items-center group-hover:bg-zinc-800">
         <picture className="aspect-square w-12 h-12">
           <img
-            src={song?.snippet.thumbnails.default.url}
-            alt={`Playlist from ${song?.snippet.title}`}
-            className=" object-none w-full h-full rounded-md "
+            src={song?.thumbnails.medium}
+            alt={`Playlist from ${song?.title}`}
+            className=" object-scale-down w-full h-full rounded-md "
           />
         </picture>
-        <h3 className=" max-w-96 truncate">{song?.snippet.title}</h3>
+        <h3 className=" max-w-96 truncate">{song?.title}</h3>
       </td>
       <td className="px-3 py-1 font-thin text-gray-500 max-w-72 truncate group-hover:bg-zinc-800">
         <a className="cursor-pointer hover:text-white">
-          {song?.snippet.channelTitle.split("-")[0]}
+          {song?.artist.title.split("-")[0]}
         </a>
       </td>
       <td className="px-3 py-1 font-thin text-gray-500 max-w-72 truncate group-hover:bg-zinc-800">

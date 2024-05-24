@@ -26,8 +26,7 @@ function PageAside() {
   };
 
   useEffect(() => {
-    if (currentMusic.playList.id != null) {
-      console.log("entro");
+    if (youtubeId?.id != null) {
       const usersRef = ref(database, `Users/${youtubeId.id}`);
 
       get(usersRef).then((snapshot) => {
@@ -46,7 +45,7 @@ function PageAside() {
         }
       });
     }
-  }, [currentMusic.playList.id]);
+  }, [currentMusic]);
 
   return (
     <nav className="flex flex-col flex-1 p-2">
