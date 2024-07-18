@@ -1,7 +1,7 @@
-import { PlaylistData, MusicData } from "./interfaces";
+import { PlaylistModel, MusicModel } from "../models";
 
 export function PlaylistStandardization(playlist: any) {
-  let data: PlaylistData = {
+  let data: PlaylistModel = {
     playlist_id: playlist.id,
     title: playlist.snippet.title,
     creator: playlist.snippet.channelTitle,
@@ -16,7 +16,7 @@ export function PlaylistStandardization(playlist: any) {
 }
 
 export function MusicStandardization(music: any, type: string) {
-  let data: MusicData = {
+  let data: MusicModel = {
     music_id:
       type == "playlistSearch"
         ? music.snippet.resourceId.videoId

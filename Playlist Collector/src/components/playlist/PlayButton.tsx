@@ -1,7 +1,7 @@
 import React from "react";
 import PauseIcon from "../../assets/icons/pause";
 import PlayIcon from "../../assets/icons/play";
-import { useYoutubeStore } from "../../global/youtubeStore";
+import { useYoutubeStore } from "../../global/youtube.store";
 import { useSpotifyStore } from "../../global/spotifyStore";
 import { usePlayerStore } from "../../global/musicStore";
 import { push, ref, update } from "firebase/database";

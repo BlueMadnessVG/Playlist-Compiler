@@ -1,18 +1,21 @@
 import styles from "../../App.module.css";
 
-import { motion } from "framer-motion";
+import { motion, useIsPresent } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useYoutubeStore } from "../../global/youtubeStore";
-import { fetchYoutubePlaylistsItems } from "../../services/YoutubeService";
+import { useYoutubeStore } from "../../global/youtube.store";
+import { fetchYoutubePlaylistsItems } from "../../services/Youtube/Youtube.service";
 import MusicItem from "./musicItem";
 import { useSpotifyStore } from "../../global/spotifyStore";
-import { fetchSpotifyPlaylistItems } from "../../services/SpotifyService";
+import { fetchSpotifyPlaylistItems } from "../../services/Spotify/Spotify.service";
 import PageHeader from "../home/pageHeader";
 import { FastAverageColor } from "fast-average-color";
-import CardPlayButton from "../home/cardPlayButton";
+import CardPlayButton from "../home/card/cardPlayButton";
+import FrameMotion from "../../utils/frameMotion.utility";
 
 function PlayList() {
+  const isPresent = useIsPresent();
+
   const { type, id } = useParams();
   const { youtubePlaylist } = useYoutubeStore((state: any) => state);
   const { spotifyPlaylist } = useSpotifyStore((state: any) => state);
@@ -62,13 +65,7 @@ function PlayList() {
   };
 
   return (
-    <motion.div
-      className=" relative transition-all duration-1000 flex-1 flex-row h-full rounded-lg  bg-zinc-900 overflow-x-hidden  overflow-y-hidden mr-2 font-abc"
-      initial={{ x: "-100%" }}
-      animate={{ x: 0 }}
-      exit={{ x: "100%" }}
-      transition={{ duration: 0.3, delay: 0, ease: [0, 0.71, 0.2, 1.01] }}
-    >
+    <div className=" relative transition-all duration-1000 flex-1 flex-row h-full rounded-lg  bg-zinc-900 overflow-x-hidden  overflow-y-hidden mr-2 font-abc">
       <header
         className={`flex flex-col sticky top-0 px-6 pt-6 bg-gradient-to-t z-20  `}
       >
@@ -155,7 +152,9 @@ function PlayList() {
           </div>
         </section>
       </main>
-    </motion.div>
+
+      <FrameMotion />
+    </div>
   );
 }
 

@@ -1,11 +1,11 @@
 import React from "react";
-import PauseIcon from "../../assets/icons/pause";
-import PlayIcon from "../../assets/icons/play";
-import { useYoutubeStore } from "../../global/youtubeStore";
-import { useSpotifyStore } from "../../global/spotifyStore";
-import { usePlayerStore } from "../../global/musicStore";
+import PauseIcon from "../../../assets/icons/pause";
+import PlayIcon from "../../../assets/icons/play";
+import { useYoutubeStore } from "../../../global/youtube.store";
+import { useSpotifyStore } from "../../../global/spotifyStore";
+import { usePlayerStore } from "../../../global/musicStore";
 import { push, ref, update } from "firebase/database";
-import { database } from "../../global/fireBase";
+import { database } from "../../../global/fireBase";
 
 function CardPlayButton({
   id,

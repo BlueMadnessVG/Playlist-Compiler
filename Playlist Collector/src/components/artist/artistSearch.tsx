@@ -6,16 +6,17 @@ import {
   fetchYoutubeChanel,
   fetchYoutubeChanelPlaylists,
   fetchYoutubeChannelVideos,
-} from "../../services/YoutubeService";
+} from "../../services/Youtube/Youtube.service";
 import PopularSong from "./popularSong";
 import SongCart from "./songCart";
 import PlaylistCart from "./playlistCart";
-import { useArtistStore } from "../../global/artistStore";
+import { useArtistStore } from "../../global/artist.store";
 import styles from "../../App.module.css";
 import NextIcon from "../../assets/icons/next";
 import ArrowLeftIcon from "../../assets/icons/arrowLeft";
 import ArrowRightIcon from "../../assets/icons/arrowRight";
-import { useYoutubeStore } from "../../global/youtubeStore";
+import { useYoutubeStore } from "../../global/youtube.store";
+import FrameMotion from "../../utils/frameMotion.utility";
 
 function ArtistSearch() {
   const { type, id } = useParams();
@@ -97,21 +98,15 @@ function ArtistSearch() {
 
   return (
     artistInfo != undefined && (
-      <motion.div
+      <div
         id="playlist-container"
         className=" relative transition-all duration-1000 flex-1 flex-col h-full rounded-lg  bg-zinc-900 overflow-x-hidden mr-2 font-abc"
-        initial={{ x: "-100%" }}
-        animate={{ x: 0 }}
-        exit={{ x: "100%" }}
-        transition={{ duration: 0.3, delay: 0, ease: [0, 0.71, 0.2, 1.01] }}
       >
         <div className="flex">
           <picture className="aspect-square w-full h-96 flex-none absolute inset-0">
             <img
-              src={type == "youtube" && artistInfo?.snippet.thumbnails.high.url}
-              alt={`Playlist from ${
-                type == "youtube" && artistInfo?.snippet.channelTitle
-              }`}
+              src={artistInfo?.snippet.thumbnails.high.url}
+              alt={`Playlist from ${artistInfo?.snippet.channelTitle}`}
               className=" object-cover w-full h-full  shadow-lg"
             />
           </picture>
@@ -197,7 +192,9 @@ function ArtistSearch() {
             </div>
           </div>
         </main>
-      </motion.div>
+
+        <FrameMotion />
+      </div>
     )
   );
 }

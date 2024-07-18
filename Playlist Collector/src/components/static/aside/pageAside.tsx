@@ -7,8 +7,8 @@ import SideMenuCard from "./sideMenuCard";
 import { get, ref } from "firebase/database";
 import { useEffect, useState } from "react";
 import { database } from "../../../global/fireBase";
-import { useYoutubeStore } from "../../../global/youtubeStore";
-import { fetchYoutubePlaylistId } from "../../../services/YoutubeService";
+import { useYoutubeStore } from "../../../global/youtube.store";
+import { fetchYoutubePlaylistId } from "../../../services/Youtube/Youtube.service";
 import { usePlayerStore } from "../../../global/musicStore";
 
 function PageAside() {

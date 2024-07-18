@@ -6,13 +6,13 @@ import styles from "../../../App.module.css";
 import { usePlayerStore } from "../../../global/musicStore";
 import VolumeController from "./Volume";
 import YouTubePlayer from "react-player/youtube";
-import { fetchYoutubePlaylistsItems } from "../../../services/YoutubeService";
+import { fetchYoutubePlaylistsItems } from "../../../services/Youtube/Youtube.service";
 import NextIcon from "../../../assets/icons/next";
 import PrevIcon from "../../../assets/icons/prev";
 import CloseIcon from "../../../assets/icons/close";
 import { MusicSlider } from "./MusicSlider";
 import { motion } from "framer-motion";
-import { fetchSpotifyPlaylistItems } from "../../../services/SpotifyService";
+import { fetchSpotifyPlaylistItems } from "../../../services/Spotify/Spotify.service";
 
 import { useSpotifyStore } from "../../../global/spotifyStore";
 import { useNavigate } from "react-router-dom";

@@ -1,8 +1,8 @@
 import axios from "axios";
-import PlaylistData, { MusicData } from "../utils/interfaces";
+import { MusicModel, PlaylistModel } from "../../models";
 import PlaylistStandardization, {
   MusicStandardization,
-} from "../utils/YoutubeStandarisation";
+} from "../../utils/Youtube.standardization";
 
 // REGION: Spotify authorization controllers
 const authEndPoint = "https://accounts.google.com/o/oauth2/v2/auth?";
@@ -26,7 +26,7 @@ export async function redirectToYouTubeAuth() {
 }
 
 //REGION: AXIOS CALL
-const apiYouTube = axios.create({
+export const apiYouTube = axios.create({
   baseURL: "https://www.googleapis.com/youtube/v3/",
 });
 
@@ -49,7 +49,7 @@ export async function fetchYoutubePlaylists() {
     params: { part: "snippet", mine: true, maxResults: 10 },
   });
 
-  var data: PlaylistData[] = [];
+  var data: PlaylistModel[] = [];
   result.data.items.map((item: any) => {
     data.push(PlaylistStandardization(item));
   });
@@ -79,7 +79,7 @@ export async function fetchYoutubeChannelVideos(id: any) {
     },
   });
 
-  let data: MusicData[] = [];
+  let data: MusicModel[] = [];
   result.data.items.map((item: any) => {
     data.push(MusicStandardization(item, "channelSearch"));
   });
@@ -109,12 +109,23 @@ export async function fetchYoutubeChanelPlaylists(id: any) {
     },
   });
 
-  let data: PlaylistData[] = [];
+  let data: PlaylistModel[] = [];
   result.data.items.map((item: any) => {
     data.push(PlaylistStandardization(item));
   });
 
   return data;
+}
+
+export async function fetchYoutubeChanelRecommendation() {
+  const result = await apiYouTube("playlists", {
+    params: {
+      part: "snippet",
+      channelId: "UCUT0DldFAP5KPmBzIhmkCig",
+    },
+  });
+
+  console.log(result);
 }
 
 export async function fetchYoutubePlaylistId(id: any) {
@@ -132,7 +143,7 @@ export async function fetchYoutubePlaylistsItems(id: any) {
     params: { part: "snippet", maxResults: 50, playlistId: id },
   });
 
-  let data: MusicData[] = [];
+  let data: MusicModel[] = [];
   result.data.items.map((item: any) => {
     data.push(MusicStandardization(item, "playlistSearch"));
   });
