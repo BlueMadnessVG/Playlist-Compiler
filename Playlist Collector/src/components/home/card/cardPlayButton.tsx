@@ -2,8 +2,8 @@ import React from "react";
 import PauseIcon from "../../../assets/icons/pause";
 import PlayIcon from "../../../assets/icons/play";
 import { useYoutubeStore } from "../../../global/youtube.store";
-import { useSpotifyStore } from "../../../global/spotifyStore";
-import { usePlayerStore } from "../../../global/musicStore";
+import { useSpotifyStore } from "../../../global/spotify.store";
+import { usePlayerStore } from "../../../global/music.store";
 import { push, ref, update } from "firebase/database";
 import { database } from "../../../global/fireBase";
 

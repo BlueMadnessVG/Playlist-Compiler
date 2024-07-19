@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { database } from "../../../global/fireBase";
 import { useYoutubeStore } from "../../../global/youtube.store";
 import { fetchYoutubePlaylistId } from "../../../services/Youtube/Youtube.service";
-import { usePlayerStore } from "../../../global/musicStore";
+import { usePlayerStore } from "../../../global/music.store";
 
 function PageAside() {
   const { currentMusic } = usePlayerStore((state: any) => state);

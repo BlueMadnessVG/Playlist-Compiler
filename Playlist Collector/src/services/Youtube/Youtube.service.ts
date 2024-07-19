@@ -30,13 +30,6 @@ export const apiYouTube = axios.create({
   baseURL: "https://www.googleapis.com/youtube/v3/",
 });
 
-export function setYouTubeClientToken(token: string) {
-  apiYouTube.interceptors.request.use(async function (config) {
-    config.headers.Authorization = "Bearer " + token;
-    return config;
-  });
-}
-
 export async function fetchYouTubeProfile() {
   const result = await apiYouTube("channels", {
     params: { part: "snippet", mine: true },

@@ -4,11 +4,10 @@ import PageHeader from "./pageHeader";
 import {
   fetchYoutubeChanelRecommendation,
   fetchYoutubePlaylists,
-  setYouTubeClientToken,
 } from "../../services/Youtube/Youtube.service";
 import { useYoutubeStore } from "../../global/youtube.store";
 import Filters from "./Filters";
-import { useFiltersStore } from "../../global/filtersStore";
+import { useFiltersStore } from "../../global/filters.store";
 import PlaylistItemCard from "./card/playListItemCard";
 import FrameMotionUtility from "../../utils/frameMotion.utility";
 
@@ -28,23 +27,23 @@ function Home() {
         const _token = hash.split("&")[0].split("=")[1];
         window.localStorage.setItem("YouTube_token", _token);
         setYoutubeToken(_token);
-        setYouTubeClientToken(_token);
         getYoutubePlaylist();
       }
     } else if (StorageYoutubeToken) {
-      if (StorageYoutubeToken) {
-        setYoutubeToken(StorageYoutubeToken);
-        setYouTubeClientToken(StorageYoutubeToken);
-      }
+      setYoutubeToken(StorageYoutubeToken);
     } else {
       getYoutubeRecommendation();
     }
   }, []);
 
   async function getYoutubePlaylist() {
+    if (youtubePlaylist.length > 0) return;
+
     const _youtubePlaylist = await fetchYoutubePlaylists();
     setYoutubePlaylist(_youtubePlaylist);
   }
+
+  async function getYoutubeVideosPlayed() {}
 
   async function getYoutubeRecommendation() {
     const _youtubePlaylist = await fetchYoutubeChanelRecommendation();

@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { usePlayerStore } from "../../global/musicStore";
+import { usePlayerStore } from "../../global/music.store";
 import PlayIcon from "../../assets/icons/play";
 
 function MusicItem({

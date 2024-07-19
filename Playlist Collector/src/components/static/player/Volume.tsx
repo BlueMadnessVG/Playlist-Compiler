@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Slider } from "./Slider";
-import { usePlayerStore } from "../../../global/musicStore";
+import { usePlayerStore } from "../../../global/music.store";
 import VolumeNoneIcon from "../../../assets/icons/volume_None";
 import Volume1Icon from "../../../assets/icons/volume_1";
 import Volume2Icon from "../../../assets/icons/volume_2";

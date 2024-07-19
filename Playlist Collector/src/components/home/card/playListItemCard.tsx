@@ -19,9 +19,9 @@ function PlaylistItemCard({ playlist, type }: { playlist: any; type: string }) {
         onClick={() => {
           navigate("/playlist/" + type + "/" + playlist.playlist_id);
         }}
-        className="playlist-item transition-all duration-300 overflow-hidden p-2 pb-4 rounded-md flex flex-col relative gap-2 bg-zing-500/30 w-44 hover:bg-zinc-700/30"
+        className="playlist-item transition-all duration-300 overflow-hidden p-2 pb-4 rounded-md flex flex-col relative gap-2 bg-zing-500/30 w-full hover:bg-zinc-700/30"
       >
-        <picture className="aspect-square w-full h-44 flex-none  ">
+        <picture className="aspect-square w-full h-[40%] flex-none  ">
           <img
             src={playlist?.thumbnails.medium}
             alt={`Playlist from ${playlist?.creator}`}

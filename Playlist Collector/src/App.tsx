@@ -6,7 +6,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import PageAside from "./components/static/aside/pageAside";
 import Player from "./components/static/player/player";
-import { usePlayerStore } from "./global/musicStore";
+import { usePlayerStore } from "./global/music.store";
 import { SnackbarProvider } from "notistack";
 import { SnackbarUtilitiesConfiguration } from "./utils/snakbar.manager";
 import { AnimatePresence } from "framer-motion";

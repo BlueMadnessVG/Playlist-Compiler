@@ -1,24 +1,20 @@
 import styles from "../../App.module.css";
 
-import { motion, useIsPresent } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useYoutubeStore } from "../../global/youtube.store";
 import { fetchYoutubePlaylistsItems } from "../../services/Youtube/Youtube.service";
 import MusicItem from "./musicItem";
-import { useSpotifyStore } from "../../global/spotifyStore";
 import { fetchSpotifyPlaylistItems } from "../../services/Spotify/Spotify.service";
 import PageHeader from "../home/pageHeader";
-import { FastAverageColor } from "fast-average-color";
 import CardPlayButton from "../home/card/cardPlayButton";
 import FrameMotion from "../../utils/frameMotion.utility";
+import { usePlaylistStore, useYoutubeStore } from "../../global";
 
 function PlayList() {
-  const isPresent = useIsPresent();
-
   const { type, id } = useParams();
   const { youtubePlaylist } = useYoutubeStore((state: any) => state);
-  const { spotifyPlaylist } = useSpotifyStore((state: any) => state);
+  const { playlistId, playlistItems, setPlaylistId, setPlaylistItems } =
+    usePlaylistStore((state: any) => state);
   const [playlistInfo, setPlaylistInfo] = useState<any>();
   const [items, setItems] = useState<any>();
 
@@ -28,41 +24,29 @@ function PlayList() {
     let item;
     if (type == "youtube") {
       item = youtubePlaylist.filter((val: any) => val.playlist_id === id)[0];
-    } else {
-      item = spotifyPlaylist.filter((val: any) => val.playlist_id === id)[0];
     }
 
-    generateColor(item);
+    setPlaylistId(id);
     setPlaylistInfo(item);
-
     async function getItems() {
       try {
         let result;
         if (type == "youtube") result = await fetchYoutubePlaylistsItems(id);
         else result = await fetchSpotifyPlaylistItems(id);
         setItems(result);
+        setPlaylistItems(result);
       } catch (error) {
         console.log(error);
       }
     }
 
-    getItems();
-  }, []);
-
-  const generateColor = async (playlistInfo: any) => {
-    const fac = new FastAverageColor();
-    try {
-      const color = await fac.getColorAsync(
-        type == "youtube"
-          ? playlistInfo?.thumbnails.high
-          : playlistInfo?.images[0].url
-      );
-      bgColor.current = await color.hex;
-    } catch (error) {
-      console.log(error);
-      bgColor.current = "#5B21B6";
+    if (playlistId === id && playlistItems.length > 0) {
+      console.log("entro");
+      setItems(playlistItems);
+    } else {
+      getItems();
     }
-  };
+  }, []);
 
   return (
     <div className=" relative transition-all duration-1000 flex-1 flex-row h-full rounded-lg  bg-zinc-900 overflow-x-hidden  overflow-y-hidden mr-2 font-abc">
@@ -75,7 +59,7 @@ function PlayList() {
       <main id={styles.playlistContainer} className=" h-[93%]">
         <div
           className="[grid-area:aside]   flex flex-col gap-8  h-full  rounded-t-3xl "
-          style={{ backgroundColor: bgColor.current }}
+          style={{ backgroundColor: "#5B21B6" }}
         >
           <div className="absolute w-[35%] h-[93%] bg-gradient-to-t from-zinc-900 from-[5%]"></div>
 

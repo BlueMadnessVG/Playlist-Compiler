@@ -4,7 +4,7 @@ import {
   redirectToYouTubeAuth,
 } from "../../services/Youtube/Youtube.service";
 import { useYoutubeStore } from "../../global/youtube.store";
-import { useSpotifyStore } from "../../global/spotifyStore";
+import { useSpotifyStore } from "../../global/spotify.store";
 import Tooltip from "../../utils/tooltip";
 import {
   fetchSpotifyProfile,

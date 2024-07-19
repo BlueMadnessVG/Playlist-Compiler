@@ -3,7 +3,7 @@ import PlayIcon from "../../../assets/icons/play";
 import PauseIcon from "../../../assets/icons/pause";
 import styles from "../../../App.module.css";
 
-import { usePlayerStore } from "../../../global/musicStore";
+import { usePlayerStore } from "../../../global/music.store";
 import VolumeController from "./Volume";
 import YouTubePlayer from "react-player/youtube";
 import { fetchYoutubePlaylistsItems } from "../../../services/Youtube/Youtube.service";
@@ -14,7 +14,6 @@ import { MusicSlider } from "./MusicSlider";
 import { motion } from "framer-motion";
 import { fetchSpotifyPlaylistItems } from "../../../services/Spotify/Spotify.service";
 
-import { useSpotifyStore } from "../../../global/spotifyStore";
 import { useNavigate } from "react-router-dom";
 
 function Player() {
@@ -27,8 +26,6 @@ function Player() {
     setCurrentMusic,
     volume,
   } = usePlayerStore((state: any) => state);
-
-  const { spotifyToken } = useSpotifyStore((state: any) => state);
 
   const audioRef = useRef<string>("");
   const playerRef = useRef<any>(null);
@@ -62,22 +59,10 @@ function Player() {
     }
   };
 
-  const getSpotifyPlaylistItems = async () => {
-    try {
-      const result = await fetchSpotifyPlaylistItems(currentMusic.playList.id);
-
-      console.log(result);
-    } catch (error) {
-      console.log(error);
-      setCurrentMusic({ playList: null, song: null, songs: [] });
-    }
-  };
-
   useEffect(() => {
     if (currentMusic.playList) {
       setIsPlaying(false);
       if (playlistType == "youtube") getYoutubePlaylistItems();
-      else if (playlistType == "spotify") getSpotifyPlaylistItems();
     }
   }, [currentMusic]);
 
