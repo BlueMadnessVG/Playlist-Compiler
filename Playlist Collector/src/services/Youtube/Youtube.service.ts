@@ -9,6 +9,7 @@ const authEndPoint = "https://accounts.google.com/o/oauth2/v2/auth?";
 const userScope = ["https://www.googleapis.com/auth/youtube.readonly"];
 
 const clientID = import.meta.env.VITE_YOUTUBE_API_ID; // User credentials
+const clientSecret = import.meta.env.VITE_YOUTUBE_CLIENT_SECRET;
 const redirectUri = import.meta.env.VITE_REDIRECT_URI; // Page redirection when login
 
 export async function redirectToYouTubeAuth() {
@@ -23,6 +24,37 @@ export async function redirectToYouTubeAuth() {
 
   //RELOCATE TO THE SPOTIFY PAGE
   document.location = `${authEndPoint}${params.toString()}`;
+}
+
+export async function refreshToken() {
+  const params = new URLSearchParams();
+  params.append("client_id", clientID);
+  params.append("client_secret", clientSecret);
+  params.append("code", localStorage.getItem("YouTube_token") || "");
+  params.append("grant_type", "authorization_code"); //WHAT ARE WE GETTING PERMITIOS
+  params.append("redirect_uri", redirectUri); //WHERE IS GOING TO REDIRECT
+
+  axios({
+    method: "post",
+    url: "https://oauth2.googleapis.com/token",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    data: {
+      client_id: clientID,
+      client_secret: clientSecret,
+      refresh_token: localStorage.getItem("YouTube_token"),
+      grant_type: "refresh_token",
+    },
+  }).then((response) => {
+    console.log(response);
+    window.localStorage.setItem("Youtube_token", response.data.access_token);
+
+    const expiresValue = response.data.expires_in;
+    const delay = (expiresValue ? parseInt(expiresValue, 10) : 2500) * 10;
+    console.log(delay);
+    setInterval(refreshToken, delay);
+  });
 }
 
 //REGION: AXIOS CALL

@@ -4,6 +4,7 @@ import PageHeader from "./pageHeader";
 import {
   fetchYoutubeChanelRecommendation,
   fetchYoutubePlaylists,
+  refreshToken,
 } from "../../services/Youtube/Youtube.service";
 import { useYoutubeStore } from "../../global/youtube.store";
 import Filters from "./Filters";
@@ -42,8 +43,6 @@ function Home() {
     const _youtubePlaylist = await fetchYoutubePlaylists();
     setYoutubePlaylist(_youtubePlaylist);
   }
-
-  async function getYoutubeVideosPlayed() {}
 
   async function getYoutubeRecommendation() {
     const _youtubePlaylist = await fetchYoutubeChanelRecommendation();

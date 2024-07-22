@@ -1,6 +1,6 @@
 import styles from "./App.module.css";
 
-import { Suspense } from "react";
+import { useEffect } from "react";
 import { AppRouter } from "./router/router";
 import { BrowserRouter as Router } from "react-router-dom";
 
@@ -9,10 +9,23 @@ import Player from "./components/static/player/player";
 import { usePlayerStore } from "./global/music.store";
 import { SnackbarProvider } from "notistack";
 import { SnackbarUtilitiesConfiguration } from "./utils/snakbar.manager";
-import { AnimatePresence } from "framer-motion";
+import { useYoutubeStore } from "./global";
+import { refreshToken } from "./services/Youtube/Youtube.service";
 
 function App() {
   const { currentMusic } = usePlayerStore((state: any) => state);
+  const { youtubeToken, setYoutubeToken } = useYoutubeStore(
+    (state: any) => state
+  );
+
+  useEffect(() => {
+    if (youtubeToken) {
+      const expiresValue = localStorage.getItem("expires_in");
+      const delay = expiresValue ? parseInt(expiresValue, 10) : 2500;
+
+      setTimeout(refreshToken, delay);
+    }
+  }, [youtubeToken]);
 
   return (
     <>
