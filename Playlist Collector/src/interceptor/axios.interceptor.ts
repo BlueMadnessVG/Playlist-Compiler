@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from "axios";
 import { apiYouTube } from "../services/Youtube/Youtube.service";
-import { getValidationError } from "../utils/validation.error";
-import { SnackbarUtilities } from "../utils/snakbar.manager";
+import { getValidationError } from "../utils/controllers/validation.error";
+import { SnackbarUtilities } from "../utils/controllers/snakbar.manager";
 
 export const AxiosInterceptor = () => {
   const updateHeaders = (request: AxiosRequestConfig) => {

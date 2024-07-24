@@ -1,4 +1,4 @@
-import { PlaylistModel, MusicModel } from "../models";
+import { PlaylistModel, MusicModel } from "../../models";
 
 export function PlaylistStandardization(playlist: any) {
   let data: PlaylistModel = {

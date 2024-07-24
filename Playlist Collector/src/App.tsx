@@ -1,6 +1,5 @@
 import styles from "./App.module.css";
 
-import { useEffect } from "react";
 import { AppRouter } from "./router/router";
 import { BrowserRouter as Router } from "react-router-dom";
 
@@ -8,24 +7,10 @@ import PageAside from "./components/static/aside/pageAside";
 import Player from "./components/static/player/player";
 import { usePlayerStore } from "./global/music.store";
 import { SnackbarProvider } from "notistack";
-import { SnackbarUtilitiesConfiguration } from "./utils/snakbar.manager";
-import { useYoutubeStore } from "./global";
-import { refreshToken } from "./services/Youtube/Youtube.service";
+import { SnackbarUtilitiesConfiguration } from "./utils/controllers/snakbar.manager";
 
 function App() {
   const { currentMusic } = usePlayerStore((state: any) => state);
-  const { youtubeToken, setYoutubeToken } = useYoutubeStore(
-    (state: any) => state
-  );
-
-  useEffect(() => {
-    if (youtubeToken) {
-      const expiresValue = localStorage.getItem("expires_in");
-      const delay = expiresValue ? parseInt(expiresValue, 10) : 2500;
-
-      setTimeout(refreshToken, delay);
-    }
-  }, [youtubeToken]);
 
   return (
     <>
@@ -41,7 +26,7 @@ function App() {
               <AppRouter />
             </main>
 
-            {currentMusic.playList && (
+            {currentMusic.playlist && (
               <footer>
                 <Player />
               </footer>

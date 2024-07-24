@@ -16,7 +16,7 @@ import NextIcon from "../../assets/icons/next";
 import ArrowLeftIcon from "../../assets/icons/arrowLeft";
 import ArrowRightIcon from "../../assets/icons/arrowRight";
 import { useYoutubeStore } from "../../global/youtube.store";
-import FrameMotion from "../../utils/frameMotion.utility";
+import FrameMotion from "../../utils/Page utils/frameMotion.utility";
 
 function ArtistSearch() {
   const { type, id } = useParams();

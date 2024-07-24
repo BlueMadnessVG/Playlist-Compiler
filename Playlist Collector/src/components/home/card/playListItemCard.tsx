@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import CardPlayButton from "./cardPlayButton";
+import PlayButton from "../../playlist/PlayButton";
 
 function PlaylistItemCard({ playlist, type }: { playlist: any; type: string }) {
   const navigate = useNavigate();
@@ -7,7 +8,7 @@ function PlaylistItemCard({ playlist, type }: { playlist: any; type: string }) {
   return (
     <article className=" group relative">
       <div className="absolute right-2 bottom-16 translate-y-4 transition-all duration-500 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 z-10">
-        <CardPlayButton
+        <PlayButton
           id={playlist.playlist_id}
           type={type}
           text=""

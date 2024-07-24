@@ -13,10 +13,16 @@ function MusicItem({
 }) {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { setCurrentMusic } = usePlayerStore((state: any) => state);
+  const { currentMusic, setCurrentMusic } = usePlayerStore(
+    (state: any) => state
+  );
 
   const handleClick = () => {
-    setCurrentMusic({ playList: { id }, song: index, songs: [] });
+    setCurrentMusic({
+      playlist: { id },
+      song: index,
+      songs: currentMusic.songs ? currentMusic.songs : [],
+    });
   };
 
   return (

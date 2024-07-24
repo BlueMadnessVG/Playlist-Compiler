@@ -27,23 +27,6 @@ function PageAside() {
 
   useEffect(() => {
     if (youtubeId?.id != null) {
-      const usersRef = ref(database, `Users/${youtubeId.id}`);
-
-      get(usersRef).then((snapshot) => {
-        if (snapshot.exists()) {
-          const usersArray = Object.entries(snapshot.val()).map(
-            ([id, data]: any) => ({
-              id,
-              ...data,
-            })
-          );
-
-          const lastPlaylists = usersArray.slice(-5);
-          let ids = [...new Set(lastPlaylists.map((index) => index.id))].join();
-
-          getHistory(ids);
-        }
-      });
     }
   }, [currentMusic]);
 

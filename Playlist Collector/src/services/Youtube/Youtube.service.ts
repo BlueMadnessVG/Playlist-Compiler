@@ -2,7 +2,7 @@ import axios from "axios";
 import { MusicModel, PlaylistModel } from "../../models";
 import PlaylistStandardization, {
   MusicStandardization,
-} from "../../utils/Youtube.standardization";
+} from "../../utils/controllers/Youtube.standardization";
 
 // REGION: Spotify authorization controllers
 const authEndPoint = "https://accounts.google.com/o/oauth2/v2/auth?";
@@ -48,7 +48,7 @@ export async function refreshToken() {
     },
   }).then((response) => {
     console.log(response);
-    window.localStorage.setItem("Youtube_token", response.data.access_token);
+    window.localStorage.setItem("YouTube_token", response.data.access_token);
 
     const expiresValue = response.data.expires_in;
     const delay = (expiresValue ? parseInt(expiresValue, 10) : 2500) * 10;

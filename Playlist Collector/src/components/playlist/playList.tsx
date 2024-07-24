@@ -1,14 +1,15 @@
 import styles from "../../App.module.css";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchYoutubePlaylistsItems } from "../../services/Youtube/Youtube.service";
 import MusicItem from "./musicItem";
 import { fetchSpotifyPlaylistItems } from "../../services/Spotify/Spotify.service";
 import PageHeader from "../home/pageHeader";
 import CardPlayButton from "../home/card/cardPlayButton";
-import FrameMotion from "../../utils/frameMotion.utility";
+import FrameMotion from "../../utils/Page utils/frameMotion.utility";
 import { usePlaylistStore, useYoutubeStore } from "../../global";
+import PlayButton from "./PlayButton";
 
 function PlayList() {
   const { type, id } = useParams();
@@ -18,30 +19,19 @@ function PlayList() {
   const [playlistInfo, setPlaylistInfo] = useState<any>();
   const [items, setItems] = useState<any>();
 
-  const bgColor = useRef<any>("#fffff");
-
   useEffect(() => {
-    let item;
-    if (type == "youtube") {
-      item = youtubePlaylist.filter((val: any) => val.playlist_id === id)[0];
-    }
+    let item = youtubePlaylist.filter((val: any) => val.playlist_id === id)[0];
 
     setPlaylistId(id);
     setPlaylistInfo(item);
     async function getItems() {
-      try {
-        let result;
-        if (type == "youtube") result = await fetchYoutubePlaylistsItems(id);
-        else result = await fetchSpotifyPlaylistItems(id);
-        setItems(result);
-        setPlaylistItems(result);
-      } catch (error) {
-        console.log(error);
-      }
+      const result = await fetchYoutubePlaylistsItems(id);
+
+      setItems(result);
+      setPlaylistItems(result);
     }
 
     if (playlistId === id && playlistItems.length > 0) {
-      console.log("entro");
       setItems(playlistItems);
     } else {
       getItems();
@@ -79,7 +69,7 @@ function PlayList() {
                 className=" object-none w-full h-full rounded-xl shadow-md "
               />
 
-              <CardPlayButton
+              <PlayButton
                 id={id ? id?.toString() : ""}
                 type={type ? type : "youtube"}
                 text="Reproduce playlist"

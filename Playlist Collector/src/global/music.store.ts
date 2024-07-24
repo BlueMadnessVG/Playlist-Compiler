@@ -3,7 +3,7 @@ import { create } from "zustand";
 export const usePlayerStore = create((set) => ({
   isPlaying: false,
   playlistType: "youtube",
-  currentMusic: { playlist: null, song: null, songs: [] },
+  currentMusic: {},
   volume: 1,
   setVolume: (volume: any) => set({ volume }),
   setIsPlaying: (isPlaying: any) => set({ isPlaying }),

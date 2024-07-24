@@ -29,52 +29,58 @@ function Player() {
 
   const audioRef = useRef<string>("");
   const playerRef = useRef<any>(null);
+  const playlistRef = useRef<string>("");
   const [time, setTime] = useState({
     played: 0,
     MaxTime: 0,
   });
 
   const getYoutubePlaylistItems = async () => {
-    try {
-      const result = await fetchYoutubePlaylistsItems(currentMusic.playList.id);
+    let result;
 
-      currentMusic.songs = [];
-      setTime({ ...time, played: 0 });
-
-      for (let i = 0; i < result.length; i++) {
-        currentMusic.songs.push({
-          id: result[i].music_id,
-          img: result[i].thumbnails.medium,
-          name: result[i].title,
-          artist: result[i].artist.title,
-          channelID: result[i].artist.id,
-        });
-      }
-
-      audioRef.current = currentMusic.songs[currentMusic.song].id;
-      setIsPlaying(true);
-    } catch (error) {
-      console.log("error: " + error);
-      setCurrentMusic({ playList: null, song: null, songs: [] });
+    if (
+      playerRef.current == currentMusic.playlist.id &&
+      currentMusic.songs.length > 0
+    ) {
+      result = currentMusic.songs;
+    } else {
+      result = await fetchYoutubePlaylistsItems(currentMusic.playlist.id);
     }
+
+    currentMusic.songs = result;
+    setTime({ ...time, played: 0 });
+
+    /*     for (let i = 0; i < result.length; i++) {
+      currentMusic.songs.push({
+        id: result[i].music_id,
+        thumbnails: result[i].thumbnails.medium,
+        name: result[i].title,
+        artist: result[i].artist.title,
+        channelID: result[i].artist.id,
+      });
+    } */
+
+    audioRef.current = currentMusic.songs[currentMusic.song].music_id;
+    setIsPlaying(true);
   };
 
   useEffect(() => {
-    if (currentMusic.playList) {
+    if (currentMusic.playlist) {
       setIsPlaying(false);
       if (playlistType == "youtube") getYoutubePlaylistItems();
+      playerRef.current = currentMusic.playlist.id;
     }
   }, [currentMusic]);
 
   const handlePlay = () => {
-    if (currentMusic?.playList) setIsPlaying(!isPlaying);
+    if (currentMusic?.playlist) setIsPlaying(!isPlaying);
   };
 
   const handleNext = () => {
     if (currentMusic.song < currentMusic.songs.length - 1) {
       currentMusic.song++;
       setIsPlaying(false);
-      audioRef.current = currentMusic.songs[currentMusic.song].id;
+      audioRef.current = currentMusic.songs[currentMusic.song].music_id;
       setIsPlaying(true);
     }
   };
@@ -83,7 +89,7 @@ function Player() {
     if (currentMusic.song > 0) {
       currentMusic.song--;
       setIsPlaying(false);
-      audioRef.current = currentMusic.songs[currentMusic.song].id;
+      audioRef.current = currentMusic.songs[currentMusic.song].music_id;
       setIsPlaying(true);
     }
   };
@@ -91,7 +97,7 @@ function Player() {
   const handleMusicEnded = () => {
     if (currentMusic.song == currentMusic.songs.length - 1) {
       currentMusic.song = 0;
-      audioRef.current = currentMusic.songs[currentMusic.song].id;
+      audioRef.current = currentMusic.songs[currentMusic.song].music_id;
       setIsPlaying(true);
     } else {
       handleNext();
@@ -117,7 +123,7 @@ function Player() {
 
   const handleCloseClick = () => {
     setIsPlaying(false);
-    setCurrentMusic({ playList: null, song: null, songs: [] });
+    setCurrentMusic({ playlist: null, song: null, songs: [] });
   };
 
   return (
@@ -194,8 +200,8 @@ function Player() {
       />
       <div className="flex flex-auto flex-col justify-between w-[28vw] px-4 z-50 pb-2 pt-2 bg-zinc-800 font-abc cursor-default overflow-hidden">
         <div className={`whitespace-nowrap inline-block truncate`}>
-          <h2 className="text-md ">
-            {currentMusic.songs[currentMusic.song]?.name}
+          <h2 className="text-lg">
+            {currentMusic.songs[currentMusic.song]?.title}
           </h2>
         </div>
 
@@ -203,12 +209,12 @@ function Player() {
           <a
             onClick={() => {
               navigate(
-                "/artist/" + playlistType + "/" + currentMusic?.playList.id
+                "/artist/" + playlistType + "/" + currentMusic?.playlist.id
               );
             }}
-            className="text-xs font-thin text-gray-400 border-0 hover:text-gray-300 cursor-pointer"
+            className="text-sm font-thin text-gray-400 border-0 hover:text-gray-300 cursor-pointer"
           >
-            {currentMusic.songs[currentMusic.song]?.artist.split("-")[0]}
+            {currentMusic.songs[currentMusic.song]?.artist.title.split("-")[0]}
           </a>
 
           <VolumeController />

@@ -10,7 +10,7 @@ import { useYoutubeStore } from "../../global/youtube.store";
 import Filters from "./Filters";
 import { useFiltersStore } from "../../global/filters.store";
 import PlaylistItemCard from "./card/playListItemCard";
-import FrameMotionUtility from "../../utils/frameMotion.utility";
+import FrameMotionUtility from "../../utils/Page utils/frameMotion.utility";
 
 function Home() {
   const { youtubeToken, youtubePlaylist, setYoutubeToken, setYoutubePlaylist } =
