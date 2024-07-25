@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import CardPlayButton from "./cardPlayButton";
-import PlayButton from "../../playlist/PlayButton";
+import PlayButton from "../../../utils/Page utils/PlayButton.utility";
 
 function PlaylistItemCard({ playlist, type }: { playlist: any; type: string }) {
   const navigate = useNavigate();

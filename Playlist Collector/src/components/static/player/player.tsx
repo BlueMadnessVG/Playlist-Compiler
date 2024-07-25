@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import PlayIcon from "../../../assets/icons/play";
 import PauseIcon from "../../../assets/icons/pause";
-import styles from "../../../App.module.css";
 
 import { usePlayerStore } from "../../../global/music.store";
 import VolumeController from "./Volume";
@@ -12,7 +11,6 @@ import PrevIcon from "../../../assets/icons/prev";
 import CloseIcon from "../../../assets/icons/close";
 import { MusicSlider } from "./MusicSlider";
 import { motion } from "framer-motion";
-import { fetchSpotifyPlaylistItems } from "../../../services/Spotify/Spotify.service";
 
 import { useNavigate } from "react-router-dom";
 
@@ -28,8 +26,8 @@ function Player() {
   } = usePlayerStore((state: any) => state);
 
   const audioRef = useRef<string>("");
-  const playerRef = useRef<any>(null);
-  const playlistRef = useRef<string>("");
+  const playerRef = useRef<any>();
+  const currentPlaylistRef = useRef<string>("");
   const [time, setTime] = useState({
     played: 0,
     MaxTime: 0,
@@ -39,7 +37,7 @@ function Player() {
     let result;
 
     if (
-      playerRef.current == currentMusic.playlist.id &&
+      currentPlaylistRef.current == currentMusic.playlist.id &&
       currentMusic.songs.length > 0
     ) {
       result = currentMusic.songs;
@@ -49,17 +47,6 @@ function Player() {
 
     currentMusic.songs = result;
     setTime({ ...time, played: 0 });
-
-    /*     for (let i = 0; i < result.length; i++) {
-      currentMusic.songs.push({
-        id: result[i].music_id,
-        thumbnails: result[i].thumbnails.medium,
-        name: result[i].title,
-        artist: result[i].artist.title,
-        channelID: result[i].artist.id,
-      });
-    } */
-
     audioRef.current = currentMusic.songs[currentMusic.song].music_id;
     setIsPlaying(true);
   };
@@ -68,7 +55,7 @@ function Player() {
     if (currentMusic.playlist) {
       setIsPlaying(false);
       if (playlistType == "youtube") getYoutubePlaylistItems();
-      playerRef.current = currentMusic.playlist.id;
+      currentPlaylistRef.current = currentMusic.playlist.id;
     }
   }, [currentMusic]);
 
@@ -128,7 +115,7 @@ function Player() {
 
   return (
     <motion.div
-      className="absolute bottom-0 rounded-t-lg right-4 overflow-hidden z-20 cursor-pointer"
+      className="absolute bottom-0 rounded-t-lg right-8 overflow-hidden z-50 cursor-pointer"
       initial={{ y: "100%" }}
       animate={{ y: 0 }}
       exit={{ y: "-100%" }}
@@ -209,7 +196,10 @@ function Player() {
           <a
             onClick={() => {
               navigate(
-                "/artist/" + playlistType + "/" + currentMusic?.playlist.id
+                "/artist/" +
+                  playlistType +
+                  "/" +
+                  currentMusic.songs[currentMusic.song]?.artist.id
               );
             }}
             className="text-sm font-thin text-gray-400 border-0 hover:text-gray-300 cursor-pointer"

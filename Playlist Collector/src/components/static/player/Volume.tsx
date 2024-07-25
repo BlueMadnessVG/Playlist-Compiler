@@ -11,7 +11,7 @@ function VolumeController() {
   const setVolume = usePlayerStore((state: any) => state.setVolume);
   const previousVolumeRef = useRef(volume);
 
-  const isVolumeSilences = volume < 0.1;
+  const isVolumeSilences = volume == 0;
 
   const handleClickVolume = () => {
     if (isVolumeSilences) {

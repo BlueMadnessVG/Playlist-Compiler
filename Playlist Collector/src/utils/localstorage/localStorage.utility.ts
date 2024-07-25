@@ -38,7 +38,14 @@ export const saveLocalStorage = (
 };
 
 export const obtainLocalStorage = (name: string) => {
-  return localStorage.getItem(name);
+  const storageItem = localStorage.getItem(name);
+  let parseArray: { [key: string]: any }[] = [];
+
+  if (storageItem) {
+    parseArray = JSON.parse(storageItem) as { [key: string]: any }[];
+  }
+
+  return parseArray;
 };
 
 export const deleteLocalStorage = (name: string) => {

@@ -4,31 +4,26 @@ import SearchIcon from "../../../assets/icons/search";
 import PlaylistIcon from "../../../assets/icons/playlist";
 import SideMenuCard from "./sideMenuCard";
 
-import { get, ref } from "firebase/database";
 import { useEffect, useState } from "react";
-import { database } from "../../../global/fireBase";
-import { useYoutubeStore } from "../../../global/youtube.store";
 import { fetchYoutubePlaylistId } from "../../../services/Youtube/Youtube.service";
 import { usePlayerStore } from "../../../global/music.store";
+import { obtainLocalStorage } from "../../../utils/localstorage/localStorage.utility";
 
 function PageAside() {
   const { currentMusic } = usePlayerStore((state: any) => state);
-  const { youtubeId } = useYoutubeStore((state: any) => state);
   const [history, setHistory] = useState<any>([]);
 
   const getHistory = async (id: any) => {
-    try {
-      const result = await fetchYoutubePlaylistId(id);
-      setHistory(result.items);
-    } catch (error) {
-      console.log(error);
-    }
+    const result = await fetchYoutubePlaylistId(id);
+    setHistory(result.items);
   };
 
   useEffect(() => {
-    if (youtubeId?.id != null) {
-    }
-  }, [currentMusic]);
+    const playlistHistory = obtainLocalStorage("playlist")
+      .map((item) => item.id)
+      .join(",");
+    getHistory(playlistHistory);
+  }, [currentMusic.currentMusic?.id]);
 
   return (
     <nav className="flex flex-col flex-1 p-2">
@@ -68,11 +63,11 @@ function PageAside() {
 
           <div className=" pt-2">
             {history &&
-              history.map((playlist: any, index: number) => {
+              history.map((item: any, index: number) => {
                 return (
                   <SideMenuCard
                     key={index}
-                    playlist={playlist}
+                    playlist={item}
                     type="youtube"
                   ></SideMenuCard>
                 );

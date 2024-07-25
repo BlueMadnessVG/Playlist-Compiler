@@ -6,10 +6,9 @@ import { fetchYoutubePlaylistsItems } from "../../services/Youtube/Youtube.servi
 import MusicItem from "./musicItem";
 import { fetchSpotifyPlaylistItems } from "../../services/Spotify/Spotify.service";
 import PageHeader from "../home/pageHeader";
-import CardPlayButton from "../home/card/cardPlayButton";
 import FrameMotion from "../../utils/Page utils/frameMotion.utility";
 import { usePlaylistStore, useYoutubeStore } from "../../global";
-import PlayButton from "./PlayButton";
+import PlayButton from "../../utils/Page utils/PlayButton.utility";
 
 function PlayList() {
   const { type, id } = useParams();

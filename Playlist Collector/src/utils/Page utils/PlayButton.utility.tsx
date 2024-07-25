@@ -1,7 +1,7 @@
 import PauseIcon from "../../assets/icons/pause";
 import PlayIcon from "../../assets/icons/play";
 import { usePlayerStore } from "../../global/music.store";
-import { saveLocalStorage } from "../../utils/localstorage/localStorage.utility";
+import { saveLocalStorage } from "../localstorage/localStorage.utility";
 
 function PlayButton({
   id,
@@ -37,7 +37,6 @@ function PlayButton({
 
     saveLocalStorage("playlist", { id: id }, 5);
     setIsPlaying(true);
-    console.log("sigo");
     setCurrentMusic({
       playlist: { id },
       song: 0,

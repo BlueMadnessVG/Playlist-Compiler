@@ -21,8 +21,6 @@ import FrameMotion from "../../utils/Page utils/frameMotion.utility";
 function ArtistSearch() {
   const { type, id } = useParams();
 
-  const { setYoutubePlaylist } = useYoutubeStore((state: any) => state);
-
   const {
     artistInfo,
     artistSongs,
@@ -67,7 +65,6 @@ function ArtistSearch() {
       if (verifier || !artistPlaylist) {
         const response = await fetchYoutubeChanelPlaylists(id);
         setArtistPlaylist(response);
-        setYoutubePlaylist(response);
       } else {
         console.log(artistPlaylist);
       }
@@ -78,19 +75,15 @@ function ArtistSearch() {
 
   useEffect(() => {
     const fetchChanel = async () => {
-      try {
-        if (!artistInfo || (artistInfo && artistInfo?.id != id)) {
-          const response = await fetchYoutubeChanel(id);
-          setArtistInfo(response?.items[0]);
-        } else {
-          setVerifier(false);
-        }
-
-        fetchVideos();
-        fetchPlaylists();
-      } catch (error) {
-        console.log(error);
+      if (!artistInfo || (artistInfo && artistInfo?.id != id)) {
+        const response = await fetchYoutubeChanel(id);
+        setArtistInfo(response?.items[0]);
+      } else {
+        setVerifier(false);
       }
+
+      fetchVideos();
+      fetchPlaylists();
     };
 
     if (id) fetchChanel();
@@ -180,15 +173,19 @@ function ArtistSearch() {
               </button>
             </div>
 
-            <div className="flex flex-wrap gap-1 py-2">
+            <div className="grid grid-cols-5 gap-4 py-2">
               {artistSongs?.slice(-5).map((song: any, index: number) => {
                 return <SongCart key={index} song={song} />;
               })}
-              <div className={showPublication ? "flex flex-wrap" : "hidden"}>
-                {artistSongs?.slice(0, -5).map((song: any, index: number) => {
-                  return <SongCart key={index} song={song} />;
-                })}
-              </div>
+            </div>
+            <div
+              className={
+                showPublication ? "grid grid-cols-5 gap-4 py-2" : "hidden"
+              }
+            >
+              {artistSongs?.slice(0, -5).map((song: any, index: number) => {
+                return <SongCart key={index} song={song} />;
+              })}
             </div>
           </div>
         </main>

@@ -6,8 +6,8 @@ function SongCart({ song }: { song: any }) {
 
   return (
     <div className="group relative">
-      <div className="flex flex-col hover:bg-zinc-800/80 p-2 rounded-md w-52">
-        <picture className="aspect-square w-48 h-48 flex-none">
+      <div className="flex flex-col hover:bg-zinc-800/80 p-2 rounded-md w-full">
+        <picture className="aspect-square w-full h-[40%] flex-none">
           <img
             src={song?.thumbnails.high}
             alt={`Song from ${song?.artist.title}`}
