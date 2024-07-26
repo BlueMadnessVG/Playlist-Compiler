@@ -51,12 +51,24 @@ function Player() {
     setIsPlaying(true);
   };
 
+  const reproduceArtistItems = () => {
+    setTime({ ...time, played: 0 });
+    console.log(currentMusic.songs[currentMusic.song]);
+    audioRef.current = currentMusic.songs[currentMusic.song].music_id;
+    setIsPlaying(true);
+  };
+
   useEffect(() => {
+    console.log(currentMusic);
+    setIsPlaying(false);
     if (currentMusic.playlist) {
-      setIsPlaying(false);
+      if (currentMusic.playlist.id == 0) {
+        reproduceArtistItems();
+        return;
+      }
       if (playlistType == "youtube") getYoutubePlaylistItems();
-      currentPlaylistRef.current = currentMusic.playlist.id;
     }
+    currentPlaylistRef.current = currentMusic.playlist.id;
   }, [currentMusic]);
 
   const handlePlay = () => {

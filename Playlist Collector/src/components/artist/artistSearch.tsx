@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PageHeader from "../home/pageHeader";
-import { FlatTree, motion } from "framer-motion";
-import { json, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   fetchYoutubeChanel,
   fetchYoutubeChanelPlaylists,
@@ -11,15 +10,13 @@ import PopularSong from "./popularSong";
 import SongCart from "./songCart";
 import PlaylistCart from "./playlistCart";
 import { useArtistStore } from "../../global/artist.store";
-import styles from "../../App.module.css";
-import NextIcon from "../../assets/icons/next";
 import ArrowLeftIcon from "../../assets/icons/arrowLeft";
 import ArrowRightIcon from "../../assets/icons/arrowRight";
-import { useYoutubeStore } from "../../global/youtube.store";
 import FrameMotion from "../../utils/Page utils/frameMotion.utility";
+import { MusicModel } from "../../models";
 
 function ArtistSearch() {
-  const { type, id } = useParams();
+  const { id } = useParams();
 
   const {
     artistInfo,
@@ -124,9 +121,13 @@ function ArtistSearch() {
           <table className="table-auto text-left min-w-full divide-y-2 divide-gray-500/50 ">
             <tbody>
               {artistSongs &&
-                artistSongs?.slice(0, 5).map((song: any, index: number) => {
-                  return <PopularSong key={index} song={song} />;
-                })}
+                artistSongs
+                  ?.slice(0, 5)
+                  .map((song: MusicModel, index: number) => {
+                    return (
+                      <PopularSong key={index} song={song} index={index} />
+                    );
+                  })}
             </tbody>
           </table>
 
@@ -174,18 +175,29 @@ function ArtistSearch() {
             </div>
 
             <div className="grid grid-cols-5 gap-4 py-2">
-              {artistSongs?.slice(-5).map((song: any, index: number) => {
-                return <SongCart key={index} song={song} />;
-              })}
+              {artistSongs
+                ?.map((song: MusicModel, index: number) => ({ song, index }))
+                .slice(-5)
+                .map(({ song, index }: { song: MusicModel; index: number }) => {
+                  return <SongCart key={index} song={song} index={index} />;
+                })}
             </div>
             <div
               className={
                 showPublication ? "grid grid-cols-5 gap-4 py-2" : "hidden"
               }
             >
-              {artistSongs?.slice(0, -5).map((song: any, index: number) => {
-                return <SongCart key={index} song={song} />;
-              })}
+              {artistSongs
+                ?.map((song: MusicModel, index: number) => ({ song, index })) // Create an array of objects with song and its index
+                .slice(0, -5) // Get the last 5 items
+                .reverse() // Reverse to get them in the desired order
+                .map(
+                  (
+                    { song, index }: { song: MusicModel; index: number } // Destructure the object to get song and index
+                  ) => (
+                    <SongCart key={index} song={song} index={index} />
+                  )
+                )}
             </div>
           </div>
         </main>

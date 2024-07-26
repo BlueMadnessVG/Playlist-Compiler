@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { usePlayerStore } from "../../global/music.store";
-import PlayIcon from "../../assets/icons/play";
+import ReproduceButton from "../../utils/Page utils/reproduceButton.utility";
 
 function MusicItem({
   music,
@@ -13,29 +13,18 @@ function MusicItem({
 }) {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { currentMusic, setCurrentMusic } = usePlayerStore(
-    (state: any) => state
-  );
-
-  const handleClick = () => {
-    setCurrentMusic({
-      playlist: { id },
-      song: index,
-      songs: currentMusic.songs ? currentMusic.songs : [],
-    });
-  };
+  const { currentMusic } = usePlayerStore((state: any) => state);
 
   return (
     <main className="text-gray-300 text-sm font-light border-b border-gray-500/20 group cursor-default">
       <div className="px-3 py-2 flex gap-3 items-center group-hover:bg-zinc-800 relative ">
-        <button
-          className="flex place-content-center items-center absolute w-40 h-24 text-white bg-zinc-900/70 opacity-0 group-hover:opacity-100 z-10"
-          onClick={handleClick}
-        >
-          <PlayIcon />
-        </button>
+        <picture className=" w-40 h-24 rounded-md relative">
+          <ReproduceButton
+            playlist={{ id }}
+            song={index.toString()}
+            songs={currentMusic.songs ? currentMusic.songs : []}
+          />
 
-        <picture className=" w-40 h-24 rounded-md">
           <img
             src={
               type == "youtube"

@@ -1,4 +1,10 @@
-function PopularSong({ song }: { song: any }) {
+import { useArtistStore } from "../../global";
+import { MusicModel } from "../../models";
+import ReproduceButton from "../../utils/Page utils/reproduceButton.utility";
+
+function PopularSong({ song, index }: { song: MusicModel; index: number }) {
+  const { artistSongs } = useArtistStore((state: any) => state);
+
   const date = new Date(song?.published_at);
 
   const day = date.getUTCDate().toString().padStart(2);
@@ -7,8 +13,13 @@ function PopularSong({ song }: { song: any }) {
 
   return (
     <tr className="text-gray-300 text-sm font-light border-b border-gray-500/20 group cursor-default">
-      <td className="px-3 py-2 flex gap-3 items-center group-hover:bg-zinc-800">
-        <picture className="aspect-square w-12 h-12">
+      <td className="px-3 py-2 flex gap-3 items-center group-hover:bg-zinc-800 relative">
+        <picture className="aspect-square w-12 h-12 relative">
+          <ReproduceButton
+            playlist={{ id: 0 }}
+            song={index.toString()}
+            songs={artistSongs}
+          />
           <img
             src={song?.thumbnails.medium}
             alt={`Playlist from ${song?.title}`}
