@@ -13,6 +13,7 @@ import { MusicSlider } from "./MusicSlider";
 import { motion } from "framer-motion";
 
 import { useNavigate } from "react-router-dom";
+import ArrowUpIcon from "../../../assets/icons/arrowUp";
 
 function Player() {
   const navigate = useNavigate();
@@ -133,8 +134,8 @@ function Player() {
       exit={{ y: "-100%" }}
       transition={{ duration: 0.3, delay: 0, ease: [0, 0.71, 0.2, 1.01] }}
     >
-      <div className=" group cursor-default">
-        <div className="flex gap-5 place-content-center absolute bg-zinc-900/50 w-[28vw] h-[16vw] items-center opacity-0 group-hover:opacity-100">
+      <div className="group cursor-default">
+        <div className="flex gap-5 place-content-center absolute bg-zinc-900/50 w-[28vw] h-[16vw] items-center opacity-0 group-hover:opacity-100 transition duration-300">
           <button
             className="text-white hover:scale-110 transition duration-75"
             onClick={handlePre}
@@ -142,7 +143,7 @@ function Player() {
             <PrevIcon />
           </button>
           <button
-            className="bg-white rounded-full p-3 text-black hover:scale-110 transition duration-75"
+            className="bg-white rounded-full p-3 text-black hover:scale-110 transition duration-150"
             onClick={handlePlay}
           >
             {isPlaying ? <PauseIcon /> : <PlayIcon />}
@@ -158,6 +159,12 @@ function Player() {
             <span>{formatTime(time.played)}</span>
             <span>/</span>
             <span>{formatTime(time.MaxTime)}</span>
+          </div>
+
+          <div className="absolute gap-x-2 p-1 px-2 top-0 left-0 bg-zinc-800 rounded-br-lg hover:bg-zinc-700 transition-all duration-200">
+            <button className="hover:scale-110">
+              <ArrowUpIcon />
+            </button>
           </div>
 
           <div className="absolute gap-x-1 top-2 right-2">

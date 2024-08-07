@@ -8,6 +8,7 @@ import RouteWithNotFound from "../utils/Page utils/RouteWithNotFound.utility";
 const Home = lazy(() => import("../components/home/Home"));
 const PlayList = lazy(() => import("../components/playlist/playList"));
 const ArtistSearch = lazy(() => import("../components/artist/artistSearch"));
+const Search = lazy(() => import("../components/search/Search"));
 
 export const AppRouter = () => {
   const location = useLocation();
@@ -20,6 +21,7 @@ export const AppRouter = () => {
           <Route path={PublicRoutes.HOME} element={<Home />} />
           <Route path={PublicRoutes.PLAYLIST} element={<PlayList />} />
           <Route path={PublicRoutes.ARTIST} element={<ArtistSearch />} />
+          <Route path={PublicRoutes.SEARCH} element={<Search />} />
 
           <Route path="*" element={<div> NOT FOUND </div>} />
         </Routes>

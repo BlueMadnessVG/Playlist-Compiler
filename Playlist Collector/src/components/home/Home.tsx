@@ -1,11 +1,7 @@
 import { useEffect } from "react";
-import { motion, useIsPresent } from "framer-motion";
+import { motion } from "framer-motion";
 import PageHeader from "./pageHeader";
-import {
-  fetchYoutubeChanelRecommendation,
-  fetchYoutubePlaylists,
-  refreshToken,
-} from "../../services/Youtube/Youtube.service";
+import { fetchYoutubePlaylists } from "../../services/Youtube/Youtube.service";
 import { useYoutubeStore } from "../../global/youtube.store";
 import Filters from "./Filters";
 import { useFiltersStore } from "../../global/filters.store";
@@ -32,8 +28,6 @@ function Home() {
       }
     } else if (StorageYoutubeToken) {
       setYoutubeToken(StorageYoutubeToken);
-    } else {
-      getYoutubeRecommendation();
     }
   }, []);
 
@@ -42,11 +36,6 @@ function Home() {
 
     const _youtubePlaylist = await fetchYoutubePlaylists();
     setYoutubePlaylist(_youtubePlaylist);
-  }
-
-  async function getYoutubeRecommendation() {
-    const _youtubePlaylist = await fetchYoutubeChanelRecommendation();
-    console.log(_youtubePlaylist);
   }
 
   useEffect(() => {

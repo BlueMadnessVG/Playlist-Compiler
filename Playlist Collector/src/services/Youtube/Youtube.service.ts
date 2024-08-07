@@ -142,17 +142,6 @@ export async function fetchYoutubeChanelPlaylists(id: any) {
   return data;
 }
 
-export async function fetchYoutubeChanelRecommendation() {
-  const result = await apiYouTube("playlists", {
-    params: {
-      part: "snippet",
-      channelId: "UCUT0DldFAP5KPmBzIhmkCig",
-    },
-  });
-
-  console.log(result);
-}
-
 export async function fetchYoutubePlaylistId(id: any) {
   const result = await apiYouTube("playlists", {
     params: {

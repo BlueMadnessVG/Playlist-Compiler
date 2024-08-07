@@ -2,6 +2,7 @@ import { AxiosRequestConfig } from "axios";
 import { apiYouTube } from "../services/Youtube/Youtube.service";
 import { getValidationError } from "../utils/controllers/validation.error";
 import { SnackbarUtilities } from "../utils/controllers/snakbar.manager";
+import { deleteLocalStorage } from "../utils/localstorage/localStorage.utility";
 
 export const AxiosInterceptor = () => {
   const updateHeaders = (request: AxiosRequestConfig) => {
@@ -37,6 +38,7 @@ export const AxiosInterceptor = () => {
     },
     (error) => {
       console.log("error", error.code);
+      if (error.code == "ERR_BAD_REQUEST") deleteLocalStorage("Youtube_token");
       SnackbarUtilities.error(getValidationError(error.code));
       return Promise.reject(error);
     }
