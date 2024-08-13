@@ -79,6 +79,7 @@ export async function fetchYoutubePlaylists() {
     data.push(PlaylistStandardization(item));
   });
 
+  console.log(data);
   return data;
 }
 
