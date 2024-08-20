@@ -4,12 +4,7 @@ import {
   redirectToYouTubeAuth,
 } from "../../services/Youtube/Youtube.service";
 import { useYoutubeStore } from "../../global/youtube.store";
-import { useSpotifyStore } from "../../global/spotify.store";
 import Tooltip from "../../utils/Page utils/tooltip";
-import {
-  fetchSpotifyProfile,
-  redirectToSpotifyAuth,
-} from "../../services/Spotify/Spotify.service";
 
 function PageHeader() {
   const { youtubeToken, youtubeId, setYoutubeToken, setYoutubeId } =

@@ -1,4 +1,3 @@
-import React from "react";
 import { useFiltersStore } from "../../global/filters.store";
 
 function Filters() {

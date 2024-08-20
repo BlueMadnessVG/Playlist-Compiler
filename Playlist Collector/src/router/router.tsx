@@ -3,7 +3,6 @@ import { PublicRoutes } from "./router.config";
 
 import { AnimatePresence } from "framer-motion";
 import { lazy, Suspense } from "react";
-import RouteWithNotFound from "../utils/Page utils/RouteWithNotFound.utility";
 
 const Home = lazy(() => import("../components/home/Home"));
 const PlayList = lazy(() => import("../components/playlist/playList"));

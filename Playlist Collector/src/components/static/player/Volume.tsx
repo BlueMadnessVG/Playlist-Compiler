@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef } from "react";
 import { Slider } from "./Slider";
 import { usePlayerStore } from "../../../global/music.store";
 import VolumeNoneIcon from "../../../assets/icons/volume_None";

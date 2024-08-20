@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchYoutubePlaylistsItems } from "../../services/Youtube/Youtube.service";
 import MusicItem from "./musicItem";
-import { fetchSpotifyPlaylistItems } from "../../services/Spotify/Spotify.service";
 import PageHeader from "../home/pageHeader";
 import FrameMotion from "../../utils/Page utils/frameMotion.utility";
 import { usePlaylistStore, useYoutubeStore } from "../../global";

@@ -1,11 +1,10 @@
-import { AxiosRequestConfig } from "axios";
 import { apiYouTube } from "../services/Youtube/Youtube.service";
 import { getValidationError } from "../utils/controllers/validation.error";
 import { SnackbarUtilities } from "../utils/controllers/snakbar.manager";
 import { deleteLocalStorage } from "../utils/localstorage/localStorage.utility";
 
 export const AxiosInterceptor = () => {
-  const updateHeaders = (request: AxiosRequestConfig) => {
+  const updateHeaders = (request: any) => {
     const token = localStorage.getItem("YouTube_token");
 
     //    CONTROL THE ACCESS WHEN THE USER IS LOGIN IN OR NOT
