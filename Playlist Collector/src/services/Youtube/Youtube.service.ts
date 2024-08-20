@@ -19,6 +19,7 @@ export async function redirectToYouTubeAuth() {
   const params = new URLSearchParams();
   params.append("client_id", clientID); //CLIENT ID
   params.append("redirect_uri", redirectUri); //WHERE IS GOING TO REDIRECT
+  console.log("redirection: ", redirectUri);
   params.append("response_type", "token"); //TYPE OF RESPONSE
   params.append("scope", userScope.join(" ")); //WHAT ARE WE GETTING PERMITIOS
 
