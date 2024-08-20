@@ -1,5 +1,3 @@
-import React from "react";
-
 function VolumeNoneIcon() {
   return (
     <svg
