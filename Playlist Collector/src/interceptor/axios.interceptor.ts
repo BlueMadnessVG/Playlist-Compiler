@@ -37,7 +37,7 @@ export const AxiosInterceptor = () => {
     },
     (error) => {
       console.log("error", error.code);
-      if (error.code == "ERR_BAD_REQUEST") deleteLocalStorage("Youtube_token");
+      deleteLocalStorage("YouTube_token");
       SnackbarUtilities.error(getValidationError(error.code));
       return Promise.reject(error);
     }

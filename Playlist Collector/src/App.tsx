@@ -8,6 +8,7 @@ import Player from "./components/static/player/player";
 import { usePlayerStore } from "./global/music.store";
 import { SnackbarProvider } from "notistack";
 import { SnackbarUtilitiesConfiguration } from "./utils/controllers/snakbar.manager";
+import { AnimatePresence } from "framer-motion";
 
 function App() {
   const { currentMusic } = usePlayerStore((state: any) => state);
@@ -16,21 +17,19 @@ function App() {
     <>
       <SnackbarProvider>
         <SnackbarUtilitiesConfiguration />
-        <div id={styles.app} className="relative h-screen gap-2 ">
+        <div id={styles.app} className="relative h-screen  overflow-hidden">
           <Router>
-            <aside className="[grid-area:aside]  flex-col flex overflow-y-auto">
+            <aside className="  flex-col flex overflow-y-auto overflow-x-hidden w-auto">
               <PageAside />
             </aside>
 
-            <main className="[grid-area:main] flex overflow-y-auto overflow-x-hidden w-full mt-2">
+            <main className=" flex overflow-y-auto overflow-x-hidden w-full mt-2">
               <AppRouter />
             </main>
 
-            {currentMusic.playlist && (
-              <footer>
-                <Player />
-              </footer>
-            )}
+            <AnimatePresence mode="wait" initial={true}>
+              {currentMusic.playlist && <Player />}
+            </AnimatePresence>
           </Router>
         </div>
       </SnackbarProvider>
