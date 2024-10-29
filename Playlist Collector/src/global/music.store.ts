@@ -9,4 +9,8 @@ export const usePlayerStore = create((set) => ({
   setIsPlaying: (isPlaying: any) => set({ isPlaying }),
   setPlaylistType: (playlistType: any) => set({ playlistType }),
   setCurrentMusic: (currentMusic: any) => set({ currentMusic }),
+  updateCurrentMusicSongs: (songs: any) =>
+    set((state: any) => ({
+      currentMusic: { ...state.currentMusic, songs },
+    })),
 }));

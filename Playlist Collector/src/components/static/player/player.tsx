@@ -10,21 +10,29 @@ import NextIcon from "../../../assets/icons/next";
 import PrevIcon from "../../../assets/icons/prev";
 import CloseIcon from "../../../assets/icons/close";
 import { MusicSlider } from "./MusicSlider";
-import { motion } from "framer-motion";
+import { motion, Reorder } from "framer-motion";
 
 import { useNavigate } from "react-router-dom";
 import ArrowUpIcon from "../../../assets/icons/arrowUp";
+import ParallaxText from "../../../utils/Motion/ParallaxText.utility";
+import PlayerItem from "./player_item";
+import MusicItem from "../../playlist/MusicItem";
+import useMeasure from "react-use-measure";
 
 function Player() {
   const navigate = useNavigate();
+
   const {
     currentMusic,
     playlistType,
     isPlaying,
     setIsPlaying,
     setCurrentMusic,
+    updateCurrentMusicSongs,
     volume,
   } = usePlayerStore((state: any) => state);
+
+  const [ref, { width }] = useMeasure();
 
   const audioRef = useRef<string>("");
   const playerRef = useRef<any>();
@@ -33,6 +41,7 @@ function Player() {
     played: 0,
     MaxTime: 0,
   });
+  const [open, setOpen] = useState(false);
 
   const getYoutubePlaylistItems = async () => {
     let result;
@@ -48,6 +57,7 @@ function Player() {
 
     currentMusic.songs = result;
     setTime({ ...time, played: 0 });
+    console.log(currentMusic);
     audioRef.current = currentMusic.songs[currentMusic.song].music_id;
     setIsPlaying(true);
   };
@@ -60,7 +70,6 @@ function Player() {
   };
 
   useEffect(() => {
-    console.log(currentMusic);
     setIsPlaying(false);
     if (currentMusic.playlist) {
       if (currentMusic.playlist.id == 0) {
@@ -69,7 +78,7 @@ function Player() {
       }
       if (playlistType == "youtube") getYoutubePlaylistItems();
     }
-    currentPlaylistRef.current = currentMusic.playlist.id;
+    currentPlaylistRef.current = currentMusic?.playlist?.id;
   }, [currentMusic]);
 
   const handlePlay = () => {
@@ -128,14 +137,18 @@ function Player() {
 
   return (
     <motion.div
-      className="absolute bottom-0 rounded-t-lg right-8 overflow-hidden z-50 cursor-pointer"
-      initial={{ y: "100%" }}
+      initial={{ y: 500 }}
       animate={{ y: 0 }}
-      exit={{ y: "-100%" }}
-      transition={{ duration: 0.3, delay: 0, ease: [0, 0.71, 0.2, 1.01] }}
+      exit={{ y: open ? 500 : 5000 }}
+      transition={{
+        duration: 0.75,
+        ease: "easeInOut",
+      }}
+      style={{ height: open ? "100%" : "fit-content" }}
+      className="absolute bottom-0 right-2 overflow-hidden z-50 cursor-pointer bg-zinc-800 shadow-md shadow-zinc-950 w-[28vw]"
     >
       <div className="group cursor-default">
-        <div className="flex gap-5 place-content-center absolute bg-zinc-900/50 w-[28vw] h-[16vw] items-center opacity-0 group-hover:opacity-100 transition duration-300">
+        <div className="flex gap-5 place-content-center absolute bg-zinc-900/50 w-full h-[16vw] items-center opacity-0 group-hover:opacity-100 transition duration-300">
           <button
             className="text-white hover:scale-110 transition duration-75"
             onClick={handlePre}
@@ -162,7 +175,10 @@ function Player() {
           </div>
 
           <div className="absolute gap-x-2 p-1 px-2 top-0 left-0 bg-zinc-800 rounded-br-lg hover:bg-zinc-700 transition-all duration-200">
-            <button className="hover:scale-110">
+            <button
+              className={`hover:scale-110 ${open && "rotate-180"}`}
+              onClick={() => setOpen(!open)}
+            >
               <ArrowUpIcon />
             </button>
           </div>
@@ -177,7 +193,7 @@ function Player() {
         <YouTubePlayer
           ref={playerRef}
           url={`"https://www.youtube.com/watch?v=${audioRef.current}`}
-          width={"28vw"}
+          width={"100%"}
           height={"16vw"}
           playing={isPlaying}
           controls={false}
@@ -193,7 +209,7 @@ function Player() {
         max={time.MaxTime}
         min={0}
         step={0.1}
-        className="w-[100%]"
+        className="w-full"
         value={[time.played]}
         onValueChange={(value) => {
           setTime({ ...time, played: value[0] });
@@ -204,11 +220,17 @@ function Player() {
           if (!isPlaying) setIsPlaying(true);
         }}
       />
-      <div className="flex flex-auto flex-col justify-between w-[28vw] px-4 z-50 pb-2 pt-2 bg-zinc-800 font-abc cursor-default overflow-hidden">
+      <div className="flex flex-auto flex-col justify-between w-full px-4 z-50 pb-2 pt-2 bg-zinc-800 font-abc cursor-default overflow-hidden">
         <div className={`whitespace-nowrap inline-block truncate`}>
-          <h2 className="text-lg">
-            {currentMusic.songs[currentMusic.song]?.title}
-          </h2>
+          {currentMusic.songs[currentMusic.song]?.title.length < 20 ? (
+            <h2 className="text-lg">
+              {currentMusic.songs[currentMusic.song]?.title}
+            </h2>
+          ) : (
+            <ParallaxText>
+              {currentMusic.songs[currentMusic.song]?.title}
+            </ParallaxText>
+          )}
         </div>
 
         <div className="flex items-end justify-between">
@@ -229,6 +251,36 @@ function Player() {
           <VolumeController />
         </div>
       </div>
+
+      {open && currentMusic?.songs.length > 0 && (
+        <div className="flex flex-col py-2 w-full bg-zinc-900">
+          <motion.h1
+            layout
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.125 }}
+            className="text-lg font-medium uppercase pl-4 border-b border-zinc-600"
+          >
+            Playlist queue
+          </motion.h1>
+          <Reorder.Group
+            axis="y"
+            values={currentMusic.songs}
+            onReorder={updateCurrentMusicSongs}
+            style={{ overflowY: "auto" }}
+            className="h-[34rem]"
+          >
+            {currentMusic.songs.map((music: any, index: string) => (
+              <PlayerItem
+                key={music.music_id}
+                music={music}
+                type="youtube"
+                index={index}
+              />
+            ))}
+          </Reorder.Group>
+        </div>
+      )}
     </motion.div>
   );
 }
