@@ -19,7 +19,7 @@ function SearchBar() {
 
   const { search, setSearch } = useSearchStore((state: any) => state);
 
-  useAnimationFrame((t, delta) => {
+  useAnimationFrame((_t, delta) => {
     const currentVelocity = isHovered ? hoverVelocity : baseVelocity;
     let rotateBy = 1 * currentVelocity * (delta / 10);
 
@@ -36,7 +36,7 @@ function SearchBar() {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     setSearch(value);
   };
 

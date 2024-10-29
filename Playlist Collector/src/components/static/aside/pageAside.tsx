@@ -1,7 +1,6 @@
 import HomeIcon from "../../../assets/icons/home";
 import SideMenuItem from "./sideMenuItem";
 import SearchIcon from "../../../assets/icons/search";
-import PlaylistIcon from "../../../assets/icons/playlist";
 import SideMenuCard from "./sideMenuCard";
 
 import { useEffect, useState } from "react";

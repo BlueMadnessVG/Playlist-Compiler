@@ -1,9 +1,9 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 function PlaylistCart({ playlist }: { playlist: any }) {
   const navigate = useNavigate();
-  const { type } = useParams();
+  /* const { type } = useParams(); */
 
   const date = new Date(playlist?.created_date);
   const year = date.getUTCFullYear();

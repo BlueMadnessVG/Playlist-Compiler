@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useAnimation } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { useRef, useState } from "react";
 import { wrap } from "@motionone/utils";
 import ArrowRightIcon from "../../assets/icons/arrowRight";
@@ -63,7 +63,7 @@ function CarouselMotion({ children, items_length }: any) {
         dragElastic={0.2}
         style={{ display: "flex", gap: _gap }}
         className="w-fit"
-        onDragEnd={(e, { velocity, offset, point }) => {
+        onDragEnd={(_e, { velocity, offset, point }) => {
           if (!carouselRef.current || !containerRef.current) return;
 
           const swipe = swipePower(offset.x, velocity.x);

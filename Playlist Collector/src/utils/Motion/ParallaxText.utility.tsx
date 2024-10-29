@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   motion,
   useAnimationFrame,
@@ -15,7 +15,7 @@ function ParallaxText({ children }: any) {
 
   const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`);
 
-  useAnimationFrame((t, delta) => {
+  useAnimationFrame((_t, delta) => {
     const currentVelocity = isHovered ? hoverVelocity : baseVelocity;
     let moveBy = 1 * currentVelocity * (delta / 1000);
 

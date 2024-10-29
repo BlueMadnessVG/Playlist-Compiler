@@ -4,7 +4,6 @@ import PlaylistStandardization, {
   ArtistStandardization,
   MusicStandardization,
 } from "../../utils/controllers/Youtube.standardization";
-import { ArtistModel } from "../../models/Artist.model";
 
 // REGION: Spotify authorization controllers
 const authEndPoint = "https://accounts.google.com/o/oauth2/v2/auth?";

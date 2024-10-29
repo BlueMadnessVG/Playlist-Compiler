@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { fetchYouTubeProfile } from "../../services/Youtube/Youtube.service";
 import { useYoutubeStore } from "../../global/youtube.store";
 import Tooltip from "../../utils/Page utils/tooltip";
 import {

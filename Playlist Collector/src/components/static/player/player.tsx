@@ -16,8 +16,6 @@ import { useNavigate } from "react-router-dom";
 import ArrowUpIcon from "../../../assets/icons/arrowUp";
 import ParallaxText from "../../../utils/Motion/ParallaxText.utility";
 import PlayerItem from "./player_item";
-import MusicItem from "../../playlist/MusicItem";
-import useMeasure from "react-use-measure";
 
 function Player() {
   const navigate = useNavigate();
@@ -31,8 +29,6 @@ function Player() {
     updateCurrentMusicSongs,
     volume,
   } = usePlayerStore((state: any) => state);
-
-  const [ref, { width }] = useMeasure();
 
   const audioRef = useRef<string>("");
   const playerRef = useRef<any>();

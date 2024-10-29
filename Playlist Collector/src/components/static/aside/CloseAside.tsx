@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import PlaylistIcon from "../../../assets/icons/playlist";
 
 function CloseAside({
   open,

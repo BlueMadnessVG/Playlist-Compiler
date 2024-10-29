@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PlayButton from "../../utils/Page utils/PlayButton.utility";
-import { wrap } from "@motionone/utils";
 
 function PlaylistInfo({
   songs,
