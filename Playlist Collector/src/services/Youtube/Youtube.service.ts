@@ -1,8 +1,10 @@
 import axios from "axios";
 import { MusicModel, PlaylistModel } from "../../models";
 import PlaylistStandardization, {
+  ArtistStandardization,
   MusicStandardization,
 } from "../../utils/controllers/Youtube.standardization";
+import { ArtistModel } from "../../models/Artist.model";
 
 // REGION: Spotify authorization controllers
 const authEndPoint = "https://accounts.google.com/o/oauth2/v2/auth?";
@@ -77,10 +79,9 @@ export async function fetchYoutubePlaylists() {
 
   var data: PlaylistModel[] = [];
   result.data.items.map((item: any) => {
-    data.push(PlaylistStandardization(item));
+    data.push(PlaylistStandardization(item, "artist"));
   });
 
-  console.log(data);
   return data;
 }
 
@@ -94,15 +95,20 @@ export async function fetchYoutubeChanel(id: any) {
   return result.data;
 }
 
-export async function fetchYoutubeChannelVideos(id: any) {
+export async function fetchYoutubeChannelVideos(
+  id: any,
+  resultPerPage: number,
+  pageToken?: string
+) {
   const result = await apiYouTube("search", {
     params: {
       part: "snippet",
       channelId: id,
       type: "video",
       videoCategoryId: 10,
-      maxResults: 50,
+      maxResults: resultPerPage,
       order: "viewCount",
+      pageToken: pageToken || "",
     },
   });
 
@@ -111,7 +117,13 @@ export async function fetchYoutubeChannelVideos(id: any) {
     data.push(MusicStandardization(item, "channelSearch"));
   });
 
-  return data;
+  return {
+    pageInfo: {
+      ...result.data.pageInfo,
+      nextPageToken: result.data.nextPageToken || "",
+    },
+    items: data,
+  };
 }
 
 export async function fetchYoutubeVideo(id: any) {
@@ -138,7 +150,7 @@ export async function fetchYoutubeChanelPlaylists(id: any) {
 
   let data: PlaylistModel[] = [];
   result.data.items.map((item: any) => {
-    data.push(PlaylistStandardization(item));
+    data.push(PlaylistStandardization(item, "artist"));
   });
 
   return data;
@@ -165,4 +177,38 @@ export async function fetchYoutubePlaylistsItems(id: any) {
   });
 
   return data;
+}
+
+export async function fetchSearch(
+  q: string,
+  resultPerPage: number,
+  type: string,
+  pageToken?: string
+) {
+  const result = await apiYouTube("search", {
+    params: {
+      part: "snippet",
+      q: q,
+      type: type,
+      maxResults: resultPerPage,
+      pageToken: pageToken || "",
+    },
+  });
+
+  let data: any[] = [];
+  result.data.items.map((item: any) => {
+    type === "channel"
+      ? data.push(ArtistStandardization(item))
+      : type === "video"
+      ? data.push(MusicStandardization(item, "channelSearch"))
+      : data.push(PlaylistStandardization(item, "search"));
+  });
+
+  return {
+    pageInfo: {
+      ...result.data.pageInfo,
+      nextPageToken: result.data.nextPageToken || "",
+    },
+    items: data,
+  };
 }

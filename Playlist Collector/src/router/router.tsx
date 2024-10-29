@@ -5,7 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { lazy, Suspense } from "react";
 
 const Home = lazy(() => import("../components/home/Home"));
-const PlayList = lazy(() => import("../components/playlist/playList"));
+const PlayList = lazy(() => import("../components/playlist/PlayList"));
 const ArtistSearch = lazy(() => import("../components/artist/artistSearch"));
 const Search = lazy(() => import("../components/search/Search"));
 
@@ -15,7 +15,7 @@ export const AppRouter = () => {
   //SET THE MAP FOR THE ROUTER
   return (
     <Suspense fallback={<> LOADING... </>}>
-      <AnimatePresence mode="wait" initial={false}>
+      <AnimatePresence mode="wait" initial={true}>
         <Routes location={location} key={location.pathname}>
           <Route path={PublicRoutes.HOME} element={<Home />} />
           <Route path={PublicRoutes.PLAYLIST} element={<PlayList />} />

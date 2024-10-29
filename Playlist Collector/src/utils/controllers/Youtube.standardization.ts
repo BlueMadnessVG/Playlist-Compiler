@@ -1,8 +1,9 @@
 import { PlaylistModel, MusicModel } from "../../models";
+import { ArtistModel } from "../../models/Artist.model";
 
-export function PlaylistStandardization(playlist: any) {
+export function PlaylistStandardization(playlist: any, type: string) {
   let data: PlaylistModel = {
-    playlist_id: playlist.id,
+    playlist_id: type === "artist" ? playlist.id : playlist.id.playlistId,
     title: playlist.snippet.title,
     creator: playlist.snippet.channelTitle,
     thumbnails: {
@@ -10,6 +11,21 @@ export function PlaylistStandardization(playlist: any) {
       high: playlist.snippet.thumbnails.high.url,
     },
     created_date: playlist.snippet.publishedAt,
+  };
+
+  return data;
+}
+
+export function ArtistStandardization(channel: any) {
+  let data: ArtistModel = {
+    channel_id: channel.snippet.channelId,
+    title: channel.snippet.title,
+    description: channel.snippet.description,
+    published_at: channel.snippet.publishedAt,
+    thumbnails: {
+      medium: channel.snippet.thumbnails.medium.url,
+      high: channel.snippet.thumbnails.high.url,
+    },
   };
 
   return data;
