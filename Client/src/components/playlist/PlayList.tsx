@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import { fetchYoutubePlaylistsItems } from "../../services/Youtube/Youtube.service";
 import MusicItem from "./MusicItem";
 import PageHeader from "../header/pageHeader";
-import FrameMotion from "../../utils/Motion/frameMotion.utility";
 import {
   useArtistStore,
   usePlaylistStore,
