@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import PlayButton from "../../../utils/Page utils/PlayButton.utility";
-import { useAnimate } from "framer-motion";
+import { motion, useAnimate } from "framer-motion";
 import MusicMotion, {
   BOTTOM_RIGHT_CLIP,
 } from "../../../utils/Motion/MusicMotion.utility";
@@ -19,13 +19,16 @@ function PlaylistItemCard({ playlist, type }: { playlist: any; type: string }) {
         }}
         className="playlist-item transition-all duration-300 overflow-hidden p-2 pb-4 rounded-sm flex flex-col relative gap-2 bg-zing-500/30 w-full hover:bg-zinc-700/30 cursor-pointer"
       >
-        <picture className="aspect-square w-full h-[40%] flex-none  ">
+        <motion.picture
+          layoutId={`${playlist?.playlist_id}-playlist-img`}
+          className="aspect-square w-full h-[40%] flex-none  "
+        >
           <img
             src={playlist?.thumbnails.medium}
             alt={`Playlist from ${playlist?.creator}`}
             className={`w-full h-full rounded-lg shadow-inner object-none `}
           />
-        </picture>
+        </motion.picture>
 
         <div className="flex flex-auto flex-col font-abc px-3 ">
           <h4 className=" text-md truncate">{playlist?.title}</h4>

@@ -73,8 +73,6 @@ function PlayList() {
           </div>
         </section>
       </main>
-
-      <FrameMotion />
     </div>
   );
 }

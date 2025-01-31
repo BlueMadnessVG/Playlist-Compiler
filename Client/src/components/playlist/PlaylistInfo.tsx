@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import PlayButton from "../../utils/Page utils/PlayButton.utility";
+import { motion } from "framer-motion";
 
 function PlaylistInfo({
   songs,
@@ -13,7 +14,7 @@ function PlaylistInfo({
   return (
     <div className="[grid-area:aside] absolute top-0 flex flex-col gap-8 h-full w-[380px] bg-white">
       <div className="absolute w-full h-full bg-gradient-to-t from-zinc-900 from-[5%]">
-        <picture className=" object-fill">
+        <motion.picture layoutId={`${id}-playlist-img`} className="object-fill">
           <img
             src={
               type == "youtube"
@@ -27,7 +28,7 @@ function PlaylistInfo({
             }`}
             className="object-fill w-full h-full shadow-md blur-3xl"
           />
-        </picture>
+        </motion.picture>
       </div>
 
       <div className="flex flex-col gap-8 p-6 z-10 sticky pt-12">

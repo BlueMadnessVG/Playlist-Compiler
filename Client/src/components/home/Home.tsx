@@ -115,8 +115,6 @@ function Home() {
           </div>
         </div>
       </div>
-
-      <FrameMotionUtility />
     </motion.div>
   );
 }
