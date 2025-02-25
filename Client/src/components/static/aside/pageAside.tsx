@@ -1,6 +1,5 @@
 import HomeIcon from "../../../assets/icons/home";
 import SideMenuItem from "./sideMenuItem";
-import SearchIcon from "../../../assets/icons/search";
 import SideMenuCard from "./sideMenuCard";
 
 import { useEffect, useState } from "react";
@@ -89,13 +88,6 @@ function PageAside() {
               open={open}
               Icon={HomeIcon}
               title="Home"
-            ></SideMenuItem>
-
-            <SideMenuItem
-              href="/search"
-              open={open}
-              Icon={SearchIcon}
-              title="Search"
             ></SideMenuItem>
           </ul>
         </div>

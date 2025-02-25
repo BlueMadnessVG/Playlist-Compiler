@@ -14,7 +14,7 @@ function PlaylistInfo({
   return (
     <div className="[grid-area:aside] absolute top-0 flex flex-col gap-8 h-full w-[380px] bg-white">
       <div className="absolute w-full h-full bg-gradient-to-t from-zinc-900 from-[5%]">
-        <motion.picture layoutId={`${id}-playlist-img`} className="object-fill">
+        <motion.picture className="object-fill">
           <img
             src={
               type == "youtube"

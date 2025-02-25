@@ -12,6 +12,7 @@ import handleYoutubeLogin, {
   handleYoutubeLogout,
 } from "../../utils/controllers/Youtube.manager";
 import PageHeader from "../header/pageHeader";
+import FrameMotionUtility from "../../utils/Motion/frameMotion.utility";
 
 function Home() {
   const {
@@ -114,6 +115,8 @@ function Home() {
           </div>
         </div>
       </div>
+
+      <FrameMotionUtility />
     </motion.div>
   );
 }

@@ -11,6 +11,7 @@ import {
   useYoutubeStore,
 } from "../../global";
 import PlaylistInfo from "./PlaylistInfo";
+import FrameMotionUtility from "../../utils/Motion/frameMotion.utility";
 
 function PlayList() {
   const { type, from, id } = useParams();
@@ -72,6 +73,8 @@ function PlayList() {
           </div>
         </section>
       </main>
+
+      <FrameMotionUtility />
     </div>
   );
 }

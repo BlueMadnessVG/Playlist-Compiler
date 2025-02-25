@@ -19,10 +19,7 @@ function PlaylistItemCard({ playlist, type }: { playlist: any; type: string }) {
         }}
         className="playlist-item transition-all duration-300 overflow-hidden p-2 pb-4 rounded-sm flex flex-col relative gap-2 bg-zing-500/30 w-full hover:bg-zinc-700/30 cursor-pointer"
       >
-        <motion.picture
-          layoutId={`${playlist?.playlist_id}-playlist-img`}
-          className="aspect-square w-full h-[40%] flex-none  "
-        >
+        <motion.picture className="aspect-square w-full h-[40%] flex-none  ">
           <img
             src={playlist?.thumbnails.medium}
             alt={`Playlist from ${playlist?.creator}`}
