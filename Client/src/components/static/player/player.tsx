@@ -39,43 +39,12 @@ function Player() {
   });
   const [open, setOpen] = useState(false);
 
-  const getYoutubePlaylistItems = async () => {
-    let result;
-
-    if (
-      currentPlaylistRef.current == currentMusic.playlist.id &&
-      currentMusic.songs.length > 0
-    ) {
-      result = currentMusic.songs;
-    } else {
-      result = await fetchYoutubePlaylistsItems(currentMusic.playlist.id);
-    }
-
-    currentMusic.songs = result;
-    setTime({ ...time, played: 0 });
-    console.log(currentMusic);
-    audioRef.current = currentMusic.songs[currentMusic.song].music_id;
-    setIsPlaying(true);
-  };
-
   const reproduceArtistItems = () => {
     setTime({ ...time, played: 0 });
     console.log(currentMusic.songs[currentMusic.song]);
     audioRef.current = currentMusic.songs[currentMusic.song].music_id;
     setIsPlaying(true);
   };
-
-  useEffect(() => {
-    setIsPlaying(false);
-    if (currentMusic.playlist) {
-      if (currentMusic.playlist.id == 0) {
-        reproduceArtistItems();
-        return;
-      }
-      if (playlistType == "youtube") getYoutubePlaylistItems();
-    }
-    currentPlaylistRef.current = currentMusic?.playlist?.id;
-  }, [currentMusic]);
 
   const handlePlay = () => {
     if (currentMusic?.playlist) setIsPlaying(!isPlaying);
@@ -130,6 +99,37 @@ function Player() {
     setIsPlaying(false);
     setCurrentMusic({ playlist: null, song: null, songs: [] });
   };
+
+  const getYoutubePlaylistItems = async () => {
+    let result;
+
+    if (
+      currentPlaylistRef.current == currentMusic.playlist.id &&
+      currentMusic.songs.length > 0
+    ) {
+      result = currentMusic.songs;
+    } else {
+      result = await fetchYoutubePlaylistsItems(currentMusic.playlist.id);
+    }
+
+    currentMusic.songs = result;
+    setTime({ ...time, played: 0 });
+    console.log(currentMusic);
+    audioRef.current = currentMusic.songs[currentMusic.song].music_id;
+    setIsPlaying(true);
+  };
+
+  useEffect(() => {
+    setIsPlaying(false);
+    if (currentMusic.playlist) {
+      if (currentMusic.playlist.id == 0) {
+        reproduceArtistItems();
+        return;
+      }
+      if (playlistType == "youtube") getYoutubePlaylistItems();
+    }
+    currentPlaylistRef.current = currentMusic?.playlist?.id;
+  }, [currentMusic]);
 
   return (
     <motion.div

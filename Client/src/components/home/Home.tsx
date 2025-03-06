@@ -27,6 +27,23 @@ function Home() {
   } = useYoutubeStore((state: any) => state);
 
   //const { isAll, isYoutube } = useFiltersStore((state: any) => state);
+  async function getYoutubePlaylist() {
+    if (youtubePlaylist.length > 0) return;
+
+    const _youtubePlaylist = await fetchYoutubePlaylists();
+    setYoutubePlaylist(_youtubePlaylist);
+  }
+
+  async function getYoutubeUser() {
+    if (youtubeId != null) {
+      setYoutubeProfileThumb(youtubeId.snippet.thumbnails.default.url);
+      return;
+    }
+
+    const youtube = await fetchYouTubeProfile();
+    setYoutubeProfileThumb(youtube.items[0].snippet.thumbnails.default.url);
+    setYoutubeId(youtube.items[0]);
+  }
 
   useEffect(() => {
     const StorageYoutubeToken = window.localStorage.getItem("YouTube_token");
@@ -47,24 +64,6 @@ function Home() {
       getYoutubeUser();
     }
   }, []);
-
-  async function getYoutubePlaylist() {
-    if (youtubePlaylist.length > 0) return;
-
-    const _youtubePlaylist = await fetchYoutubePlaylists();
-    setYoutubePlaylist(_youtubePlaylist);
-  }
-
-  async function getYoutubeUser() {
-    if (youtubeId != null) {
-      setYoutubeProfileThumb(youtubeId.snippet.thumbnails.default.url);
-      return;
-    }
-
-    const youtube = await fetchYouTubeProfile();
-    setYoutubeProfileThumb(youtube.items[0].snippet.thumbnails.default.url);
-    setYoutubeId(youtube.items[0]);
-  }
 
   return (
     <motion.div

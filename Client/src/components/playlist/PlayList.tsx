@@ -22,6 +22,13 @@ function PlayList() {
   const [playlistInfo, setPlaylistInfo] = useState<any>();
   const [items, setItems] = useState<any>();
 
+  const getItems =  async () => {
+    const result = await fetchYoutubePlaylistsItems(id);
+
+    setItems(result);
+    setPlaylistItems(result);
+  }
+
   useEffect(() => {
     let item;
     if (from === "user") {
@@ -32,17 +39,11 @@ function PlayList() {
 
     setPlaylistId(id);
     setPlaylistInfo(item);
-    async function getItems() {
-      const result = await fetchYoutubePlaylistsItems(id);
-
-      setItems(result);
-      setPlaylistItems(result);
-    }
 
     if (playlistId === id && playlistItems.length > 0) {
       setItems(playlistItems);
     } else {
-      console.log(item);
+      console.log(playlistItems);
       getItems();
     }
   }, []);

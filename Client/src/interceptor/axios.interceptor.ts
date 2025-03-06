@@ -2,8 +2,12 @@ import { apiYouTube } from "../services/Youtube/Youtube.service";
 import { getValidationError } from "../utils/controllers/validation.error";
 import { SnackbarUtilities } from "../utils/controllers/snakbar.manager";
 import { deleteLocalStorage } from "../utils/localstorage/localStorage.utility";
+import { useYoutubeStore } from "../global";
 
 export const AxiosInterceptor = () => {
+  const { youtubePlaylist } = useYoutubeStore((state: any) => state);
+
+
   const updateHeaders = (request: any) => {
     const token = localStorage.getItem("YouTube_token");
 
@@ -40,6 +44,7 @@ export const AxiosInterceptor = () => {
       deleteLocalStorage("YouTube_token");
       SnackbarUtilities.error(getValidationError(error.code));
       return Promise.reject(error);
-    }
+    },
+    
   );
 };

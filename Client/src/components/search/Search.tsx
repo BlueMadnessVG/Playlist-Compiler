@@ -42,10 +42,8 @@ function Search() {
     getSearch("channel");
     getSearch("video");
     getSearch("playlist");
-    console.log(artistsSearch);
 
     return () => {
-      console.log("act when remove from dom");
       setSearch("");
     };
   }, [setSearch]);
