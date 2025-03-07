@@ -5,9 +5,6 @@ import { deleteLocalStorage } from "../utils/localstorage/localStorage.utility";
 import { useYoutubeStore } from "../global";
 
 export const AxiosInterceptor = () => {
-  const { youtubePlaylist } = useYoutubeStore((state: any) => state);
-
-
   const updateHeaders = (request: any) => {
     const token = localStorage.getItem("YouTube_token");
 

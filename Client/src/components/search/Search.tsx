@@ -1,8 +1,5 @@
 import { motion } from "framer-motion";
 import FrameMotionUtility from "../../utils/Motion/frameMotion.utility";
-import { useSearchStore } from "../../global";
-import { useEffect } from "react";
-import { fetchSearch } from "../../services/Youtube";
 import { useParams } from "react-router-dom";
 import PageHeader from "../header/pageHeader";
 import CarouselMotion from "../../utils/Motion/carouselMotion.utility";
@@ -11,42 +8,15 @@ import SearchResult from "./SearchResult";
 import SongCart from "../artist/songCart";
 import { MusicModel, PlaylistModel } from "../../models";
 import PlaylistCart from "../artist/playlistCart";
-
-const maxResult = 15;
+import { useFetchSearch } from "../../Hooks";
 
 function Search() {
   const { search_item } = useParams();
-  const {
-    search,
-    artistsSearch,
-    musicSearch,
-    playlistSearch,
-    setSearch,
-    setArtistsSearch,
-    setMusicSearch,
-    setPlaylistSearch,
-  } = useSearchStore((state: any) => state);
+  const { data, loading } = useFetchSearch(search_item || "");
 
-  const getSearch = async (type: string) => {
-    const result = await fetchSearch(
-      search !== search_item ? search_item : search,
-      maxResult,
-      type
-    );
-    if (type === "channel") setArtistsSearch(result.items);
-    else if (type === "video") setMusicSearch(result.items);
-    else if (type === "playlist") setPlaylistSearch(result.items);
-  };
-
-  useEffect(() => {
-    getSearch("channel");
-    getSearch("video");
-    getSearch("playlist");
-
-    return () => {
-      setSearch("");
-    };
-  }, [setSearch]);
+  if(loading){
+    console.log(loading);
+  }
 
   return (
     <motion.div
@@ -58,10 +28,10 @@ function Search() {
       </div>
 
       <SearchResult title="Songs">
-        {musicSearch?.length > 0 && (
+        {data.musicSearch && data.musicSearch?.length > 0 && (
           <div className="px-2">
-            <CarouselMotion items_length={musicSearch.length}>
-              {musicSearch.map((song: MusicModel, index: number) => {
+            <CarouselMotion items_length={data.musicSearch.length}>
+              {data.musicSearch.map((song: MusicModel, index: number) => {
                 return (
                   <SongCart
                     key={index}
@@ -76,10 +46,10 @@ function Search() {
         )}
       </SearchResult>
       <SearchResult title="Artists">
-        {artistsSearch?.length > 0 && (
+        {data.artistsSearch && data.artistsSearch?.length > 0 && (
           <div className="px-2">
-            <CarouselMotion items_length={artistsSearch.length}>
-              {artistsSearch.map((item: any, index: number) => {
+            <CarouselMotion items_length={data.artistsSearch.length}>
+              {data.artistsSearch.map((item: any, index: number) => {
                 return <ArtistCard key={index} artist={item} />;
               })}
             </CarouselMotion>
@@ -88,10 +58,10 @@ function Search() {
       </SearchResult>
 
       <SearchResult title="Playlists">
-        {playlistSearch?.length > 0 && (
+        {data.playlistSearch && data.playlistSearch?.length > 0 && (
           <div className="px-2">
-            <CarouselMotion items_length={playlistSearch.length}>
-              {playlistSearch.map((playlist: PlaylistModel, index: number) => {
+            <CarouselMotion items_length={data.playlistSearch.length}>
+              {data.playlistSearch.map((playlist: PlaylistModel, index: number) => {
                 return <PlaylistCart key={index} playlist={playlist} />;
               })}
             </CarouselMotion>
