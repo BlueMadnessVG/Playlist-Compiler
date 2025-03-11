@@ -1,25 +1,17 @@
-import { useEffect, useRef, useState } from "react";
-import PlayIcon from "../../../assets/icons/play";
-import PauseIcon from "../../../assets/icons/pause";
-
-import { usePlayerStore } from "../../../global/music.store";
-import VolumeController from "./Volume";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { usePlayerStore } from "../../../global";
 import YouTubePlayer from "react-player/youtube";
 import { fetchYoutubePlaylistsItems } from "../../../services/Youtube/Youtube.service";
-import NextIcon from "../../../assets/icons/next";
-import PrevIcon from "../../../assets/icons/prev";
-import CloseIcon from "../../../assets/icons/close";
-import { MusicSlider } from "./MusicSlider";
-import { motion, Reorder } from "framer-motion";
 
-import { useNavigate } from "react-router-dom";
-import ArrowUpIcon from "../../../assets/icons/arrowUp";
-import ParallaxText from "../../../utils/Motion/ParallaxText.utility";
-import PlayerItem from "./player_item";
+import { motion } from "framer-motion";
+
+import { PlayerContent } from "./PlayerContent";
+import { PlayerFooter } from "./PlayerFooter";
+import { PlayerHeader } from "./PlayerHeader";
+import { PlayerQueue } from "./PlayerQueue";
+import { PlayerControls } from "./PlayerControls";
 
 function Player() {
-  const navigate = useNavigate();
-
   const {
     currentMusic,
     playlistType,
@@ -31,7 +23,7 @@ function Player() {
   } = usePlayerStore((state: any) => state);
 
   const audioRef = useRef<string>("");
-  const playerRef = useRef<any>();
+  const playerRef = useRef<YouTubePlayer>(null);
   const currentPlaylistRef = useRef<string>("");
   const [time, setTime] = useState({
     played: 0,
@@ -46,29 +38,29 @@ function Player() {
     setIsPlaying(true);
   };
 
-  const handlePlay = () => {
+  const handlePlay = useCallback(() => {
     if (currentMusic?.playlist) setIsPlaying(!isPlaying);
-  };
+  }, [currentMusic, isPlaying, setIsPlaying]);
 
-  const handleNext = () => {
-    if (currentMusic.song < currentMusic.songs.length - 1) {
-      currentMusic.song++;
-      setIsPlaying(false);
-      audioRef.current = currentMusic.songs[currentMusic.song].music_id;
-      setIsPlaying(true);
-    }
-  };
+  const handleNext = useCallback(() => {
+    if (currentMusic.song == currentMusic.songs.length - 1) return;
 
-  const handlePre = () => {
-    if (currentMusic.song > 0) {
-      currentMusic.song--;
-      setIsPlaying(false);
-      audioRef.current = currentMusic.songs[currentMusic.song].music_id;
-      setIsPlaying(true);
-    }
-  };
+    currentMusic.song++;
+    setIsPlaying(false);
+    audioRef.current = currentMusic.songs[currentMusic.song].music_id;
+    setIsPlaying(true);
+  }, [currentMusic, setIsPlaying]);
 
-  const handleMusicEnded = () => {
+  const handlePre = useCallback(() => {
+    if (currentMusic.song === 0) return;
+
+    currentMusic.song--;
+    setIsPlaying(false);
+    audioRef.current = currentMusic.songs[currentMusic.song].music_id;
+    setIsPlaying(true);
+  }, [currentMusic, setIsPlaying]);
+
+  const handleMusicEnded = useCallback(() => {
     if (currentMusic.song == currentMusic.songs.length - 1) {
       currentMusic.song = 0;
       audioRef.current = currentMusic.songs[currentMusic.song].music_id;
@@ -76,15 +68,33 @@ function Player() {
     } else {
       handleNext();
     }
-  };
+  }, [currentMusic, handleNext, setIsPlaying]);
 
-  const handleOnProgress = (changeState: any) => {
-    setTime({ ...time, played: changeState.playedSeconds });
-  };
+  const handleOnProgress = useCallback((changeState: any) => {
+    setTime((prev) => ({ ...prev, played: changeState.playedSeconds }));
+  }, []);
 
-  const handleOnDuration = (state: any) => {
-    setTime({ ...time, MaxTime: state });
-  };
+  const handleOnDuration = useCallback((state: number) => {
+    setTime((prev) => ({ ...prev, MaxTime: state }));
+  }, []);
+
+  const handleCloseClick = useCallback(() => {
+    setIsPlaying(false);
+    setCurrentMusic({ playlist: null, song: null, songs: [] });
+  }, [setIsPlaying, setCurrentMusic]);
+
+  const handleToggleOpen = useCallback(() => {
+    setOpen((prev) => !prev);
+  }, []);
+
+  const handleSeek = useCallback(
+    (value: number) => {
+      playerRef?.current?.seekTo(value);
+      setTime((prev) => ({ ...prev, played: value }));
+      if (!isPlaying) setIsPlaying(true);
+    },
+    [isPlaying, setIsPlaying]
+  );
 
   const formatTime = (time: number) => {
     if (time == null || time == 0) return "0:00";
@@ -93,11 +103,6 @@ function Player() {
     const minutes = Math.floor(time / 60);
 
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-  };
-
-  const handleCloseClick = () => {
-    setIsPlaying(false);
-    setCurrentMusic({ playlist: null, song: null, songs: [] });
   };
 
   const getYoutubePlaylistItems = async () => {
@@ -129,6 +134,7 @@ function Player() {
       if (playlistType == "youtube") getYoutubePlaylistItems();
     }
     currentPlaylistRef.current = currentMusic?.playlist?.id;
+    console.log(currentMusic.songs[currentMusic.song]);
   }, [currentMusic]);
 
   return (
@@ -136,146 +142,53 @@ function Player() {
       initial={{ y: 500 }}
       animate={{ y: 0 }}
       exit={{ y: open ? 500 : 5000 }}
-      transition={{
-        duration: 0.75,
-        ease: "easeInOut",
-      }}
+      transition={{ duration: 0.75, ease: "easeInOut" }}
       style={{ height: open ? "100%" : "fit-content" }}
       className="absolute bottom-0 right-2 overflow-hidden z-50 cursor-pointer bg-zinc-800 shadow-md shadow-zinc-950 w-[28vw]"
     >
-      <div className="group cursor-default">
-        <div className="flex gap-5 place-content-center absolute bg-zinc-900/50 w-full h-[16vw] items-center opacity-0 group-hover:opacity-100 transition duration-300">
-          <button
-            className="text-white hover:scale-110 transition duration-75"
-            onClick={handlePre}
-          >
-            <PrevIcon />
-          </button>
-          <button
-            className="bg-white rounded-full p-3 text-black hover:scale-110 transition duration-150"
-            onClick={handlePlay}
-          >
-            {isPlaying ? <PauseIcon /> : <PlayIcon />}
-          </button>
-          <button
-            className="text-white hover:scale-110 transition duration-75"
-            onClick={handleNext}
-          >
-            <NextIcon />
-          </button>
-
-          <div className=" absolute gap-x-1 text-xs font-abc bottom-2 left-2">
-            <span>{formatTime(time.played)}</span>
-            <span>/</span>
-            <span>{formatTime(time.MaxTime)}</span>
-          </div>
-
-          <div className="absolute gap-x-2 p-1 px-2 top-0 left-0 bg-zinc-800 rounded-br-lg hover:bg-zinc-700 transition-all duration-200">
-            <button
-              className={`hover:scale-110 ${open && "rotate-180"}`}
-              onClick={() => setOpen(!open)}
-            >
-              <ArrowUpIcon />
-            </button>
-          </div>
-
-          <div className="absolute gap-x-1 top-2 right-2">
-            <button className="hover:scale-110" onClick={handleCloseClick}>
-              <CloseIcon />
-            </button>
-          </div>
-        </div>
-
-        <YouTubePlayer
-          ref={playerRef}
-          url={`"https://www.youtube.com/watch?v=${audioRef.current}`}
-          width={"100%"}
-          height={"16vw"}
-          playing={isPlaying}
-          controls={false}
-          onEnded={handleMusicEnded}
-          volume={volume}
-          onProgress={handleOnProgress}
-          onDuration={handleOnDuration}
-          style={{ cursor: "default" }}
+      <PlayerHeader
+        onClose={handleCloseClick}
+        onToggleOpen={() => setOpen(!open)}
+        open={open}
+        playedTime={formatTime(time.played)}
+        maxTime={formatTime(time.MaxTime)}
+      >
+        <PlayerControls
+          onPlay={handlePlay}
+          onNext={handleNext}
+          onPrev={handlePre}
+          isPlaying={isPlaying}
         />
-      </div>
-      <MusicSlider
-        defaultValue={[0]}
-        max={time.MaxTime}
-        min={0}
-        step={0.1}
-        className="w-full"
-        value={[time.played]}
-        onValueChange={(value) => {
-          setTime({ ...time, played: value[0] });
-        }}
-        onValueCommit={(value) => {
-          playerRef?.current?.seekTo(value[0]);
-          setTime({ ...time, played: value[0] });
-          if (!isPlaying) setIsPlaying(true);
-        }}
+      </PlayerHeader>
+
+      <PlayerContent
+        audioRef={audioRef.current}
+        isPlaying={isPlaying}
+        volume={volume}
+        onProgress={handleOnProgress}
+        onDuration={handleOnDuration}
+        onEnded={handleMusicEnded}
+        playedTime={time.played}
+        maxTime={time.MaxTime}
+        onSeek={handleSeek}
       />
-      <div className="flex flex-auto flex-col justify-between w-full px-4 z-50 pb-2 pt-2 bg-zinc-800 font-abc cursor-default overflow-hidden">
-        <div className={`whitespace-nowrap inline-block truncate`}>
-          {currentMusic.songs[currentMusic.song]?.title.length < 20 ? (
-            <h2 className="text-lg">
-              {currentMusic.songs[currentMusic.song]?.title}
-            </h2>
-          ) : (
-            <ParallaxText>
-              {currentMusic.songs[currentMusic.song]?.title}
-            </ParallaxText>
-          )}
-        </div>
 
-        <div className="flex items-end justify-between">
-          <a
-            onClick={() => {
-              navigate(
-                "/artist/" +
-                  playlistType +
-                  "/" +
-                  currentMusic.songs[currentMusic.song]?.artist.id
-              );
-            }}
-            className="text-sm font-thin text-gray-400 border-0 hover:text-gray-300 cursor-pointer"
-          >
-            {currentMusic.songs[currentMusic.song]?.artist.title.split("-")[0]}
-          </a>
-
-          <VolumeController />
-        </div>
-      </div>
+      {currentMusic.songs[currentMusic.song] && (
+        <PlayerFooter
+          songTitle={currentMusic.songs[currentMusic.song]?.title}
+          artistName={
+            currentMusic.songs[currentMusic.song]?.artist.title.split("-")[0]
+          }
+          artistId={currentMusic.songs[currentMusic.song]?.artist.id}
+          playlistType={playlistType}
+        />
+      )}
 
       {open && currentMusic?.songs.length > 0 && (
-        <div className="flex flex-col py-2 w-full bg-zinc-900">
-          <motion.h1
-            layout
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.125 }}
-            className="text-lg font-medium uppercase pl-4 border-b border-zinc-600"
-          >
-            Playlist queue
-          </motion.h1>
-          <Reorder.Group
-            axis="y"
-            values={currentMusic.songs}
-            onReorder={updateCurrentMusicSongs}
-            style={{ overflowY: "auto" }}
-            className="h-[34rem]"
-          >
-            {currentMusic.songs.map((music: any, index: string) => (
-              <PlayerItem
-                key={music.music_id}
-                music={music}
-                type="youtube"
-                index={index}
-              />
-            ))}
-          </Reorder.Group>
-        </div>
+        <PlayerQueue
+          songs={currentMusic.songs}
+          onReorder={updateCurrentMusicSongs}
+        />
       )}
     </motion.div>
   );

@@ -1,4 +1,3 @@
-import HomeIcon from "../../../assets/icons/home";
 import SideMenuItem from "./sideMenuItem";
 import SideMenuCard from "./sideMenuCard";
 
@@ -11,8 +10,8 @@ import { usePlayerStore } from "../../../global/music.store";
 import { obtainLocalStorage } from "../../../utils/localstorage/localStorage.utility";
 import { motion } from "framer-motion";
 import CloseAside from "./CloseAside";
-import ArrowLeftIcon from "../../../assets/icons/arrowLeft";
 import { useArtistStore } from "../../../global";
+import { HomeIcon, ArrowLeftIcon } from "../../../assets/icons";
 
 function PageAside() {
   const [open, setOpen] = useState(true);

@@ -1,4 +1,4 @@
-function PauseIcon() {
+export function PauseIcon() {
   return (
     <svg
       role="img"
@@ -12,5 +12,3 @@ function PauseIcon() {
     </svg>
   );
 }
-
-export default PauseIcon;

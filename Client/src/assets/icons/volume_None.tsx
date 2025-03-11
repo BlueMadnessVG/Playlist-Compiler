@@ -1,4 +1,4 @@
-function VolumeNoneIcon() {
+export function VolumeNoneIcon() {
   return (
     <svg
       role="img"
@@ -15,5 +15,3 @@ function VolumeNoneIcon() {
     </svg>
   );
 }
-
-export default VolumeNoneIcon;

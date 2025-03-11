@@ -1,4 +1,4 @@
-function ArrowRightIcon() {
+export function ArrowRightIcon() {
   return (
     <svg
       role="img"
@@ -15,5 +15,3 @@ function ArrowRightIcon() {
     </svg>
   );
 }
-
-export default ArrowRightIcon;

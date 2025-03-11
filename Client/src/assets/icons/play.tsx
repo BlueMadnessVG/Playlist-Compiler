@@ -1,4 +1,4 @@
-function PlayIcon() {
+export function PlayIcon() {
   return (
     <svg
       role="img"
@@ -15,5 +15,3 @@ function PlayIcon() {
     </svg>
   );
 }
-
-export default PlayIcon;

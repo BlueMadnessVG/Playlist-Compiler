@@ -5,7 +5,7 @@ import {
   useTransform,
 } from "framer-motion";
 import React, { useState } from "react";
-import SearchIcon from "../../assets/icons/search";
+import {SearchIcon} from "../../assets/icons";
 import { useNavigate } from "react-router-dom";
 import { useSearchStore } from "../../global";
 

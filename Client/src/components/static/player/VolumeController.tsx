@@ -1,10 +1,7 @@
 import { useRef } from "react";
 import { Slider } from "./Slider";
 import { usePlayerStore } from "../../../global/music.store";
-import VolumeNoneIcon from "../../../assets/icons/volume_None";
-import Volume1Icon from "../../../assets/icons/volume_1";
-import Volume2Icon from "../../../assets/icons/volume_2";
-import Volume3Icon from "../../../assets/icons/volume_3";
+import {VolumeNoneIcon, Volume1Icon, Volume2Icon, Volume3Icon } from "../../../assets/icons";
 
 function VolumeController() {
   const volume = usePlayerStore((state: any) => state.volume);

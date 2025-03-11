@@ -1,5 +1,4 @@
-import PauseIcon from "../../assets/icons/pause";
-import PlayIcon from "../../assets/icons/play";
+import {PauseIcon, PlayIcon} from "../../assets/icons";
 import { usePlayerStore } from "../../global";
 import { MusicModel } from "../../models";
 

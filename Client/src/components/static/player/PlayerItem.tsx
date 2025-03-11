@@ -18,6 +18,9 @@ function PlayerItem({
   const y = useMotionValue(0);
   const boxShadow = useRaisedShadow(y);
 
+  console.log("im re rendering");
+
+
   return (
     <Reorder.Item value={music} id={index} style={{ boxShadow, y }}>
       <main className="text-gray-300 text-sm font-light group cursor-move relative hover:bg-zinc-800 border-b border-gray-500/20 z-40 bg-zinc-900 px-2 py-1">
