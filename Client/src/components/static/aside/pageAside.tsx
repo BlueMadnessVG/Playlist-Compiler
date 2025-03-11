@@ -1,6 +1,4 @@
-import SideMenuItem from "./sideMenuItem";
-import SideMenuCard from "./sideMenuCard";
-
+import {SideMenuItem, SideMenuCard, CloseAside} from "./";
 import { useEffect, useState } from "react";
 import {
   fetchYoutubeChanel,
@@ -9,7 +7,6 @@ import {
 import { usePlayerStore } from "../../../global/music.store";
 import { obtainLocalStorage } from "../../../utils/localstorage/localStorage.utility";
 import { motion } from "framer-motion";
-import CloseAside from "./CloseAside";
 import { useArtistStore } from "../../../global";
 import { HomeIcon, ArrowLeftIcon } from "../../../assets/icons";
 
