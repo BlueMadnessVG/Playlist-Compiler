@@ -4,9 +4,9 @@ import {
   handleYoutubeLogin,
   handleYoutubeLogout,
 } from "../../utils/controllers/Youtube.manager";
-import SearchBar from "./SearchBar";
+import { SearchBar } from "./";
 
-function PageHeader({ showProfile }: { showProfile: boolean }) {
+export function PageHeader({ showProfile }: { showProfile: boolean }) {
   const { youtubeToken, youtubeProfileThumb } = useYoutubeStore(
     (state: any) => state
   );
@@ -52,5 +52,3 @@ function PageHeader({ showProfile }: { showProfile: boolean }) {
     </div>
   );
 }
-
-export default PageHeader;

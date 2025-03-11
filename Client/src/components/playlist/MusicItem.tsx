@@ -3,7 +3,7 @@ import { usePlayerStore } from "../../global/music.store";
 import ReproduceButton from "../../utils/Page utils/reproduceButton.utility";
 import { motion } from "framer-motion";
 
-function MusicItem({
+export function MusicItem({
   music,
   type,
   index,
@@ -71,5 +71,3 @@ function MusicItem({
     </main>
   );
 }
-
-export default MusicItem;

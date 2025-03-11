@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-function SideMenuItem({
+export function SideMenuItem({
   href,
   open,
   Icon,
@@ -41,4 +41,3 @@ function SideMenuItem({
   );
 }
 
-export default SideMenuItem;

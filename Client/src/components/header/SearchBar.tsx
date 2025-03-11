@@ -9,7 +9,7 @@ import {SearchIcon} from "../../assets/icons";
 import { useNavigate } from "react-router-dom";
 import { useSearchStore } from "../../global";
 
-function SearchBar() {
+export function SearchBar() {
   const navigate = useNavigate();
 
   const [isHovered, setIsHovered] = useState(false);
@@ -68,5 +68,3 @@ function SearchBar() {
     </div>
   );
 }
-
-export default SearchBar;

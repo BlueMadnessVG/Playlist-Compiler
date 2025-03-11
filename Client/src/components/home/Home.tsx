@@ -5,14 +5,14 @@ import ProfileButton from "./ProfileButton";
 import handleYoutubeLogin, {
   handleYoutubeLogout,
 } from "../../utils/controllers/Youtube.manager";
-import PageHeader from "../header/pageHeader";
+import { PageHeader } from "../header";
 import FrameMotionUtility from "../../utils/Motion/frameMotion.utility";
 import { useLoginUser } from "../../Hooks";
 
 function Home() {
-  const {data, loading} = useLoginUser();
+  const { data, loading } = useLoginUser();
 
-  if(loading) {
+  if (loading) {
     console.log("loading");
   }
 
@@ -26,7 +26,9 @@ function Home() {
         {/* LOGIN TO PLAYLIST HEADER */}
         <section className="grid grid-cols-3 gap-8 mb-5 pt-4">
           <button
-            onClick={!data?.youtubeToken ? handleYoutubeLogin : handleYoutubeLogout}
+            onClick={
+              !data?.youtubeToken ? handleYoutubeLogin : handleYoutubeLogout
+            }
           >
             <ProfileButton
               icon={"Youtube_Music_icon.png"}

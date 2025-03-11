@@ -1,4 +1,7 @@
-export { default as CloseAside } from './CloseAside';
-export { default as PageAside } from './PageAside';
-export { default as SideMenuCard } from './SideMenuCard';
-export { default as SideMenuItem } from './SideMenuItem';
+export * from './CloseAside';
+export {default as PageAside} from './PageAside';
+export * from './PageFooter';
+export * from './PageHeader';
+export * from './PageMenu';
+export * from './SideMenuCard';
+export * from './SideMenuItem';
