@@ -1,4 +1,4 @@
-import PlayButton from "../../utils/Page utils/PlayButton.utility";
+import { PlayButton } from "../../utils/Page utils";
 
 interface PlaylistImageProps {
   imageUrl: string;

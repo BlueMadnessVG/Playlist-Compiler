@@ -2,18 +2,16 @@ import { motion } from "framer-motion";
 
 import ImageMotion from "../../utils/Motion/ImageMotion.utility";
 import FlipTitle from "../../utils/Motion/TittleMotion.utility";
+import { ReactNode } from "react";
 
-function ProfileButton({
-  children,
-  icon,
-  thumb,
-  style,
-}: {
-  children: any;
+interface ProfileButtonProps {
+  children: ReactNode;
   icon: string;
   thumb: string;
   style: string;
-}) {
+}
+
+export function ProfileButton({ children, icon, thumb, style }: ProfileButtonProps) {
   return (
     <motion.div
       initial="initial"
@@ -27,4 +25,4 @@ function ProfileButton({
     </motion.div>
   );
 }
-export default ProfileButton;
+

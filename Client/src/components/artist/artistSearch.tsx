@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { PageHeader } from "../header/pageHeader";
+import { PageHeader } from "../header/PageHeader";
 import { useParams } from "react-router-dom";
 import {
   fetchYoutubeChanel,

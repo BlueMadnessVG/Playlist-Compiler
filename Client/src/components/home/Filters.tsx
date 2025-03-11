@@ -1,6 +1,6 @@
 import { useFiltersStore } from "../../global/filters.store";
 
-function Filters() {
+export function Filters() {
   const { isAll, isMusic, isPlaylist, setAll, setMusic, setPlaylist } =
     useFiltersStore((state: any) => state);
 
@@ -49,5 +49,3 @@ function Filters() {
     </div>
   );
 }
-
-export default Filters;

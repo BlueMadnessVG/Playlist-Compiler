@@ -19,7 +19,7 @@ function ImageMotion({
           ease: "easeInOut",
           delay: 0.1,
         }}
-        className="absolute w-32 -right-5 shadow-2xl  rounded-full -z-10"
+        className="absolute w-32 -right-5 shadow-2xl  rounded-full -z-0"
       >
         <img src={profileThumbnail} className="w-full h-full rounded-full" />
       </motion.picture>
@@ -33,7 +33,7 @@ function ImageMotion({
           ease: "easeInOut",
           delay: 0.1,
         }}
-        className="absolute w-32 -right-5 shadow-2xl rounded-full -z-10"
+        className="absolute w-32 -right-5 shadow-2xl rounded-full -z-0"
       >
         <img src={iconPicture} className="w-full h-full rounded-full" />
       </motion.picture>

@@ -1,4 +1,4 @@
-function Tooltip({ children, tooltip }: { children: any; tooltip: string }) {
+export function Tooltip({ children, tooltip }: { children: any; tooltip: string }) {
   return (
     <div className=" group relative inline-block ">
       {children}
@@ -8,5 +8,3 @@ function Tooltip({ children, tooltip }: { children: any; tooltip: string }) {
     </div>
   );
 }
-
-export default Tooltip;
