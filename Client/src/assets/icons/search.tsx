@@ -1,4 +1,4 @@
-function SearchIcon({ style }: any) {
+export function SearchIcon({ style }: any) {
   return (
     <svg
       role="img"
@@ -16,5 +16,3 @@ function SearchIcon({ style }: any) {
     </svg>
   );
 }
-
-export default SearchIcon;

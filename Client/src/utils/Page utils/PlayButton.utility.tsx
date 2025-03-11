@@ -1,9 +1,8 @@
-import PauseIcon from "../../assets/icons/pause";
-import PlayIcon from "../../assets/icons/play";
+import {PauseIcon, PlayIcon} from "../../assets/icons";
 import { usePlayerStore } from "../../global/music.store";
 import { saveLocalStorage } from "../localstorage/localStorage.utility";
 
-function PlayButton({
+export function PlayButton({
   id,
   type,
   text,
@@ -52,5 +51,3 @@ function PlayButton({
     </button>
   );
 }
-
-export default PlayButton;

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ArtistModel } from "../../models/Artist.model";
 import { motion } from "framer-motion";
 
-function ArtistCard({ artist }: { artist: ArtistModel }) {
+export function ArtistCard({ artist }: { artist: ArtistModel }) {
   const navigate = useNavigate();
 
   return (
@@ -39,4 +39,3 @@ function ArtistCard({ artist }: { artist: ArtistModel }) {
     </motion.button>
   );
 }
-export default ArtistCard;

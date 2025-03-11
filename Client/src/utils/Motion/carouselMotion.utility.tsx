@@ -1,8 +1,7 @@
 import { motion, useAnimation } from "framer-motion";
 import { useRef, useState } from "react";
 import { wrap } from "@motionone/utils";
-import ArrowRightIcon from "../../assets/icons/arrowRight";
-import ArrowLeftIcon from "../../assets/icons/arrowLeft";
+import {ArrowRightIcon, ArrowLeftIcon} from "../../assets/icons/";
 
 function CarouselMotion({ children, items_length }: any) {
   const containerRef = useRef<HTMLDivElement>(null);

@@ -22,7 +22,7 @@ export async function redirectToYouTubeAuth() {
   params.append("redirect_uri", redirectUri); //WHERE IS GOING TO REDIRECT
   console.log("redirection: ", redirectUri);
   params.append("response_type", "token"); //TYPE OF RESPONSE
-  params.append("scope", userScope.join(" ")); //WHAT ARE WE GETTING PERMITIOS
+  params.append("scope", userScope.join(" ")); //WHAT ARE WE GETTING PERMISSION
 
   //RELOCATE TO THE SPOTIFY PAGE
   document.location = `${authEndPoint}${params.toString()}`;

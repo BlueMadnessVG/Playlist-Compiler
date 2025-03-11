@@ -1,4 +1,4 @@
-function NextIcon() {
+export function NextIcon() {
   return (
     <svg
       role="img"
@@ -16,5 +16,3 @@ function NextIcon() {
     </svg>
   );
 }
-
-export default NextIcon;

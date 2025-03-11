@@ -1,4 +1,4 @@
-function HomeIcon() {
+export function HomeIcon() {
   return (
     <svg
       role="img"
@@ -16,5 +16,3 @@ function HomeIcon() {
     </svg>
   );
 }
-
-export default HomeIcon;

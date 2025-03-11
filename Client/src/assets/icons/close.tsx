@@ -1,4 +1,4 @@
-function CloseIcon() {
+export function CloseIcon() {
   return (
     <svg
       role="img"
@@ -16,5 +16,3 @@ function CloseIcon() {
     </svg>
   );
 }
-
-export default CloseIcon;

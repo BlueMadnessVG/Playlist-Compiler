@@ -8,5 +8,3 @@ export function handleYoutubeLogout() {
   window.localStorage.removeItem("YouTube_token");
   window.location.href = "/";
 }
-
-export default handleYoutubeLogin;

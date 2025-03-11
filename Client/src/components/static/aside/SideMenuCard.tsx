@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-function SideMenuCard({
+export function SideMenuCard({
   item,
   type,
   open,
@@ -47,5 +47,3 @@ function SideMenuCard({
     </motion.a>
   );
 }
-
-export default SideMenuCard;

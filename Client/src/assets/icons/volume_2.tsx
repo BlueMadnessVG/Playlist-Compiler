@@ -1,4 +1,4 @@
-function Volume2Icon() {
+export function Volume2Icon() {
   return (
     <svg
       role="img"
@@ -15,5 +15,3 @@ function Volume2Icon() {
     </svg>
   );
 }
-
-export default Volume2Icon;

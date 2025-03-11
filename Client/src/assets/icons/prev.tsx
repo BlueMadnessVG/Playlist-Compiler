@@ -1,4 +1,4 @@
-function PrevIcon() {
+export function PrevIcon() {
   return (
     <svg
       role="img"
@@ -17,5 +17,3 @@ function PrevIcon() {
     </svg>
   );
 }
-
-export default PrevIcon;

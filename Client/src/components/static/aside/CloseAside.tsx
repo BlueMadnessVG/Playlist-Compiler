@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-function CloseAside({
+export function CloseAside({
   open,
   setOpen,
   Icon,
@@ -39,4 +39,3 @@ function CloseAside({
     </motion.button>
   );
 }
-export default CloseAside;

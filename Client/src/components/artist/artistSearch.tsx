@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import PageHeader from "../header/pageHeader";
+import { PageHeader } from "../header/PageHeader";
 import { useParams } from "react-router-dom";
 import {
   fetchYoutubeChanel,
@@ -34,6 +34,15 @@ function ArtistSearch() {
 
   const [verifier, setVerifier] = useState<boolean>(true);
 
+  const handleOnScroll = (e: any) => {
+    const bottom =
+      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom) {
+      loadMoreVideos();
+    }
+  };
+
+
   const fetchVideos = async () => {
     if (verifier || !artistSongs) {
       const response = await fetchYoutubeChannelVideos(id, resultPerPage);
@@ -63,30 +72,23 @@ function ArtistSearch() {
       setArtistPlaylist(response);
     }
   };
+  
+  const fetchChanel = async () => {
+    if (!artistInfo || (artistInfo && artistInfo?.id != id)) {
+      const response = await fetchYoutubeChanel(id);
+      setArtistInfo(response?.items[0]);
+    } else {
+      setVerifier(false);
+    }
 
+    fetchVideos();
+    fetchPlaylists();
+  };
+  
   useEffect(() => {
     saveLocalStorage("artist", { id: id }, 5);
-    const fetchChanel = async () => {
-      if (!artistInfo || (artistInfo && artistInfo?.id != id)) {
-        const response = await fetchYoutubeChanel(id);
-        setArtistInfo(response?.items[0]);
-      } else {
-        setVerifier(false);
-      }
-
-      fetchVideos();
-      fetchPlaylists();
-    };
     if (id) fetchChanel();
   }, []);
-
-  const handleOnScroll = (e: any) => {
-    const bottom =
-      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-    if (bottom) {
-      loadMoreVideos();
-    }
-  };
 
   return (
     artistInfo != undefined && (

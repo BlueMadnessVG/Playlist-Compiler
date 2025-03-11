@@ -1,4 +1,4 @@
-function PlaylistIcon() {
+export function PlaylistIcon() {
   return (
     <svg
       role="img"
@@ -16,5 +16,3 @@ function PlaylistIcon() {
     </svg>
   );
 }
-
-export default PlaylistIcon;

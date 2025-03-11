@@ -3,6 +3,7 @@ import { PublicRoutes } from "./router.config";
 
 import { AnimatePresence } from "framer-motion";
 import { lazy, Suspense } from "react";
+import LoadingPage from "../utils/Page utils/LoadingPage.utility";
 
 const Home = lazy(() => import("../components/home/Home"));
 const PlayList = lazy(() => import("../components/playlist/PlayList"));
@@ -14,7 +15,7 @@ export const AppRouter = () => {
 
   //SET THE MAP FOR THE ROUTER
   return (
-    <Suspense fallback={<> LOADING... </>}>
+    <Suspense fallback={<LoadingPage />}>
       <AnimatePresence mode="wait" initial={true}>
         <Routes location={location} key={location.pathname}>
           <Route path={PublicRoutes.HOME} element={<Home />} />
