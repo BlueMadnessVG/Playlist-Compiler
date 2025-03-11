@@ -2,7 +2,6 @@ import { apiYouTube } from "../services/Youtube/Youtube.service";
 import { getValidationError } from "../utils/controllers/validation.error";
 import { SnackbarUtilities } from "../utils/controllers/snakbar.manager";
 import { deleteLocalStorage } from "../utils/localstorage/localStorage.utility";
-import { useYoutubeStore } from "../global";
 
 export const AxiosInterceptor = () => {
   const updateHeaders = (request: any) => {

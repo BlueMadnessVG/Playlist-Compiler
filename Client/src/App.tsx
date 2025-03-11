@@ -3,7 +3,7 @@ import styles from "./App.module.css";
 import { AppRouter } from "./router/router";
 import { BrowserRouter as Router } from "react-router-dom";
 
-import PageAside from "./components/static/aside/pageAside";
+import {PageAside} from "./components/static/aside";
 import { Player } from "./components/static/player";
 import { usePlayerStore } from "./global/music.store";
 import { SnackbarProvider } from "notistack";

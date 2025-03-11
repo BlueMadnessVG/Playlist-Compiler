@@ -10,6 +10,7 @@ import { PlayerFooter } from "./PlayerFooter";
 import { PlayerHeader } from "./PlayerHeader";
 import { PlayerQueue } from "./PlayerQueue";
 import { PlayerControls } from "./PlayerControls";
+import { formatTime } from "../../../utils/controllers";
 
 function Player() {
   const {
@@ -83,10 +84,6 @@ function Player() {
     setCurrentMusic({ playlist: null, song: null, songs: [] });
   }, [setIsPlaying, setCurrentMusic]);
 
-  const handleToggleOpen = useCallback(() => {
-    setOpen((prev) => !prev);
-  }, []);
-
   const handleSeek = useCallback(
     (value: number) => {
       playerRef?.current?.seekTo(value);
@@ -95,15 +92,6 @@ function Player() {
     },
     [isPlaying, setIsPlaying]
   );
-
-  const formatTime = (time: number) => {
-    if (time == null || time == 0) return "0:00";
-
-    const seconds = Math.floor(time % 60);
-    const minutes = Math.floor(time / 60);
-
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-  };
 
   const getYoutubePlaylistItems = async () => {
     let result;
