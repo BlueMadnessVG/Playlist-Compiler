@@ -7,7 +7,7 @@ import {
 } from "framer-motion";
 import { wrap } from "@motionone/utils";
 
-function ParallaxText({ children }: any) {
+export function ParallaxText({ children }: any) {
   const [isHovered, setIsHovered] = useState(false);
   const baseX = useMotionValue(0);
   const baseVelocity = -1;
@@ -38,4 +38,3 @@ function ParallaxText({ children }: any) {
     </div>
   );
 }
-export default ParallaxText;

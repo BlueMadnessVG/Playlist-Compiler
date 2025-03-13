@@ -29,7 +29,7 @@ export function PlaylistItemCard({ playlist, type }: PlaylistItemCardProps) {
         <PlaylistDetails title={title} type="YouTube" />
       </a>
 
-      <PlaylistOverlay playlistId={playlistId} type={type} />
+      <PlaylistOverlay playlistId={playlistId} type={type} scope={scope} />
     </MusicMotion>
   );
 }

@@ -1,6 +1,7 @@
 import axios from "axios";
-import { MusicModel, PlaylistModel } from "../../models";
+import { ArtistInfoModel, MusicModel, PlaylistModel } from "../../models";
 import PlaylistStandardization, {
+  ArtistInfoStandardization,
   ArtistStandardization,
   MusicStandardization,
 } from "../../utils/controllers/Youtube.standardization";
@@ -33,7 +34,7 @@ export async function refreshToken() {
   params.append("client_id", clientID);
   params.append("client_secret", clientSecret);
   params.append("code", localStorage.getItem("YouTube_token") || "");
-  params.append("grant_type", "authorization_code"); //WHAT ARE WE GETTING PERMITIOS
+  params.append("grant_type", "authorization_code"); //WHAT ARE WE GETTING PERMITS
   params.append("redirect_uri", redirectUri); //WHERE IS GOING TO REDIRECT
 
   axios({
@@ -64,16 +65,18 @@ export const apiYouTube = axios.create({
   baseURL: "https://www.googleapis.com/youtube/v3/",
 });
 
-export async function fetchYouTubeProfile() {
+export async function fetchYouTubeProfile(signal?: AbortSignal) {
   const result = await apiYouTube("channels", {
     params: { part: "snippet", mine: true },
+    signal,
   });
   return result.data;
 }
 
-export async function fetchYoutubePlaylists() {
+export async function fetchYoutubePlaylists(signal?: AbortSignal) {
   const result = await apiYouTube("playlists", {
     params: { part: "snippet", mine: true, maxResults: 10 },
+    signal,
   });
 
   var data: PlaylistModel[] = [];
@@ -84,20 +87,29 @@ export async function fetchYoutubePlaylists() {
   return data;
 }
 
-export async function fetchYoutubeChanel(id: any) {
+export async function fetchYoutubeChanel(id: any, signal?: AbortSignal) {
   const result = await apiYouTube("channels", {
     params: {
       part: "snippet",
       id: id,
     },
+    signal,
   });
-  return result.data;
+
+  let data: ArtistInfoModel[] = [];
+  result.data.items.map((item: any) => {
+    data.push(ArtistInfoStandardization(item));
+  });
+
+  console.log(data);
+  return data;
 }
 
 export async function fetchYoutubeChannelVideos(
   id: any,
   resultPerPage: number,
-  pageToken?: string
+  signal: AbortSignal,
+  pageToken?: string,
 ) {
   const result = await apiYouTube("search", {
     params: {
@@ -109,6 +121,7 @@ export async function fetchYoutubeChannelVideos(
       order: "viewCount",
       pageToken: pageToken || "",
     },
+    signal,
   });
 
   let data: MusicModel[] = [];
@@ -125,26 +138,26 @@ export async function fetchYoutubeChannelVideos(
   };
 }
 
-export async function fetchYoutubeVideo(id: any) {
+export async function fetchYoutubeVideo(id: any, signal?: AbortSignal) {
   const result = await apiYouTube("videos", {
     params: {
       part: "snippet, contentDetails",
       id: id,
     },
+    signal
   });
-
-  console.log(result.data);
 
   return result.data;
 }
 
-export async function fetchYoutubeChanelPlaylists(id: any) {
+export async function fetchYoutubeChanelPlaylists(id: any, signal?: AbortSignal) {
   const result = await apiYouTube("playlists", {
     params: {
       part: "snippet",
       channelId: id,
       maxResults: 50,
     },
+    signal
   });
 
   let data: PlaylistModel[] = [];
@@ -162,12 +175,22 @@ export async function fetchYoutubePlaylistId(id: any) {
       id: id,
     },
   });
-  return result.data;
+
+  let data: PlaylistModel[] = [];
+  result.data.items.map((item: any) => {
+    data.push(PlaylistStandardization(item, "artist"));
+  });
+
+  return data;
 }
 
-export async function fetchYoutubePlaylistsItems(id: any) {
+export async function fetchYoutubePlaylistsItems(
+  id: any,
+  signal?: AbortSignal
+) {
   const result = await apiYouTube("playlistItems", {
     params: { part: "snippet", maxResults: 50, playlistId: id },
+    signal,
   });
 
   let data: MusicModel[] = [];
@@ -182,7 +205,8 @@ export async function fetchSearch(
   q: string,
   resultPerPage: number,
   type: string,
-  pageToken?: string
+  pageToken?: string,
+  signal?: AbortSignal
 ) {
   const result = await apiYouTube("search", {
     params: {
@@ -192,6 +216,7 @@ export async function fetchSearch(
       maxResults: resultPerPage,
       pageToken: pageToken || "",
     },
+    signal,
   });
 
   let data: any[] = [];

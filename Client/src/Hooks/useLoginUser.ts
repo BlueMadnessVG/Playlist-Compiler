@@ -6,20 +6,19 @@ import {
 } from "../services/Youtube";
 
 type Data = {
-    youtubeId: string | null;
-    youtubeToken: boolean;
-    youtubeProfileThumb: string | null;
-    youtubePlaylist: any[];
+  youtubeId: string | null;
+  youtubeToken: boolean;
+  youtubeProfileThumb: string | null;
+  youtubePlaylist: any[];
 } | null;
 
 interface Params {
-    data: Data;
-    loading: boolean;
+  data: Data;
+  loading: boolean;
 }
 
 export const useLoginUser = (): Params => {
   const [loading, setLoading] = useState(true);
-
 
   const {
     youtubeId,
@@ -41,21 +40,33 @@ export const useLoginUser = (): Params => {
     window.location.hash = "";
 
     async function getYoutubeUser() {
-      if (youtubeId != null) {
-        setYoutubeProfileThumb(youtubeId.snippet.thumbnails.default.url);
-        return;
-      }
+      try {
+        if (youtubeId != null) {
+          setYoutubeProfileThumb(youtubeId.snippet.thumbnails.default.url);
+          return;
+        }
 
-      const youtube = await fetchYouTubeProfile();
-      setYoutubeProfileThumb(youtube.items[0].snippet.thumbnails.default.url);
-      setYoutubeId(youtube.items[0]);
+        const youtube = await fetchYouTubeProfile(controller.signal); // Pass the signal
+        setYoutubeProfileThumb(youtube.items[0].snippet.thumbnails.default.url);
+        setYoutubeId(youtube.items[0]);
+      } catch (error: any) {
+        if (error.name !== "AbortError") {
+          console.error("Error fetching YouTube profile:", error);
+        }
+      }
     }
 
     async function getYoutubePlaylist() {
-      if (youtubePlaylist.length > 0) return;
+      try {
+        if (youtubePlaylist.length > 0) return;
 
-      const _youtubePlaylist = await fetchYoutubePlaylists();
-      setYoutubePlaylist(_youtubePlaylist);
+        const _youtubePlaylist = await fetchYoutubePlaylists(controller.signal); // Pass the signal
+        setYoutubePlaylist(_youtubePlaylist);
+      } catch (error: any) {
+        if (error.name !== "AbortError") {
+          console.error("Error fetching YouTube playlists:", error);
+        }
+      }
     }
 
     if (hash) {
@@ -73,17 +84,19 @@ export const useLoginUser = (): Params => {
       getYoutubePlaylist();
       setLoading(false);
     }
-    console.log(hash);
-    
+
     return () => {
-      controller.abort;
+      controller.abort();
     };
   }, []);
 
-  return { data: {
-    youtubeId,
-    youtubeToken,
-    youtubeProfileThumb,
-    youtubePlaylist,
-  }, loading };
+  return {
+    data: {
+      youtubeId,
+      youtubeToken,
+      youtubeProfileThumb,
+      youtubePlaylist,
+    },
+    loading,
+  };
 };

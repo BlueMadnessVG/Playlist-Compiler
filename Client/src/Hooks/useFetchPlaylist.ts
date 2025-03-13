@@ -26,17 +26,27 @@ export const useFetchPlaylist = (from: string, id: string): Params => {
     let controller = new AbortController();
 
     setPlaylistInfo(
-        from === "user"
-          ? youtubePlaylist.filter((val: any) => val.playlist_id === id)[0]
-          : artistPlaylist.filter((val: any) => val.playlist_id === id)[0]
-      );
+      from === "user"
+        ? youtubePlaylist.filter((val: any) => val.playlist_id === id)[0]
+        : artistPlaylist.filter((val: any) => val.playlist_id === id)[0]
+    );
 
     const getData = async () => {
-      const result: MusicModel[] = await fetchYoutubePlaylistsItems(id);
-      setData(result);
-      setPlaylistId(id);
-      setPlaylistItems(result);
-      setLoading(false);
+      try {
+        const result: MusicModel[] = await fetchYoutubePlaylistsItems(
+          id,
+          controller.signal
+        );
+        setData(result);
+        setPlaylistId(id);
+        setPlaylistItems(result);
+      } catch (error: any) {
+        if (error.name !== "AbortError") {
+          console.error("Error fetching playlist items:", error);
+        }
+      } finally {
+        setLoading(false);
+      }
     };
 
     if (!(playlistId === id && playlistItems?.length > 0)) getData();
@@ -46,9 +56,9 @@ export const useFetchPlaylist = (from: string, id: string): Params => {
     }
 
     return () => {
-      controller.abort;
+      controller.abort();
     };
-  }, []);
+  }, [id, from]);
 
   return { data, playlistInfo, loading };
 };

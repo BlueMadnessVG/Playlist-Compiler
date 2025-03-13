@@ -1,14 +1,14 @@
-import { useAnimate } from "framer-motion";
+import { AnimationScope } from "framer-motion";
 import { PlayButton } from "../../../utils/Page utils";
 import { BOTTOM_RIGHT_CLIP } from "../../../utils/Motion";
 
 interface PlaylistOverlayProps {
     playlistId: string;
     type: string;
+    scope: AnimationScope
 }
 
-export function PlaylistOverlay ( { playlistId, type }: PlaylistOverlayProps ) {
-    const [scope] = useAnimate();
+export function PlaylistOverlay ( { playlistId, type, scope }: PlaylistOverlayProps ) {
 
     return (
         <div

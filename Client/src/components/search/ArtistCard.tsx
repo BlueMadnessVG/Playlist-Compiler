@@ -5,6 +5,9 @@ import { motion } from "framer-motion";
 export function ArtistCard({ artist }: { artist: ArtistModel }) {
   const navigate = useNavigate();
 
+  const fallbackImage =
+    "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg";
+
   return (
     <motion.button
       initial={{ y: 0 }}
@@ -23,11 +26,9 @@ export function ArtistCard({ artist }: { artist: ArtistModel }) {
         >
           <img
             src={
-              artist?.thumbnails.medium
-                ? artist?.thumbnails.medium
-                : "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg"
+              artist?.thumbnails.medium || fallbackImage
             }
-            alt={`https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg`}
+            alt={artist?.title || "Artist"}
             className=" object-none w-full h-full shadow-lg rounded-full "
           />
         </picture>

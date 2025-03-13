@@ -33,25 +33,51 @@ export const useFetchSearch = (search_item: string): Params => {
     setLoading(true);
 
     const getSearch = async () => {
-      const [artistsResult, musicResult, playlistResult] = await Promise.all([
-        fetchSearch(search !== search_item ? search_item : search, maxResult, "channel"),
-        fetchSearch(search !== search_item ? search_item : search, maxResult, "video"),
-        fetchSearch(search !== search_item ? search_item : search, maxResult, "playlist"),
-      ]);
+      try {
+        const [artistsResult, musicResult, playlistResult] = await Promise.all([
+          fetchSearch(
+            search !== search_item ? search_item : search,
+            maxResult,
+            "channel",
+            undefined,
+            controller.signal // Pass the signal
+          ),
+          fetchSearch(
+            search !== search_item ? search_item : search,
+            maxResult,
+            "video",
+            undefined,
+            controller.signal // Pass the signal
+          ),
+          fetchSearch(
+            search !== search_item ? search_item : search,
+            maxResult,
+            "playlist",
+            undefined,
+            controller.signal // Pass the signal
+          ),
+        ]);
 
-      // Update state with the fetched results
-      setArtistsSearch(artistsResult.items);
-      setMusicSearch(musicResult.items);
-      setPlaylistSearch(playlistResult.items);
+        // Update state with the fetched results
+        setArtistsSearch(artistsResult.items);
+        setMusicSearch(musicResult.items);
+        setPlaylistSearch(playlistResult.items);
+      } catch (error: any) {
+        if (error.name !== "AbortError") {
+          console.error("Error fetching search results:", error);
+        }
+      } finally {
+        setLoading(false); // Ensure loading is set to false
+      }
     };
 
     getSearch();
 
     return () => {
       setSearch("");
-      controller.abort;
+      controller.abort();
     };
-  }, [setSearch]);
+  }, [search_item, search, setSearch, setArtistsSearch, setMusicSearch, setPlaylistSearch]);
 
   return {
     data: {

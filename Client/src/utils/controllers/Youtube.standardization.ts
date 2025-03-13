@@ -1,14 +1,15 @@
-import { PlaylistModel, MusicModel } from "../../models";
+import { PlaylistModel, MusicModel, ArtistInfoModel } from "../../models";
 import { ArtistModel } from "../../models/Artist.model";
 
 export function PlaylistStandardization(playlist: any, type: string) {
   let data: PlaylistModel = {
-    playlist_id: type === "artist" ? playlist.id : playlist.id.playlistId,
+    id: type === "artist" ? playlist.id : playlist.id.playlistId,
     title: playlist.snippet.title,
     creator: playlist.snippet.channelTitle,
     thumbnails: {
       medium: playlist.snippet.thumbnails.medium.url,
       high: playlist.snippet.thumbnails.high.url,
+      default: playlist.snippet.thumbnails.default.url
     },
     created_date: playlist.snippet.publishedAt,
   };
@@ -57,5 +58,21 @@ export function MusicStandardization(music: any, type: string) {
 
   return data;
 }
+
+export function ArtistInfoStandardization(artist: any) {
+  let data: ArtistInfoModel = {
+    id: artist.id,
+    title: artist.snippet.title,
+    description: artist.snippet.description,
+    thumbnails : {
+      high: artist.snippet.thumbnails.high.url,
+      medium: artist.snippet.thumbnails.medium.url,
+      default: artist.snippet.thumbnails.default.url
+    }
+  }
+
+  return data;
+}
+
 
 export default PlaylistStandardization;
