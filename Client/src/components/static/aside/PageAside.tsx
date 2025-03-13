@@ -21,12 +21,12 @@ function PageAside() {
 
   const getHistory = async (id: any) => {
     const result = await fetchYoutubePlaylistId(id);
-    setHistory(result.items);
+    setHistory(result);
   };
 
   const getArtistHistory = async (id: any) => {
     const result = await fetchYoutubeChanel(id);
-    setArtistHistory(result.items);
+    setArtistHistory(result);
   };
 
   useEffect(() => {
@@ -36,7 +36,6 @@ function PageAside() {
         .join(",");
 
       if (playlistHistory) getHistory(playlistHistory);
-      console.log(currentMusic);
     }
   }, [currentMusic?.playlist?.id]);
 
@@ -46,9 +45,7 @@ function PageAside() {
         .map((item) => item.id)
         .join(",");
       if (artistSearchHistory) getArtistHistory(artistSearchHistory);
-      console.log(artistSearchHistory);
     }
-    console.log(artistHistory);
   }, [artistInfo]);
 
   return (

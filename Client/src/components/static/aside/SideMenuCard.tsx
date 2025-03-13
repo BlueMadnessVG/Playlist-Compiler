@@ -24,8 +24,8 @@ export function SideMenuCard({
     >
       <picture className="h-12 w-12 flex-none">
         <img
-          src={item?.snippet.thumbnails.default.url}
-          alt={`item from ${item.from}`}
+          src={item.thumbnails.default}
+          alt={`item from ${item.title}`}
           className={`object-none w-full h-full shadow-md shadow-zinc-700/90 ${
             type === "playlist" ? "rounded-md" : "rounded-full"
           } `}
@@ -40,7 +40,7 @@ export function SideMenuCard({
           transition={{ delay: 0.125 }}
           className="flex flex-auto flex-col truncate font-abc"
         >
-          <h4 className=" text-sm"> {item?.snippet.title} </h4>
+          <h4 className=" text-sm"> {item.title} </h4>
           <span className="text-xs text-gray-500 pt-1 capitalize">{type}</span>
         </motion.div>
       )}

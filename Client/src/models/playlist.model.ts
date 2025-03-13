@@ -1,7 +1,7 @@
 export interface PlaylistModel {
-  playlist_id: string;
+  id: string;
   creator: string;
   title: string;
-  thumbnails: { medium: string; high: string };
+  thumbnails: { medium: string; high: string, default: string };
   created_date: string;
 }

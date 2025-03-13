@@ -1,6 +1,7 @@
 import axios from "axios";
-import { MusicModel, PlaylistModel } from "../../models";
+import { ArtistInfoModel, MusicModel, PlaylistModel } from "../../models";
 import PlaylistStandardization, {
+  ArtistInfoStandardization,
   ArtistStandardization,
   MusicStandardization,
 } from "../../utils/controllers/Youtube.standardization";
@@ -33,7 +34,7 @@ export async function refreshToken() {
   params.append("client_id", clientID);
   params.append("client_secret", clientSecret);
   params.append("code", localStorage.getItem("YouTube_token") || "");
-  params.append("grant_type", "authorization_code"); //WHAT ARE WE GETTING PERMITIOS
+  params.append("grant_type", "authorization_code"); //WHAT ARE WE GETTING PERMITS
   params.append("redirect_uri", redirectUri); //WHERE IS GOING TO REDIRECT
 
   axios({
@@ -94,14 +95,21 @@ export async function fetchYoutubeChanel(id: any, signal?: AbortSignal) {
     },
     signal,
   });
-  return result.data;
+
+  let data: ArtistInfoModel[] = [];
+  result.data.items.map((item: any) => {
+    data.push(ArtistInfoStandardization(item));
+  });
+
+  console.log(data);
+  return data;
 }
 
 export async function fetchYoutubeChannelVideos(
   id: any,
   resultPerPage: number,
+  signal: AbortSignal,
   pageToken?: string,
-  signal?: AbortSignal
 ) {
   const result = await apiYouTube("search", {
     params: {
@@ -167,7 +175,13 @@ export async function fetchYoutubePlaylistId(id: any) {
       id: id,
     },
   });
-  return result.data;
+
+  let data: PlaylistModel[] = [];
+  result.data.items.map((item: any) => {
+    data.push(PlaylistStandardization(item, "artist"));
+  });
+
+  return data;
 }
 
 export async function fetchYoutubePlaylistsItems(
