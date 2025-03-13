@@ -37,6 +37,12 @@ export const AxiosInterceptor = () => {
     },
     (error) => {
       console.log("error", error.code);
+
+      if (error.code === "ERR_CANCELED") {
+        console.log("Request canceled", error.message);
+        return Promise.reject(error);
+      }
+
       deleteLocalStorage("YouTube_token");
       SnackbarUtilities.error(getValidationError(error.code));
       return Promise.reject(error);
