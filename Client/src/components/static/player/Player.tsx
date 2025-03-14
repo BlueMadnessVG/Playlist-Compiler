@@ -16,6 +16,10 @@ function Player() {
     loading
   } = usePlayer();
 
+  if (loading) {
+    console.log(loading);
+  }
+
   return (
     <motion.div
       initial={{ y: 500 }}

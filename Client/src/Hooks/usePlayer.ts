@@ -5,7 +5,6 @@ import { fetchYoutubePlaylistsItems } from "../services/Youtube";
 import { MusicModel, PlaylistModel } from "../models";
 
 type AudioRef = string;
-type PlayerRef = any;
 
 type OnProgressCallback = (state: { playedSeconds: number }) => void;
 type OnDurationCallback = (duration: number) => void;
