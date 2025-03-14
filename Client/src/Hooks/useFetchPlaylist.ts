@@ -27,8 +27,8 @@ export const useFetchPlaylist = (from: string, id: string): Params => {
 
     setPlaylistInfo(
       from === "user"
-        ? youtubePlaylist.filter((val: any) => val.playlist_id === id)[0]
-        : artistPlaylist.filter((val: any) => val.playlist_id === id)[0]
+        ? youtubePlaylist.filter((val: any) => val.id === id)[0]
+        : artistPlaylist.filter((val: any) => val.id === id)[0]
     );
 
     const getData = async () => {

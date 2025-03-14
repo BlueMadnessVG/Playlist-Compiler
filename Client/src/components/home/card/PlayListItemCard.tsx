@@ -15,7 +15,7 @@ export function PlaylistItemCard({ playlist, type }: PlaylistItemCardProps) {
   const imageUrl = playlist?.thumbnails.medium;
   const altText = `Playlist from ${playlist?.creator}`;
   const title = playlist?.title;
-  const playlistId = playlist?.playlist_id;
+  const playlistId = playlist?.id;
 
   return (
     <MusicMotion scope={scope} animate={animate}>

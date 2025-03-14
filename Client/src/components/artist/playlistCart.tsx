@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { PlaylistModel } from "../../models";
 
-function PlaylistCart({ playlist }: { playlist: any }) {
+function PlaylistCart({ playlist }: { playlist: PlaylistModel }) {
   const navigate = useNavigate();
   /* const { type } = useParams(); */
 
@@ -13,7 +14,7 @@ function PlaylistCart({ playlist }: { playlist: any }) {
       exit={{ y: [1, 1.1, 0] }}
       className="group relative text-left"
       onClick={() => {
-        navigate(`/playlist/youtube/artist/${playlist.playlist_id}`);
+        navigate(`/playlist/youtube/artist/${playlist.id}`);
       }}
     >
       <div className="flex flex-col hover:bg-zinc-800/80 p-2 rounded-md w-56">
