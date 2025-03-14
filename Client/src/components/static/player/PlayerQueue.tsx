@@ -8,7 +8,6 @@ interface PlayerQueueProps {
 }
 
 export const PlayerQueue = memo(({ songs, onReorder }: PlayerQueueProps) => {
-  console.log("im re rendering");
 
   return (
     <div className="flex flex-col py-2 w-full bg-zinc-900">

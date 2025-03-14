@@ -3,6 +3,7 @@ import { MusicSlider } from "./MusicSlider";
 import { memo } from "react";
 
 interface PlayerContentProps {
+  playerRef: any;
   audioRef: string;
   isPlaying: boolean;
   volume: number;
@@ -16,6 +17,7 @@ interface PlayerContentProps {
 
 export const PlayerContent = memo(
   ({
+    playerRef,
     audioRef,
     isPlaying,
     volume,
@@ -26,11 +28,10 @@ export const PlayerContent = memo(
     maxTime,
     onSeek,
   }: PlayerContentProps) => {
-    console.log("im re rendering");
-
     return (
       <>
         <YouTubePlayer
+          ref={playerRef}
           url={`https://www.youtube.com/watch?v=${audioRef}`}
           width={"100%"}
           height={"16vw"}

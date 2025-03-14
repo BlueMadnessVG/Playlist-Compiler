@@ -13,7 +13,6 @@ interface PlayerFooterProps {
 export const PlayerFooter = memo(
   ({ songTitle, artistName, artistId, playlistType }: PlayerFooterProps) => {
     const navigate = useNavigate();
-    console.log("im re rendering");
 
     return (
       <div className="flex flex-auto flex-col justify-between w-full px-4 z-50 pb-2 pt-2 bg-zinc-800 font-abc cursor-default overflow-hidden">

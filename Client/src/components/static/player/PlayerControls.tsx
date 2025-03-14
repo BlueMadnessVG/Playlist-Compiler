@@ -10,7 +10,6 @@ interface PlayerControlsProps {
 
 export const PlayerControls = memo(
   ({ onPlay, onNext, onPrev, isPlaying }: PlayerControlsProps) => {
-    console.log("im re rendering");
 
     return (
       <div className="flex gap-5 place-content-center">

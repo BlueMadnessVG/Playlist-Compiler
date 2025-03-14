@@ -18,7 +18,6 @@ function PlayerItem({
   const y = useMotionValue(0);
   const boxShadow = useRaisedShadow(y);
 
-  console.log("im re rendering");
 
 
   return (

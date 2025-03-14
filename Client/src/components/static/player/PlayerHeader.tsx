@@ -19,7 +19,6 @@ export const PlayerHeader = memo(
     playedTime,
     maxTime,
   }: PlayerHeaderProps) => {
-    console.log("im re rendering");
 
     return (
       <div className="group cursor-default">
